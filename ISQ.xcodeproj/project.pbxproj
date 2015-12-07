@@ -648,6 +648,9 @@
 		04EF14F51BF8321000F4A079 /* JGActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 04EF14F31BF8321000F4A079 /* JGActionSheet.m */; };
 		04EF14FC1BF9E9DC00F4A079 /* hotCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 04EF14FB1BF9E9DC00F4A079 /* hotCell.m */; };
 		04EF14FF1BFAC33300F4A079 /* hotModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 04EF14FE1BFAC33300F4A079 /* hotModel.m */; };
+		9D330A051C15AA7A002D056B /* CollectionViewLayoutZhanBo.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D330A001C15AA7A002D056B /* CollectionViewLayoutZhanBo.m */; };
+		9D330A061C15AA7A002D056B /* zhanBo_CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D330A021C15AA7A002D056B /* zhanBo_CollectionViewCell.m */; };
+		9D330A071C15AA7A002D056B /* zhanBoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D330A041C15AA7A002D056B /* zhanBoViewController.m */; };
 		B8CEE3B31C10021000863F0E /* ActivityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8CEE3B21C10021000863F0E /* ActivityViewController.m */; };
 		B8CEE3B81C10022500863F0E /* ActivityDetailImgController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8CEE3B51C10022500863F0E /* ActivityDetailImgController.m */; };
 		B8CEE3B91C10022500863F0E /* VideoDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8CEE3B71C10022500863F0E /* VideoDetailController.m */; };
@@ -1751,6 +1754,12 @@
 		04EF14FB1BF9E9DC00F4A079 /* hotCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = hotCell.m; sourceTree = "<group>"; };
 		04EF14FD1BFAC33300F4A079 /* hotModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hotModel.h; sourceTree = "<group>"; };
 		04EF14FE1BFAC33300F4A079 /* hotModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = hotModel.m; sourceTree = "<group>"; };
+		9D3309FF1C15AA7A002D056B /* CollectionViewLayoutZhanBo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewLayoutZhanBo.h; sourceTree = "<group>"; };
+		9D330A001C15AA7A002D056B /* CollectionViewLayoutZhanBo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewLayoutZhanBo.m; sourceTree = "<group>"; };
+		9D330A011C15AA7A002D056B /* zhanBo_CollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zhanBo_CollectionViewCell.h; sourceTree = "<group>"; };
+		9D330A021C15AA7A002D056B /* zhanBo_CollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = zhanBo_CollectionViewCell.m; sourceTree = "<group>"; };
+		9D330A031C15AA7A002D056B /* zhanBoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zhanBoViewController.h; sourceTree = "<group>"; };
+		9D330A041C15AA7A002D056B /* zhanBoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = zhanBoViewController.m; sourceTree = "<group>"; };
 		B8CEE3B11C10021000863F0E /* ActivityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityViewController.h; sourceTree = "<group>"; };
 		B8CEE3B21C10021000863F0E /* ActivityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityViewController.m; sourceTree = "<group>"; };
 		B8CEE3B41C10022500863F0E /* ActivityDetailImgController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityDetailImgController.h; sourceTree = "<group>"; };
@@ -3671,6 +3680,7 @@
 				0493A5251BE6F1010018D792 /* Controller */,
 				0493A52E1BE6F1010018D792 /* model */,
 				0493A5331BE6F1010018D792 /* view */,
+				9D3309FE1C15AA61002D056B /* springVideoShow */,
 			);
 			path = Activity;
 			sourceTree = "<group>";
@@ -4114,6 +4124,20 @@
 				04EF14DE1BF8319D00F4A079 /* line@2x.png */,
 			);
 			path = Images;
+			sourceTree = "<group>";
+		};
+		9D3309FE1C15AA61002D056B /* springVideoShow */ = {
+			isa = PBXGroup;
+			children = (
+				9D3309FF1C15AA7A002D056B /* CollectionViewLayoutZhanBo.h */,
+				9D330A001C15AA7A002D056B /* CollectionViewLayoutZhanBo.m */,
+				9D330A011C15AA7A002D056B /* zhanBo_CollectionViewCell.h */,
+				9D330A021C15AA7A002D056B /* zhanBo_CollectionViewCell.m */,
+				9D330A031C15AA7A002D056B /* zhanBoViewController.h */,
+				9D330A041C15AA7A002D056B /* zhanBoViewController.m */,
+			);
+			name = springVideoShow;
+			path = view;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -4671,6 +4695,7 @@
 				042A477A1BB4F0A4006254B7 /* UserInfoCell.m in Sources */,
 				045E31151AC66215006F5ADD /* SecMyPublishCell.m in Sources */,
 				043BC86C1AE63D4C005F59AA /* AFHTTPRequestOperation.m in Sources */,
+				9D330A061C15AA7A002D056B /* zhanBo_CollectionViewCell.m in Sources */,
 				045E43BA1B2A77B300ADACF3 /* amrFileCodec.mm in Sources */,
 				042A47251BB4E70F006254B7 /* FindFriendsModel.m in Sources */,
 				0458705A1AB911F10026FE13 /* DDPageControl.m in Sources */,
@@ -4688,6 +4713,7 @@
 				042A47161BB4E6BA006254B7 /* NeighborsTableCell.m in Sources */,
 				045E43981B2A77B300ADACF3 /* EMSDWebImageDownloader.m in Sources */,
 				04126D7A1BD4C91A00BB4D22 /* MyFavoriteViewController.m in Sources */,
+				9D330A071C15AA7A002D056B /* zhanBoViewController.m in Sources */,
 				045E43A11B2A77B300ADACF3 /* UIImage+EMWebP.m in Sources */,
 				043BC86F1AE63D4C005F59AA /* AFNetworkReachabilityManager.m in Sources */,
 				045E441D1B2A781200ADACF3 /* EMChatViewCell.m in Sources */,
@@ -4797,6 +4823,7 @@
 				045E438E1B2A77B300ADACF3 /* MWGridViewController.m in Sources */,
 				045E442A1B2A789C00ADACF3 /* MyChatroomListViewController.m in Sources */,
 				0419662A1BEB0B7C003684E6 /* ISQHttpTool.m in Sources */,
+				9D330A051C15AA7A002D056B /* CollectionViewLayoutZhanBo.m in Sources */,
 				042A47881BB4F792006254B7 /* FourthWeController.m in Sources */,
 				B8CEE3C21C11BFC200863F0E /* MyActivityViewController.m in Sources */,
 				045E44141B2A781200ADACF3 /* DXRecordView.m in Sources */,

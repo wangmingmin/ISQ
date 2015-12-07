@@ -27,6 +27,7 @@
 #import "SeconWebController.h"
 #import "ActivityDetailImgController.h"
 #import "AnnouncementModel.h"
+#import "zhanBoViewController.h"
 @interface ActivityViewController ()<SRRefreshDelegate>
 
 @property (nonatomic,strong) UIButton *leftButton;
@@ -260,7 +261,11 @@
 //获取附近数据
 - (void)loadNearListData:(NSInteger) rows{
     
-    
+    if (rows==0) {
+        nearRows=0;
+        [nearData removeAllObjects];
+        nearData = [[NSMutableArray alloc] init];
+    }
     
     AppDelegate *locationCityDelegate;
     locationCityDelegate = (AppDelegate*)[[UIApplication sharedApplication]delegate];
@@ -271,14 +276,7 @@
     NSString *account = [userInfo objectForKey:userAccount];
     NSDictionary *dict = @{@"location_x":location_x,@"location_y":location_y,@"userAccount":account,@"rows":[NSString stringWithFormat:@"%ld",(long)rows]};
     [ISQHttpTool getHttp:getNearActiveList contentType:nil params:dict success:^(id responseObject) {
-       
-        if (rows==0) {
-            nearRows=0;
-            [nearData removeAllObjects];
-            nearData = [[NSMutableArray alloc] init];
-        }
-        
-        
+      
        NSDictionary *nearDic=[[NSDictionary alloc]init];
        
        nearDic= [NSJSONSerialization JSONObjectWithData:responseObject options:NSJapaneseEUCStringEncoding  error:nil];
@@ -303,11 +301,6 @@
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
 }
 
--(void)viewDidAppear:(BOOL)animated{
-    
-//    [self loadNearListData:0];
-    
-}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
@@ -517,39 +510,25 @@
 -(void)praise:(UIButton *)sender{
     
     
+    
+    if ([nearData[sender.tag-1000][@"likeNum"] intValue]==1) {
+        
+        
+    }else {
+        
+        //赞+1
+        [sender setTitle:[NSString stringWithFormat:@"%d点赞",[nearData[sender.tag-1000][@"likeNum"] intValue]] forState:UIControlStateNormal];
+    }
+    
     NSMutableDictionary *clickzDic = [[NSMutableDictionary alloc] init];
     clickzDic[@"id"] =  [NSString stringWithFormat:@"%@",nearData[sender.tag-1000][@"activeID"]];
     clickzDic[@"userAccount"] = [userInfo objectForKey:userAccount];
     [ISQHttpTool post:activityClickz contentType:nil params:clickzDic success:^(id responseObj) {
         
-         NSString *clickzData2 = [[NSString alloc] initWithData:responseObj encoding:NSUTF8StringEncoding];
-        
-        if ([clickzData2 isEqualToString:@"ok"]) {
-            
-            
-            if ([[NSString stringWithFormat:@"%@",nearData[sender.tag-1000][@"like"]] isEqualToString:@"1"]) {
-                
-                
-                
-                [sender setTitle:[NSString stringWithFormat:@"%d点赞",[nearData[sender.tag-1000][@"likeNum"] intValue]] forState:UIControlStateNormal];
-                ISQLog(@"点赞---%@",clickzData2);
-                
-            }else {
-                
-                
-                
-                //赞+1
-                [sender setTitle:[NSString stringWithFormat:@"%d点赞",[nearData[sender.tag-1000][@"likeNum"] intValue]+1] forState:UIControlStateNormal];
-                ISQLog(@"点赞---%@",clickzData2);
-            }
-            
-            
-            
-        }
         
     } failure:^(NSError *error) {
         
-        [self showHint:@"请稍后再试..."];
+        
         
     }];
     
@@ -559,39 +538,26 @@
 -(void)cancelPraise:(UIButton *)sender{
     
     
+    if ([nearData[sender.tag-1000][@"likeNum"] intValue]==1) {
+       
+        
+    }else {
+
+        //赞-1
+        [sender setTitle:[NSString stringWithFormat:@"%d点赞",[nearData[sender.tag-1000][@"likeNum"] intValue]-1] forState:UIControlStateNormal];
+    }
+    
     NSMutableDictionary *clickzDic = [[NSMutableDictionary alloc] init];
     clickzDic[@"id"] = [NSString stringWithFormat:@"%@",nearData[sender.tag-1000][@"activeID"]];
     clickzDic[@"userAccount"] = [userInfo objectForKey:userAccount];
     [ISQHttpTool getHttp:cancelActivityClickz contentType:nil params:clickzDic success:^(id responseObject) {
-       
-        NSString *clickzData2 = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
         
-        if ([clickzData2 isEqualToString:@"ok"]) {
-            
-            if ([[NSString stringWithFormat:@"%@",nearData[sender.tag-1000][@"like"]] isEqualToString:@"1"]) {
-                
-                
-                //赞-1
-                [sender setTitle:[NSString stringWithFormat:@"%d点赞",[nearData[sender.tag-1000][@"likeNum"] intValue]-1] forState:UIControlStateNormal];
-                
-            }else {
-                
-                
-
-                [sender setTitle:[NSString stringWithFormat:@"%d点赞",[nearData[sender.tag-1000][@"likeNum"] intValue]] forState:UIControlStateNormal];
-            }
-            
-           
-            
-        }
-       
+        
         
     } failure:^(NSError *erro) {
         
-        [self showHint:@"请稍后再试..."];
     }];
 }
-
 
 #pragma mark - tableView delegate
 
@@ -634,7 +600,6 @@
             data = [HotVideoModel objectWithKeyValues:nearData[indexPath.row]];
             if (![self isNullString:data.videoID]) {
                 
-           
                 videoCell *vCell = [tableView dequeueReusableCellWithIdentifier:@"videoCell" forIndexPath:indexPath];
                 
                 if ([[NSString stringWithFormat:@"%@",data.join] isEqualToString:@"1"]) {
@@ -646,13 +611,8 @@
                     
                     vCell.clickzButton.selected=YES;
                     
-                   
-                    
-                }else {
-                    vCell.clickzButton.selected=NO;
-                    
                 }
-               
+                
                 [vCell.joinButton setImage:[UIImage imageNamed:arrayNormalImg[0]] forState:UIControlStateNormal];
                 [vCell.joinButton setTitle:[NSString stringWithFormat:@"%@参加",data.joinNum] forState:UIControlStateNormal];
                 [vCell.clickzButton setTitle:[NSString stringWithFormat:@"%@点赞",data.likeNum] forState:UIControlStateNormal];
@@ -737,8 +697,6 @@
                     
                     imagecell.clickzButton.selected=YES;
                     
-                }else {
-                    imagecell.clickzButton.selected=NO;
                 }
                 
                 imagecell.clickzButton.tag=indexPath.row+1000;
@@ -779,9 +737,16 @@
     
     if(self.hotTableView ==tableView){
         if (fromHttpData) {
-            
             NSString *uid = [userInfo objectForKey:MyUserID];
             NSDictionary *dict = fromHttpData[indexPath.row];
+            
+            NSString * titleUrl = [dict objectForKey:@"titleUrl"];
+            if ([titleUrl isEqualToString:@"springVideoShow"]) {
+                zhanBoViewController * zhanBoView = [self.storyboard instantiateViewControllerWithIdentifier:@"zhanBoViewController"];
+                [self.navigationController pushViewController:zhanBoView animated:YES];
+                return;
+            }
+            
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
             SeconWebController *webVC = [storyboard instantiateViewControllerWithIdentifier:@"SeconWebController"];
             webVC.theUrl = [NSString stringWithFormat:@"%@%@%@%@",[dict objectForKey:@"titleUrl"],@"/uid/",uid,@".html"];

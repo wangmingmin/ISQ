@@ -164,7 +164,11 @@ typedef NSInteger DWPLayerScreenSizeMode;
     
 }
 
-
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [self.player stop];
+}
 #pragma mark - scrollView delegate
 
 
