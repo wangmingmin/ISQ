@@ -1,0 +1,57 @@
+//
+//  ISQ.pch
+//  ISQ
+//
+//  Created by mac on 15-3-26.
+//  Copyright (c) 2015年 cn.ai-shequ. All rights reserved.
+//
+
+#ifndef ISQ_ISQ_pch
+#define ISQ_ISQ_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+
+#import "EaseMob.h"
+
+#pragma clang diagnostic ignored "-Wmissing-selector-name"
+#import <UIKit/UIKit.h>
+#import "ChatHXDefine.h"
+#import "TTGlobalUICommon.h"
+#import "UIViewController+HUD.h"
+#import "UIViewController+DismissKeyboard.h"
+#import "NSString+Valid.h"
+#import "ConstantFileld.h"
+//#import "EMSDKFull.h"
+#import "EMAlertView.h"
+//shareSDK
+#import <ShareSDK/ShareSDK.h>
+#import <TencentOpenAPI/QQApiInterface.h>
+#import <TencentOpenAPI/TencentOAuth.h>
+#import "WXApi.h"
+//#import "WeiboApi.h"
+#import "WeiboSDK.h"
+
+#import "AFNetworking.h"
+#import "MJRefresh.h"
+#import "EGOCache.h"
+#import "MJExtension.h"
+#import "UIViewExt.h"
+#import "ISQHttpTool.h"
+
+#import "UIImage+Extension.h"
+#import "UIView+Extension.h"
+#import "UIBarButtonItem+Extension.h"
+#import "UIColor+Extension.h"
+#import "ISQNavigationController.h"
+#import "UIlabel+Extension.h"
+#import "UIImageView+AFNetworking.h"
+
+#ifdef DEBUG // 调试状态, 打开LOG功能
+#define ISQLog(...) NSLog(__VA_ARGS__)
+#else // 发布状态, 关闭LOG功能
+#define ISQLog(...)
+#endif
+
+#endif

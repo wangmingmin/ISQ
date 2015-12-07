@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="detailCell" rowHeight="60" id="Hst-KL-5qO" customClass="UserDetailTableViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Hst-KL-5qO" id="JcB-BC-1Qe">
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MxH-CC-usU">
+                        <rect key="frame" x="194" y="11" width="100" height="39"/>
+                        <color key="backgroundColor" red="0.31506614960000001" green="0.77309534670000002" blue="0.8389883668" alpha="1" colorSpace="deviceRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="100" id="fKV-o8-ewY"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                        <state key="normal" title="加为好友">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="addButton:" destination="Hst-KL-5qO" eventType="touchUpInside" id="zWM-XG-Jwe"/>
+                        </connections>
+                    </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XA5-9f-5vQ">
+                        <rect key="frame" x="10" y="9" width="176" height="42"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="MxH-CC-usU" firstAttribute="leading" secondItem="XA5-9f-5vQ" secondAttribute="trailing" constant="8" id="3jG-Ae-KNR"/>
+                    <constraint firstItem="MxH-CC-usU" firstAttribute="top" secondItem="JcB-BC-1Qe" secondAttribute="topMargin" constant="3" id="ACS-HV-0uh"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="MxH-CC-usU" secondAttribute="bottom" constant="1" id="Bxw-4W-345"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="MxH-CC-usU" secondAttribute="trailing" constant="18" id="S0c-bN-iA1"/>
+                    <constraint firstItem="XA5-9f-5vQ" firstAttribute="leading" secondItem="JcB-BC-1Qe" secondAttribute="leadingMargin" constant="2" id="bV3-Nm-Tyx"/>
+                    <constraint firstItem="XA5-9f-5vQ" firstAttribute="top" secondItem="JcB-BC-1Qe" secondAttribute="topMargin" constant="1" id="i1N-KH-fYj"/>
+                    <constraint firstItem="XA5-9f-5vQ" firstAttribute="bottom" secondItem="JcB-BC-1Qe" secondAttribute="bottomMargin" id="rdE-sz-OMb"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="addButton_ol" destination="MxH-CC-usU" id="qDL-I2-WyD"/>
+                <outlet property="textLabe" destination="XA5-9f-5vQ" id="wpX-gJ-Q4g"/>
+            </connections>
+            <point key="canvasLocation" x="353" y="232"/>
+        </tableViewCell>
+    </objects>
+</document>
