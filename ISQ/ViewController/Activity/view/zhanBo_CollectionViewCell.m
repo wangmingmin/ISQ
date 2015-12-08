@@ -50,6 +50,8 @@
         self.shareBtn.frame = CGRectMake(frame.size.width-70, frame.size.height-44, 70, 44);
         [self.shareBtn setTitleColor:[UIColor colorWithRed:132.0/255 green:132.0/255 blue:132.0/255 alpha:1] forState:UIControlStateNormal];
         [self.shareBtn setTitle:@"分享" forState:UIControlStateNormal];
+        UIImage * image = [UIImage imageNamed:@"share"];
+        [self.shareBtn setImage:image forState:UIControlStateNormal];
         self.shareBtn.titleLabel.font = [UIFont systemFontOfSize:12];
         [self addSubview:self.shareBtn];
 
