@@ -99,16 +99,19 @@ static NSString * const reuseIdentifier = @"cell";
     self.introduceBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, tabBarWidth/3.0, tabBarHeight)];
     [self.introduceBtn setTitle:@"春晚简介" forState:UIControlStateNormal];
     [self.introduceBtn setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+    [self.introduceBtn setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
     [self.tabBarView addSubview:self.introduceBtn];
     
     self.trendsBtn = [[UIButton alloc] initWithFrame:CGRectMake(tabBarWidth/3.0, 0, tabBarWidth/3.0, tabBarHeight)];
     [self.trendsBtn setTitle:@"最新动态" forState:UIControlStateNormal];
     [self.trendsBtn setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+    [self.trendsBtn setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
     [self.tabBarView addSubview:self.trendsBtn];
 
     self.voteBtn = [[UIButton alloc] initWithFrame:CGRectMake(tabBarWidth/3.0*2.0, 0, tabBarWidth/3.0, tabBarHeight)];
     [self.voteBtn setTitle:@"投票规则" forState:UIControlStateNormal];
     [self.voteBtn setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+    [self.voteBtn setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
     [self.tabBarView addSubview:self.voteBtn];
 
     self.introduceBtn.titleLabel.font = self.trendsBtn.titleLabel.font =self.voteBtn.titleLabel.font =[UIFont systemFontOfSize:14];
