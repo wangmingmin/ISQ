@@ -401,12 +401,12 @@ static NSString * const reuseIdentifier = @"cell";
 
     UIViewController * palyView = [[UIViewController alloc] init];
     palyView.view.frame = self.view.frame;
+    palyView.edgesForExtendedLayout = UIRectEdgeNone;
     palyView.view.backgroundColor = [UIColor whiteColor];
     self.videoDetail=[self.storyboard instantiateViewControllerWithIdentifier:@"VideoDetail"];
     palyView.title= self.videoDetail.title=dataIndexDic[@"title"];
     self.videoDetail.httpData=dataIndexDic;
     [self.navigationController pushViewController:palyView animated:YES];
-    
 //    [palyView addChildViewController:self.videoDetail];
     [palyView.view addSubview:self.videoDetail.view];
 }
