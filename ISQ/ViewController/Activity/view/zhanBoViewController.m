@@ -410,7 +410,7 @@ static NSString * const reuseIdentifier = @"cell";
     palyView.title= self.videoDetail.title=dataIndexDic[@"title"];
     self.videoDetail.httpData=dataIndexDic;
     [self.navigationController pushViewController:palyView animated:YES];
-//    [palyView addChildViewController:self.videoDetail];
+    [palyView addChildViewController:self.videoDetail];
     [palyView.view addSubview:self.videoDetail.view];
 }
 
