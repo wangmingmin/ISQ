@@ -368,7 +368,7 @@ bool theTop=true;
         ISQLog(@"%f%f",locationCityDelegate.theLa,locationCityDelegate.theLo);
         
         SeconWebController *webVC = [segue destinationViewController];
-        webVC.theUrl = url;
+        webVC.theUrl = url; 
     //家政
     }else if ([[segue identifier] isEqualToString:@"housekeeping"]){
         
