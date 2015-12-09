@@ -62,6 +62,7 @@ typedef NSInteger DWPLayerScreenSizeMode;
 @synthesize tableview;
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     [self basicView];
     
     UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 10, 16, 23)];
@@ -181,6 +182,8 @@ typedef NSInteger DWPLayerScreenSizeMode;
         self.tableView_videoDetails.backgroundColor = [UIColor colorWithRed:226.0/255 green:235.0/255 blue:237.0/255 alpha:1];
         self.tableView_videoDetails.showsVerticalScrollIndicator = NO;
         [self.view addSubview:self.tableView_videoDetails];
+        
+        NSLog(@"detail -----   detail=%@  httpdetail=%@ userface=%@ userNickName=%@",data.detail,self.httpData[@"detail"],data.userFace,data.userNickName);
     }
     
 }

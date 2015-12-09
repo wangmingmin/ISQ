@@ -15,6 +15,7 @@
 static NSString * const reuseIdentifier = @"cell";
 #define backColor [UIColor groupTableViewBackgroundColor]
 #define httpServer @"http://121.41.18.126:8080/isqbms/getSpringVideoList.from?"
+#define httpDetailServer @"http://121.41.18.126:8080/isqbms/getSpringVideoDetail.from?"
 
 @interface zhanBoViewController ()<UIScrollViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
 @property (nonatomic, strong) UIScrollView * allScrollView;//节目列表总视图
@@ -402,16 +403,37 @@ static NSString * const reuseIdentifier = @"cell";
     }
     NSDictionary * dataIndexDic = data[indexPath.row];
 
-    UIViewController * palyView = [[UIViewController alloc] init];
-    palyView.view.frame = self.view.frame;
-    palyView.edgesForExtendedLayout = UIRectEdgeNone;
-    palyView.view.backgroundColor = [UIColor whiteColor];
-    self.videoDetail=[self.storyboard instantiateViewControllerWithIdentifier:@"VideoDetail_forSpring"];
-    palyView.title= self.videoDetail.title=dataIndexDic[@"title"];
-    self.videoDetail.httpData=dataIndexDic;
-    [self.navigationController pushViewController:palyView animated:YES];
-    [palyView addChildViewController:self.videoDetail];
-    [palyView.view addSubview:self.videoDetail.view];
+    NSString * strUrl = [NSString stringWithFormat:@"%@activeID=%@&userAccount=%@",httpDetailServer,dataIndexDic[@"activeID"],[user_info objectForKey:userAccount]];
+    [ISQHttpTool getHttp:strUrl contentType:nil params:nil success:^(id res) {
+        NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:res options:NSJapaneseEUCStringEncoding error:nil];
+//        NSLog(@"resDic ************   %@",dic);
+        NSDictionary * dataNeed = dic[@"retData"];
+        
+        UIViewController * palyView = [[UIViewController alloc] init];
+        palyView.view.frame = self.view.frame;
+        palyView.edgesForExtendedLayout = UIRectEdgeNone;
+        palyView.view.backgroundColor = [UIColor whiteColor];
+        self.videoDetail=[self.storyboard instantiateViewControllerWithIdentifier:@"VideoDetail_forSpring"];
+        palyView.title= self.videoDetail.title=dataNeed[@"title"];
+        self.videoDetail.httpData=dataNeed;
+        [self.navigationController pushViewController:palyView animated:YES];
+        [palyView addChildViewController:self.videoDetail];
+        [palyView.view addSubview:self.videoDetail.view];
+
+    } failure:^(NSError *erro) {
+        //如果失败换一个数据dataIndexDic
+        UIViewController * palyView = [[UIViewController alloc] init];
+        palyView.view.frame = self.view.frame;
+        palyView.edgesForExtendedLayout = UIRectEdgeNone;
+        palyView.view.backgroundColor = [UIColor whiteColor];
+        self.videoDetail=[self.storyboard instantiateViewControllerWithIdentifier:@"VideoDetail_forSpring"];
+        palyView.title= self.videoDetail.title=dataIndexDic[@"title"];
+        self.videoDetail.httpData=dataIndexDic;
+        [self.navigationController pushViewController:palyView animated:YES];
+        [palyView addChildViewController:self.videoDetail];
+        [palyView.view addSubview:self.videoDetail.view];
+
+    }];
 }
 
 #pragma 点击分享
