@@ -79,7 +79,6 @@ bool theTop=true;
     bdmapVC=[[BDMLocationController alloc]init];
     [bdmapVC baiduMapLocationL];
     [bdmapVC startLocation];
-//    [self loadNewThingDetailData];
    
     UIImage *image = [UIImage imageNamed:@"topBar_blue.png"];
     [self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
@@ -218,32 +217,6 @@ bool theTop=true;
 }
 
 
-//首页广告图
-//-(void)homeAdImgHttp{
-//    
-//    self.homeADdata=[[NSArray alloc]init];
-//    NSString *http=[infoURL stringByAppendingString:@"getad"];
-//    
-//    NSDictionary *arry=@{@"start":@"0",@"num":@"2"};
-//    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-//    
-//    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-//    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-//    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/plain"];
-//    
-//    [manager GET:http parameters:arry success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//        
-//        self.homeADdata=  [NSJSONSerialization JSONObjectWithData:responseObject options:NSJapaneseEUCStringEncoding  error:nil];
-//        
-//        
-//        [self.tabelview reloadData];
-//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//        
-//        
-//    }];
-//    
-//}
-
 //navigationController的导航栏
 -(void)navigationControllerView{
     
@@ -359,11 +332,6 @@ bool theTop=true;
                 orderDetailCell.orderTitle.text = orderModel.newstitle;
                 orderDetailCell.timeLabel.text = orderModel.newsaddtime;
                 
-                // 调整行间距
-//                NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:orderModel.newssmalltext];
-//                NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-//                [paragraphStyle setLineSpacing:4];
-//                [attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [orderModel.newssmalltext length])];
                 orderDetailCell.detailLabel.font = [UIFont systemFontOfSize:14];
                 orderDetailCell.detailLabel.text = orderModel.newssmalltext;
                 
@@ -393,6 +361,7 @@ bool theTop=true;
     
     AppDelegate *locationCityDelegate;
      locationCityDelegate = (AppDelegate*)[[UIApplication sharedApplication]delegate];
+    //美食
     if ([[segue identifier] isEqualToString:@"foodAction"]){
       
         NSString *url = [NSString stringWithFormat:@"%@%f,%f.html",RestaurantURL,locationCityDelegate.theLa,locationCityDelegate.theLo];
@@ -400,34 +369,40 @@ bool theTop=true;
         
         SeconWebController *webVC = [segue destinationViewController];
         webVC.theUrl = url;
-        
+    //家政
     }else if ([[segue identifier] isEqualToString:@"housekeeping"]){
         
         NSString *url = [NSString stringWithFormat:@"%@%f,%f.html",housekeepingURL,locationCityDelegate.theLa,locationCityDelegate.theLo];
         SeconWebController *webVC = [segue destinationViewController];
         webVC.theUrl = url;
-        
+    //医疗
     }else if ([[segue identifier] isEqualToString:@"Medical"]){
     
         NSString *url = [NSString stringWithFormat:@"%@%f,%f.html",MedicalURL,locationCityDelegate.theLa,locationCityDelegate.theLo];
         SeconWebController *webVC = [segue destinationViewController];
         webVC.theUrl = url;
-        
+    //居委会
     }else if ([[segue identifier] isEqualToString:@"committee"]){
         NSString *url = [NSString stringWithFormat:@"%@",tenementURL];
         SeconWebController *webVC = [segue destinationViewController];
         webVC.theUrl = url;
-        
+    //物业
     }else if ([[segue identifier] isEqualToString:@"tenement"]){
-        NSString *url = [NSString stringWithFormat:@"%@",tenementURL];
         SeconWebController *webVC = [segue destinationViewController];
-        webVC.theUrl = url;
-        
+        if ([[saveCityName objectForKey:saveCommunityName] hasPrefix:@"百步亭"]) {
+            
+            NSString *url = [NSString stringWithFormat:@"%@%@%@",@"http://webapp.wisq.cn/property/index/uid/",[saveCityName objectForKey:MyUserID],@".html"];
+            webVC.theUrl = url;
+        }else{
+            NSString *url = [NSString stringWithFormat:@"%@",tenementURL];
+            webVC.theUrl = url;
+        }
+   //议事厅
     }else if ([[segue identifier] isEqualToString:@"discuss"]){        
         NSString *url = [NSString stringWithFormat:@"%@",tenementURL];
         SeconWebController *webVC = [segue destinationViewController];
         webVC.theUrl = url;
-    
+    //新鲜事
     }else if ([[segue identifier] isEqualToString:@"communityNewThing"]){
         NSString *communityID = [saveCityName objectForKey:userCommunityID];
         NSString *url = [NSString stringWithFormat:@"%@%@",communityNewThing,communityID];
@@ -457,28 +432,6 @@ bool theTop=true;
     [self.navigationController  pushViewController:citySelectVC animated:YES];
 }
 
-//- (IBAction)homeCommunitySelect_bt:(id)sender {
-//    
-//    
-//    if([saveCityName objectForKey:userCityName]){
-//        
-//        UIStoryboard *storyBoard=[UIStoryboard storyboardWithName:@"RegisterLogin" bundle:nil];
-//        CitySelectController *citySelectVC=[storyBoard instantiateViewControllerWithIdentifier:@"SelectCommunityId"];
-//        
-//        [citySelectVC setHidesBottomBarWhenPushed:YES];
-//        [self.navigationController  pushViewController:citySelectVC animated:YES];
-//        
-//    }else{
-//        
-//        UIStoryboard *storyBoard=[UIStoryboard storyboardWithName:@"RegisterLogin" bundle:nil];
-//        CitySelectController *citySelectVC=[storyBoard instantiateViewControllerWithIdentifier:@"SeclecticCityId"];
-//        
-//        [citySelectVC setHidesBottomBarWhenPushed:YES];
-//        [self.navigationController  pushViewController:citySelectVC animated:YES];
-//        
-//    }
-//    
-//}
 
 
 //时间戳转时间
