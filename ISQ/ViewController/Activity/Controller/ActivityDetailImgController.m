@@ -13,7 +13,7 @@
 #import "MBProgressHUD.h"
 #import "MainViewController.h"
 
-@interface ActivityDetailImgController ()<MBProgressHUDDelegate,UIScrollViewDelegate>{
+@interface ActivityDetailImgController ()<MBProgressHUDDelegate,UIScrollViewDelegate,UIAlertViewDelegate>{
     
     ActivityDetailImagCell *cell;
     NSMutableArray *cellHeight;
@@ -30,6 +30,8 @@
     UIImageView *imageView;
     CGFloat currentScale;
     NSDictionary *theLikeDic;
+    NSDictionary *userDic;
+    NSString *useraccount;
 }
 
 
@@ -39,7 +41,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
     self.activityDetailImgTableView.layer.borderWidth=0.5f;
     self.activityDetailImgTableView.layer.borderColor=[[UIColor lightGrayColor] colorWithAlphaComponent:0.5f].CGColor;
     self.praiseButton.layer.borderWidth=0.5f;
@@ -181,7 +182,8 @@
     
     
     numOfJoin=[[UILabel alloc]init];
-    numOfJoin.width=200;
+    numOfJoin.font = [UIFont systemFontOfSize:16];
+    numOfJoin.width=360;
     numOfJoin.height=35;
     numOfJoin.text=[NSString stringWithFormat:@"%@ 人参加活动",data.joinNum];
     
@@ -199,47 +201,52 @@
             
             theLikeDic=[NSJSONSerialization JSONObjectWithData:rect options:NSJapaneseEUCStringEncoding error:nil];
             
-            
-            
-            
              if (theLikeDic[@"nearActive"]) {
                  
                  //点赞、分享、参加
                  [self foolBarView:theLikeDic[@"nearActive"]];
                  
-                 
              }
            
-            
-            
-            
-            
             if (theLikeDic[@"userInfo"]) {
                 
                 int theX=0;
                 int theY=0;
-                for (NSDictionary *dic2 in theLikeDic[@"userInfo"]) {
-                    
+                NSArray *array = theLikeDic[@"userInfo"];
+                for (int i = 0; i<array.count; i++) {
+                    userDic = array[i];
                     if (theX/4>=1) {
-                        
+
                         theX=0;
                         theY++;
                     }
                     UIButton *joinPeople=[[UIButton alloc]init];
-                    [joinPeople setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
                     joinPeople.width=(joinView.width/4-8);
                     joinPeople.height=17;
                     joinPeople.x= theX * joinPeople.width;
-                    joinPeople.y=theY * (17 +8)+3;
-                    [joinPeople setTitle:dic2[@"userNickname"] forState:UIControlStateNormal];
+                    joinPeople.y=theY * (17+8)+3;
+                    [joinPeople setTitle:userDic[@"userNickname"] forState:UIControlStateNormal];
                     [joinPeople setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+                    [joinPeople setTitleColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"topBar_blue"]] forState:UIControlStateHighlighted];
                     joinPeople.titleLabel.font=[UIFont fontWithName:@"Helvetica" size:15];
                     theX++;
                     [joinView addSubview:joinPeople];
-                
+                     useraccount = [userDic objectForKey:@"userAccount"];
+                    
+                    joinPeople.tag = [[userDic objectForKey:@"userAccount"] integerValue];
+                    //如果是自己发起的活动
+                      if (useraccount.length >5) {
+                          
+                          numOfJoin.text=[NSString stringWithFormat:@"%@ 人参加活动   %@ %@ %@",data.joinNum,@"(",@"点击参与者昵称可与其电话联系",@")"];
+                          [joinPeople addTarget:self action:@selector(callAction:) forControlEvents:UIControlEventTouchUpInside];
+                          
+                    }
+
                 }
-                joinView.height=theY * (17 +8)+3+17+8;
+                
+                joinView.height=theY * (17+8)+3+17+8;
             }
+            
             [cellHeight replaceObjectAtIndex:4 withObject:[NSString stringWithFormat:@"%f",joinView.height]];
             [self.activityDetailImgTableView reloadData];
             
@@ -250,6 +257,25 @@
     }
    
 }
+
+- (void)callAction:(UIButton *)sender{
+    
+//    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"%@%@",@"电话联系 ",sender.titleLabel.text] message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+//    
+//    [alertView show];
+    NSString *phoneNum = [NSString stringWithFormat:@"%ld",(long)sender.tag];
+    
+    //拨号
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[@"tel://" stringByAppendingString:phoneNum]]];
+}
+
+//- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+//
+//    if (<#condition#>) {
+//        <#statements#>
+//    }
+//    
+//}
 
 -(void)foolBarView:(NSDictionary *)likeDic{
     
@@ -279,6 +305,8 @@
     
     
 }
+
+
 
 //参加
 - (IBAction)addAction:(UIButton*)sender {
@@ -443,6 +471,7 @@
     }];
 
 }
+
 
 
 //点击详情图片

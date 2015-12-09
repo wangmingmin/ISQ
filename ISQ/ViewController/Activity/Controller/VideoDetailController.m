@@ -19,9 +19,7 @@
 #import "HotVideoModel.h"
 #import "MainViewController.h"
 #import "AppDelegate.h"
-//#import "ActivityVideoDetailModel.h"
 
-//#import "DWMediaSubtitle.h"
 
 typedef NSInteger DWPLayerScreenSizeMode;
 @interface VideoDetailController (){
@@ -38,6 +36,8 @@ typedef NSInteger DWPLayerScreenSizeMode;
     NSArray *imgUrlArray;
     UIImage *image ;
     NSDictionary *theLikeDic;
+    NSDictionary *userDic;
+    NSString *useraccount;
 }
 
 @property (strong, nonatomic)DWMoviePlayerController  *player;
@@ -826,28 +826,41 @@ typedef NSInteger DWPLayerScreenSizeMode;
             
             if (theLikeDic[@"userInfo"]) {
                 
+                
                 int theX=0;
                 int theY=0;
-                for (NSDictionary *dic2 in theLikeDic[@"userInfo"]) {
-                    
+                NSArray *array = theLikeDic[@"userInfo"];
+                for (int i = 0; i<array.count; i++) {
+                    userDic = array[i];
                     if (theX/4>=1) {
                         
                         theX=0;
                         theY++;
                     }
                     UIButton *joinPeople=[[UIButton alloc]init];
-                    [joinPeople setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
                     joinPeople.width=(joinView.width/4-8);
                     joinPeople.height=17;
                     joinPeople.x= theX * joinPeople.width;
-                    joinPeople.y=theY * (17 +8)+3;
-                    [joinPeople setTitle:dic2[@"userNickname"] forState:UIControlStateNormal];
-                    joinPeople.titleLabel.font=[UIFont fontWithName:@"Helvetica" size:15];
+                    joinPeople.y=theY * (17+8)+3;
+                    [joinPeople setTitle:userDic[@"userNickname"] forState:UIControlStateNormal];
                     [joinPeople setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+                    [joinPeople setTitleColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"topBar_blue"]] forState:UIControlStateHighlighted];
+                    joinPeople.titleLabel.font=[UIFont fontWithName:@"Helvetica" size:15];
                     theX++;
                     [joinView addSubview:joinPeople];
+                    useraccount = [userDic objectForKey:@"userAccount"];
+                    NSLog(@"userAccount--%@",useraccount);
+                    joinPeople.tag = [[userDic objectForKey:@"userAccount"] intValue];
+                    //如果是自己发起的活动
+                    if (useraccount.length >5) {
+                        
+                        [joinPeople addTarget:self action:@selector(callAction:) forControlEvents:UIControlEventTouchUpInside];
+                        
+                    }
                     
                 }
+                
+                joinView.height=theY * (17+8)+3+17+8;
                 joinView.height=theY * (17 +8)+3+17+8;
             }
             [cellHeight replaceObjectAtIndex:4 withObject:[NSString stringWithFormat:@"%f",joinView.height]];
