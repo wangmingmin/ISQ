@@ -10,7 +10,7 @@
 #import "CollectionViewLayoutZhanBo.h"
 #import "zhanBo_CollectionViewCell.h"
 #import "ISQHttpTool.h"
-#import "VideoDetailController.h"
+#import "VideoDetailController_forSpring.h"
 
 static NSString * const reuseIdentifier = @"cell";
 #define backColor [UIColor groupTableViewBackgroundColor]
@@ -36,7 +36,7 @@ static NSString * const reuseIdentifier = @"cell";
 @property (weak, nonatomic) IBOutlet UIButton *rankBtn;
 @property (weak, nonatomic) IBOutlet UIButton *followBtn;
 
-@property (weak, nonatomic) VideoDetailController *videoDetail;
+@property (weak, nonatomic) VideoDetailController_forSpring *videoDetail;
 @end
 
 @implementation zhanBoViewController
@@ -406,7 +406,7 @@ static NSString * const reuseIdentifier = @"cell";
     palyView.view.frame = self.view.frame;
     palyView.edgesForExtendedLayout = UIRectEdgeNone;
     palyView.view.backgroundColor = [UIColor whiteColor];
-    self.videoDetail=[self.storyboard instantiateViewControllerWithIdentifier:@"VideoDetail"];
+    self.videoDetail=[self.storyboard instantiateViewControllerWithIdentifier:@"VideoDetail_forSpring"];
     palyView.title= self.videoDetail.title=dataIndexDic[@"title"];
     self.videoDetail.httpData=dataIndexDic;
     [self.navigationController pushViewController:palyView animated:YES];

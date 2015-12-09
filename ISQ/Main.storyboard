@@ -7005,6 +7005,153 @@
             </objects>
             <point key="canvasLocation" x="-352" y="803.5"/>
         </scene>
+        <!--Video Detail Controller for Spring-->
+        <scene sceneID="wyJ-jW-5yu">
+            <objects>
+                <viewController storyboardIdentifier="VideoDetail_forSpring" useStoryboardIdentifierAsRestorationIdentifier="YES" id="XQp-xd-ZCl" customClass="VideoDetailController_forSpring" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="dta-3B-wwg"/>
+                        <viewControllerLayoutGuide type="bottom" id="aIg-Nk-EyH"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="hY6-DF-tcj">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="57" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="16X-1X-nd8">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="617"/>
+                                <animations/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="sectionIndexBackgroundColor" red="0.8862745098" green="0.92156862750000001" blue="0.92941176469999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="VideoDetailPlayerCell0" rowHeight="57" id="tVb-MD-s51" userLabel="VideoDetailPlayerCell0" customClass="VideoDetailPlayerCell">
+                                        <rect key="frame" x="0.0" y="92" width="375" height="57"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="tVb-MD-s51" id="eQh-FS-sSY">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="57"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <animations/>
+                                        </tableViewCellContentView>
+                                        <animations/>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="XQp-xd-ZCl" id="hhm-cx-g7h"/>
+                                    <outlet property="delegate" destination="XQp-xd-ZCl" id="Edv-5f-scS"/>
+                                </connections>
+                            </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="98M-Rr-9tB">
+                                <rect key="frame" x="0.0" y="617" width="375" height="50"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CoX-OO-8oK">
+                                        <rect key="frame" x="20" y="9" width="75" height="32"/>
+                                        <animations/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <inset key="imageEdgeInsets" minX="5" minY="5" maxX="45" maxY="5"/>
+                                        <state key="normal" title="收藏" image="clickz">
+                                            <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <state key="highlighted">
+                                            <color key="titleColor" red="0.20000000000000001" green="0.65490196079999996" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="collectAction:" destination="XQp-xd-ZCl" eventType="touchUpInside" id="nHf-kd-rhH"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rbz-er-w86">
+                                        <rect key="frame" x="122" y="9" width="132" height="32"/>
+                                        <animations/>
+                                        <color key="backgroundColor" red="0.20000000000000001" green="0.65490196079999996" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="132" id="hz2-CK-t35"/>
+                                        </constraints>
+                                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <state key="normal" title="我来投一票">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <state key="highlighted">
+                                            <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="voteAction:" destination="XQp-xd-ZCl" eventType="touchUpInside" id="8AK-y4-ZuL"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gMD-7U-m6a">
+                                        <rect key="frame" x="281" y="9" width="74" height="32"/>
+                                        <animations/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <inset key="imageEdgeInsets" minX="5" minY="2" maxX="40" maxY="2"/>
+                                        <state key="normal" title="分享" image="share">
+                                            <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <state key="highlighted">
+                                            <color key="titleColor" red="0.20000000000000001" green="0.65490196079999996" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="shareAction:" destination="XQp-xd-ZCl" eventType="touchUpInside" id="VUm-mE-No8"/>
+                                        </connections>
+                                    </button>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gyV-Bf-ePt" userLabel="line">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
+                                        <animations/>
+                                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="1" id="auz-uM-4lK"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <animations/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="22y-EW-1he"/>
+                                    <constraint firstAttribute="bottom" secondItem="Rbz-er-w86" secondAttribute="bottom" constant="9" id="2ca-dZ-SYc"/>
+                                    <constraint firstItem="Rbz-er-w86" firstAttribute="centerX" secondItem="98M-Rr-9tB" secondAttribute="centerX" id="C8y-Yo-byw"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="EXS-Eg-FqZ"/>
+                                    <constraint firstItem="gyV-Bf-ePt" firstAttribute="leading" secondItem="98M-Rr-9tB" secondAttribute="leading" id="Hjh-NF-Y5Z"/>
+                                    <constraint firstItem="Rbz-er-w86" firstAttribute="leading" secondItem="CoX-OO-8oK" secondAttribute="trailing" constant="27" id="Wo1-p0-Uny"/>
+                                    <constraint firstItem="gMD-7U-m6a" firstAttribute="top" secondItem="98M-Rr-9tB" secondAttribute="top" constant="9" id="Z21-Mb-nSm"/>
+                                    <constraint firstAttribute="trailing" secondItem="gyV-Bf-ePt" secondAttribute="trailing" id="ZjZ-4d-bgl"/>
+                                    <constraint firstAttribute="trailing" secondItem="gMD-7U-m6a" secondAttribute="trailing" constant="20" id="aIE-xd-n4M"/>
+                                    <constraint firstItem="gMD-7U-m6a" firstAttribute="leading" secondItem="Rbz-er-w86" secondAttribute="trailing" constant="27" id="bOs-7t-kA1"/>
+                                    <constraint firstAttribute="bottom" secondItem="CoX-OO-8oK" secondAttribute="bottom" constant="9" id="can-QN-kUC"/>
+                                    <constraint firstItem="gyV-Bf-ePt" firstAttribute="top" secondItem="98M-Rr-9tB" secondAttribute="top" id="gbt-eh-a9A"/>
+                                    <constraint firstItem="CoX-OO-8oK" firstAttribute="top" secondItem="98M-Rr-9tB" secondAttribute="top" constant="9" id="hJA-LE-3yY"/>
+                                    <constraint firstAttribute="bottom" secondItem="gMD-7U-m6a" secondAttribute="bottom" constant="9" id="juu-GD-Wu6"/>
+                                    <constraint firstItem="CoX-OO-8oK" firstAttribute="leading" secondItem="98M-Rr-9tB" secondAttribute="leading" constant="20" id="qph-CH-Q1K"/>
+                                    <constraint firstItem="Rbz-er-w86" firstAttribute="top" secondItem="98M-Rr-9tB" secondAttribute="top" constant="9" id="ztc-B7-w9F"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="16X-1X-nd8" firstAttribute="top" secondItem="hY6-DF-tcj" secondAttribute="top" id="9N2-7f-an4"/>
+                            <constraint firstAttribute="trailing" secondItem="16X-1X-nd8" secondAttribute="trailing" id="BkU-GD-K8u"/>
+                            <constraint firstItem="16X-1X-nd8" firstAttribute="leading" secondItem="hY6-DF-tcj" secondAttribute="leading" id="OdX-cq-502"/>
+                            <constraint firstAttribute="trailing" secondItem="98M-Rr-9tB" secondAttribute="trailing" id="SRh-Vk-v0m"/>
+                            <constraint firstItem="98M-Rr-9tB" firstAttribute="leading" secondItem="hY6-DF-tcj" secondAttribute="leading" id="XK8-Ni-S1i"/>
+                            <constraint firstItem="aIg-Nk-EyH" firstAttribute="top" secondItem="98M-Rr-9tB" secondAttribute="bottom" id="fyk-8q-gnC"/>
+                            <constraint firstItem="98M-Rr-9tB" firstAttribute="top" secondItem="16X-1X-nd8" secondAttribute="bottom" id="vkD-oI-My8"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="XRq-jt-ZiT"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <outlet property="collectButton" destination="CoX-OO-8oK" id="vKt-lV-xJh"/>
+                        <outlet property="shareButton" destination="gMD-7U-m6a" id="Z3J-u3-gXY"/>
+                        <outlet property="tableview" destination="16X-1X-nd8" id="diO-ed-ZBd"/>
+                        <outlet property="voteButton" destination="Rbz-er-w86" id="oTK-F3-2SW"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="amo-LS-YRH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="88.5" y="50.5"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Fill 116" width="16" height="14"/>
@@ -7054,7 +7201,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Kse-dT-5RL"/>
-        <segue reference="IbM-Qh-x8E"/>
-        <segue reference="fud-f1-Mal"/>
+        <segue reference="Xf2-a7-gAb"/>
+        <segue reference="K5Q-0k-Yu3"/>
     </inferredMetricsTieBreakers>
 </document>

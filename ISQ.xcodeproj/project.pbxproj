@@ -651,6 +651,7 @@
 		9D330A051C15AA7A002D056B /* CollectionViewLayoutZhanBo.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D330A001C15AA7A002D056B /* CollectionViewLayoutZhanBo.m */; };
 		9D330A061C15AA7A002D056B /* zhanBo_CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D330A021C15AA7A002D056B /* zhanBo_CollectionViewCell.m */; };
 		9D330A071C15AA7A002D056B /* zhanBoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D330A041C15AA7A002D056B /* zhanBoViewController.m */; };
+		9DA69DED1C17D1950098549A /* VideoDetailController_forSpring.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DA69DEC1C17D1950098549A /* VideoDetailController_forSpring.m */; };
 		B8CEE3B31C10021000863F0E /* ActivityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8CEE3B21C10021000863F0E /* ActivityViewController.m */; };
 		B8CEE3B81C10022500863F0E /* ActivityDetailImgController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8CEE3B51C10022500863F0E /* ActivityDetailImgController.m */; };
 		B8CEE3B91C10022500863F0E /* VideoDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8CEE3B71C10022500863F0E /* VideoDetailController.m */; };
@@ -1760,6 +1761,8 @@
 		9D330A021C15AA7A002D056B /* zhanBo_CollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = zhanBo_CollectionViewCell.m; sourceTree = "<group>"; };
 		9D330A031C15AA7A002D056B /* zhanBoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zhanBoViewController.h; sourceTree = "<group>"; };
 		9D330A041C15AA7A002D056B /* zhanBoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = zhanBoViewController.m; sourceTree = "<group>"; };
+		9DA69DEB1C17D1950098549A /* VideoDetailController_forSpring.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoDetailController_forSpring.h; sourceTree = "<group>"; };
+		9DA69DEC1C17D1950098549A /* VideoDetailController_forSpring.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoDetailController_forSpring.m; sourceTree = "<group>"; };
 		B8CEE3B11C10021000863F0E /* ActivityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityViewController.h; sourceTree = "<group>"; };
 		B8CEE3B21C10021000863F0E /* ActivityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityViewController.m; sourceTree = "<group>"; };
 		B8CEE3B41C10022500863F0E /* ActivityDetailImgController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityDetailImgController.h; sourceTree = "<group>"; };
@@ -3800,6 +3803,8 @@
 				B8CEE3B21C10021000863F0E /* ActivityViewController.m */,
 				B8CEE3B61C10022500863F0E /* VideoDetailController.h */,
 				B8CEE3B71C10022500863F0E /* VideoDetailController.m */,
+				9DA69DEB1C17D1950098549A /* VideoDetailController_forSpring.h */,
+				9DA69DEC1C17D1950098549A /* VideoDetailController_forSpring.m */,
 				B8CEE3B41C10022500863F0E /* ActivityDetailImgController.h */,
 				B8CEE3B51C10022500863F0E /* ActivityDetailImgController.m */,
 				0493A52A1BE6F1010018D792 /* StartActivityViewController.h */,
@@ -4772,6 +4777,7 @@
 				B8CEE3B31C10021000863F0E /* ActivityViewController.m in Sources */,
 				B8CEE3C11C11BFC200863F0E /* LaunchActivityController.m in Sources */,
 				043BC8701AE63D4C005F59AA /* AFSecurityPolicy.m in Sources */,
+				9DA69DED1C17D1950098549A /* VideoDetailController_forSpring.m in Sources */,
 				0493A57B1BE6F1010018D792 /* ActivityDetailContentCell.m in Sources */,
 				045E44201B2A781200ADACF3 /* MessageReadManager.m in Sources */,
 				042A46F31BB4E4EE006254B7 /* PublicGroupDetailViewController.m in Sources */,
