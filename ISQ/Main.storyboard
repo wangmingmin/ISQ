@@ -6828,7 +6828,7 @@
                             </view>
                         </subviews>
                         <animations/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.88627450980392153" green="0.13725490196078433" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="Qmw-a7-y5a" firstAttribute="top" secondItem="mQp-tj-6TB" secondAttribute="bottom" id="DYL-S7-Kzi"/>
                             <constraint firstAttribute="trailing" secondItem="mQp-tj-6TB" secondAttribute="trailing" id="KhS-ky-GSX"/>
@@ -7017,7 +7017,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="57" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="16X-1X-nd8">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="57" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="16X-1X-nd8">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="617"/>
                                 <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -7097,7 +7097,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gyV-Bf-ePt" userLabel="line">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
                                         <animations/>
-                                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="auz-uM-4lK"/>
                                         </constraints>
@@ -7126,7 +7126,7 @@
                             </view>
                         </subviews>
                         <animations/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.8862745098" green="0.92156862750000001" blue="0.92941176469999998" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="16X-1X-nd8" firstAttribute="top" secondItem="hY6-DF-tcj" secondAttribute="top" id="9N2-7f-an4"/>
                             <constraint firstAttribute="trailing" secondItem="16X-1X-nd8" secondAttribute="trailing" id="BkU-GD-K8u"/>
@@ -7144,6 +7144,7 @@
                     <connections>
                         <outlet property="collectButton" destination="CoX-OO-8oK" id="vKt-lV-xJh"/>
                         <outlet property="shareButton" destination="gMD-7U-m6a" id="Z3J-u3-gXY"/>
+                        <outlet property="tabbarview" destination="98M-Rr-9tB" id="GWU-s4-nPr"/>
                         <outlet property="tableview" destination="16X-1X-nd8" id="diO-ed-ZBd"/>
                         <outlet property="voteButton" destination="Rbz-er-w86" id="oTK-F3-2SW"/>
                     </connections>

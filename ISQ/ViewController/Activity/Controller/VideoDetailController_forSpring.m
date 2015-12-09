@@ -54,7 +54,8 @@ typedef NSInteger DWPLayerScreenSizeMode;
 @property (assign, nonatomic)BOOL hiddenAll;
 @property (assign, nonatomic)NSInteger hiddenDelaySeconds;
 @property (assign, nonatomic)NSTimeInterval historyPlaybackTime;
-
+@property (strong, nonatomic)UITableView * tableView_videoDetails;
+@property (weak, nonatomic) IBOutlet UIView *tabbarview;
 @end
 
 @implementation VideoDetailController_forSpring
@@ -83,6 +84,7 @@ typedef NSInteger DWPLayerScreenSizeMode;
     self.signelTap.delegate = self;
     [self.overlayView addGestureRecognizer:self.signelTap];
     
+    self.tableview.backgroundColor = self.view.backgroundColor;
     self.collectButton.layer.borderColor = self.shareButton.layer.borderColor = [UIColor groupTableViewBackgroundColor].CGColor;
     self.collectButton.layer.borderWidth = self.shareButton.layer.borderWidth = 0.8;
     
@@ -157,10 +159,30 @@ typedef NSInteger DWPLayerScreenSizeMode;
     
 }
 
+-(void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    [self initTableView_videoDetails];
+}
+
 -(void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
     [self.player stop];
+}
+
+-(void)initTableView_videoDetails
+{
+    if (self.tableView_videoDetails == nil) {
+        CGFloat originY = self.tableview.frame.origin.y+[cellHeight[0] floatValue]+8;
+        self.tableView_videoDetails = [[UITableView alloc] initWithFrame:CGRectMake(0, originY, UISCREENWIDTH, self.view.frame.size.height-originY-50)];//50是storyboard中设置的底部view的高度
+        self.tableView_videoDetails.delegate = self;
+        self.tableView_videoDetails.dataSource = self;
+        self.tableView_videoDetails.backgroundColor = [UIColor colorWithRed:226.0/255 green:235.0/255 blue:237.0/255 alpha:1];
+        self.tableView_videoDetails.showsVerticalScrollIndicator = NO;
+        [self.view addSubview:self.tableView_videoDetails];
+    }
+    
 }
 #pragma mark - scrollView delegate
 
@@ -699,31 +721,171 @@ typedef NSInteger DWPLayerScreenSizeMode;
 }
 
 #pragma UITableViewDelegate
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    if (tableView == self.tableview) {
+        return 1;
+    }
+    return 2;
+}
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    
-    return 1;
+    if (tableView == self.tableview) {
+        return 1;
+    }
+    if (tableView == self.tableView_videoDetails && section==0) {
+        return 1;
+    }
+    return 6;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (tableView == self.tableview) {
+        return [cellHeight[indexPath.row] floatValue];
+    }
     
-    
-    return [cellHeight[indexPath.row] floatValue];
+    //self.tableView_videoDetails
+    if (indexPath.section==0) {
+        return 150;
+    }
+    return 44;
+}
+
+
+
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (tableView ==self.tableView_videoDetails && section == 0) {
+        return 60;
+    }
+    if (tableView ==self.tableView_videoDetails && section == 1) {
+        return 40;
+    }
+
+    return 0;
+}
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    if (tableView ==self.tableView_videoDetails) {
+        CGFloat height = section==0?60:45;
+        UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, UISCREENWIDTH, height)];
+        headerView.backgroundColor = [UIColor whiteColor];
+        
+        if (section ==0) {
+            UILabel * labelTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, headerView.frame.size.width-105, 30)];
+            labelTitle.text = [NSString stringWithFormat:@"歌舞：%@",self.title];
+            labelTitle.textColor = [UIColor grayColor];
+            [headerView addSubview:labelTitle];
+            
+            UILabel * labelAddress = [[UILabel alloc] initWithFrame:CGRectMake(10, 32, headerView.frame.size.width-105, height-5-30)];
+            labelAddress.text = [NSString stringWithFormat:@"选送：%@",self.httpData[@"address"]];
+            labelAddress.textColor = [UIColor lightGrayColor];
+            labelAddress.font = [UIFont systemFontOfSize:14];
+            [headerView addSubview:labelAddress];
+
+            UILabel * voteLabel = [[UILabel alloc] initWithFrame:CGRectMake(headerView.frame.size.width-95, 12, 30, 25)];
+            voteLabel.text = @"票数";
+            voteLabel.textColor = labelAddress.textColor;
+            voteLabel.font = labelAddress.font;
+            [headerView addSubview:voteLabel];
+            
+            UILabel * voteCount = [[UILabel alloc] initWithFrame:CGRectMake(voteLabel.frame.origin.x+voteLabel.frame.size.width, 0, headerView.frame.size.width-(voteLabel.frame.origin.x+5), 40)];
+            voteCount.text = [NSString stringWithFormat:@"%ld",(long)[self.httpData[@"voteNum"] integerValue]];
+            voteCount.textColor = [UIColor redColor];
+            voteCount.font = [UIFont systemFontOfSize:20];
+            [headerView addSubview:voteCount];
+
+            UILabel * browseCount = [[UILabel alloc] initWithFrame:CGRectMake(voteLabel.frame.origin.x, 35, headerView.frame.size.width-voteLabel.frame.origin.x, 20)];
+            browseCount.text =[NSString stringWithFormat:@"浏览数 %ld",(long)[self.httpData[@"viewNum"] integerValue]];
+            browseCount.textColor = labelAddress.textColor;
+            browseCount.font = [UIFont systemFontOfSize:12];
+            [headerView addSubview:browseCount];
+
+        }
+        if (section ==1) {
+            UILabel * labelTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 60, headerView.frame.size.height)];
+            labelTitle.text = @"评论";
+            labelTitle.textColor = [UIColor colorWithRed:51.0/255 green:167.0/255 blue:255.0/255 alpha:1];
+            [headerView addSubview:labelTitle];
+            
+            UIButton * comment = [[UIButton alloc] initWithFrame:CGRectMake(headerView.frame.size.width-15-80, 8, 80, height-8*2)];
+            [comment setTitle:@"我要评论" forState:UIControlStateNormal];
+            comment.titleLabel.font = [UIFont systemFontOfSize:14];
+            [comment setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+            [comment setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
+            comment.layer.borderColor = [UIColor groupTableViewBackgroundColor].CGColor;
+            comment.layer.borderWidth = 0.8;
+            comment.layer.cornerRadius = 3.0;
+            comment.layer.masksToBounds = YES;
+            [comment addTarget:self action:@selector(onCommentBtnToComment:) forControlEvents:UIControlEventTouchUpInside];
+            [headerView addSubview:comment];
+        }
+
+        UIView * line = [[UIView alloc] initWithFrame:CGRectMake(8, height-1, UISCREENWIDTH-8*2, 1)];
+        line.backgroundColor = [UIColor groupTableViewBackgroundColor];
+        [headerView addSubview:line];
+
+        return headerView;
+    }
+    return nil;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    if (tableView ==self.tableView_videoDetails && section==0) {
+        return 8;
+    }
+    return 0;
+}
+
+-(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    if (tableView ==self.tableView_videoDetails) {
+        CGFloat height = 8;
+        UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, UISCREENWIDTH, height)];
+        footerView.backgroundColor = [UIColor clearColor];
+        return footerView;
+    }
+    return nil;
 }
 
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (tableView == self.tableview) {
+        NSString *indentifier=@"";
+        indentifier=[NSString stringWithFormat:@"VideoDetailPlayerCell%ld",(long)indexPath.row];
+        plaCell=[tableview dequeueReusableCellWithIdentifier:indentifier];
+        
+        [plaCell addSubview:self.videoBackgroundView];
+        [plaCell addSubview:self.overlayView];
+        return plaCell;
+    }
     
+    NSString *indentifier=[NSString stringWithFormat:@"details%ld%ld",(long)indexPath.section,indexPath.row];
+    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:indentifier];
+    if (cell==nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:indentifier];
+    }else{
+        for (UIView * sub in cell.contentView.subviews) {
+            [sub removeFromSuperview];
+        }
+    }
+    cell.backgroundColor = [UIColor whiteColor];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    NSString *indentifier=@"";
-    indentifier=[NSString stringWithFormat:@"VideoDetailPlayerCell%ld",(long)indexPath.row];
-    plaCell=[tableview dequeueReusableCellWithIdentifier:indentifier];
-    
-    [plaCell addSubview:self.videoBackgroundView];
-    [plaCell addSubview:self.overlayView];
-    return plaCell;
-    
-    
-    
+    if (indexPath.section==0 && indexPath.row == 0) {//
+        UILabel * labelZuoCi = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, 60, 31)];
+        labelZuoCi.text = @"作词";
+        labelZuoCi.textColor = [UIColor lightGrayColor];
+        [cell.contentView addSubview:labelZuoCi];
+
+    }
+    if (indexPath.section==1) {//评论
+        UILabel * noComment = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, self.view.frame.size.width-10, 31)];
+        noComment.text = @"暂无评论";
+        noComment.textColor = [UIColor lightGrayColor];
+        [cell.contentView addSubview:noComment];
+    }
+    return cell;
 }
 
 
@@ -782,6 +944,13 @@ typedef NSInteger DWPLayerScreenSizeMode;
     
 }
 
+//评论
+-(void)onCommentBtnToComment:(UIButton *)button
+{
+    NSMutableDictionary *Dic = [[NSMutableDictionary alloc] init];
+    Dic[@"activeID"] = data.activeID;
+
+}
 
 - (void)removeAllObserver
 {
