@@ -9,6 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "DWLog.h"
 #import "DWMoviePlayerController.h"
+@protocol VideoDetailController_forSpringDelegate <NSObject>
+
+-(void)VideoDetailController_forSpringIsFinshedRefresh;
+
+@end
 
 @interface VideoDetailController_forSpring : UIViewController<UITableViewDataSource,UITableViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UIGestureRecognizerDelegate,UIScrollViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
@@ -19,7 +24,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *collectButton;
 @property (weak, nonatomic) IBOutlet UIButton *voteButton;
 @property (weak, nonatomic) IBOutlet UIButton *shareButton;
-
+@property (weak, nonatomic) id <VideoDetailController_forSpringDelegate>delegate;
 - (IBAction)collectAction:(id)sender;
 - (IBAction)voteAction:(id)sender;
 - (IBAction)shareAction:(id)sender;

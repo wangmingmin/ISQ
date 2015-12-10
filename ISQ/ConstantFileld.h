@@ -163,7 +163,7 @@
 /**
  *  用户热门视频投票
  */
-#define USER_HOT_VOTE @"http://121.41.18.126:8080/isqbms/uservideovote.from"
+#define USER_HOT_VOTE @"http://121.40.65.121:8080/isqbms/uservideovote.from"
 
 /**
  *  收藏活动接口
@@ -208,6 +208,10 @@
  */
 #define getLaunchActive  @"http://121.41.18.126:8080/isqbms/getLaunchActive.from"
 
+/**
+ *春晚详情
+ */
+#define httpDetailServer @"http://121.41.18.126:8080/isqbms/getSpringVideoDetail.from?"
 
 #define user_info [NSUserDefaults standardUserDefaults]
 #endif
