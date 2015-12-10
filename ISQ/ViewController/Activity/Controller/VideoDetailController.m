@@ -38,6 +38,7 @@ typedef NSInteger DWPLayerScreenSizeMode;
     NSDictionary *theLikeDic;
     NSDictionary *userDic;
     NSString *useraccount;
+    NSMutableArray *phoneArray;
 }
 
 @property (strong, nonatomic)DWMoviePlayerController  *player;
@@ -67,7 +68,7 @@ typedef NSInteger DWPLayerScreenSizeMode;
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self basicView];
-    
+    phoneArray = [[NSMutableArray alloc] init];
     UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 10, 16, 23)];
     [backButton setImage:[UIImage imageNamed:@"back_img"] forState:UIControlStateNormal];
     [backButton addTarget:self action:@selector(backAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -96,7 +97,8 @@ typedef NSInteger DWPLayerScreenSizeMode;
     if (buttonIndex == 0) {
         
         //停止播放
-        [self.player stop];
+        [self.player pause];
+        [self.navigationController popViewControllerAnimated:YES];
         
         
     }else if (buttonIndex == 1){
@@ -783,7 +785,7 @@ typedef NSInteger DWPLayerScreenSizeMode;
     contentLabel.width=UISCREENWIDTH-70;
     contentLabel.height=[UILabel getLabelHeight:data.detail theUIlabel:contentLabel].height+10;
     contentLabel.numberOfLines=0;
-    contentLabel.font=[UIFont fontWithName:@"Helvetica" size:15];
+    contentLabel.font=[UIFont fontWithName:@"Helvetica" size:16];
     [cellHeight addObject:[NSString stringWithFormat:@"%f",contentLabel.height]];
     contentLabel.text=data.detail;
     
@@ -849,12 +851,14 @@ typedef NSInteger DWPLayerScreenSizeMode;
                     theX++;
                     [joinView addSubview:joinPeople];
                     useraccount = [userDic objectForKey:@"userAccount"];
-                    NSLog(@"userAccount--%@",useraccount);
-                    joinPeople.tag = [[userDic objectForKey:@"userAccount"] intValue];
+                    
+                    [phoneArray addObject:[userDic objectForKey:@"userAccount"]];
+                    joinPeople.tag = i;
+                    
                     //如果是自己发起的活动
                     if (useraccount.length >5) {
-                        
-                        [joinPeople addTarget:self action:@selector(callAction:) forControlEvents:UIControlEventTouchUpInside];
+                         numOfJoin.text=[NSString stringWithFormat:@"%@ 人参加活动%@ %@ %@",data.joinNum,@"(",@"点击昵称可与其电话联系",@")"];
+                        [joinPeople addTarget:self action:@selector(callSender:) forControlEvents:UIControlEventTouchUpInside];
                         
                     }
                     
@@ -872,6 +876,17 @@ typedef NSInteger DWPLayerScreenSizeMode;
         }];
     }
     
+}
+
+
+- (void)callSender:(UIButton *)sender{
+
+     NSString *phoneNum = [[NSString alloc] initWithFormat:@"%@",phoneArray[sender.tag]];
+    NSLog(@"phoneNum--%@",phoneNum);
+    
+    
+    //拨号
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[@"tel://" stringByAppendingString:phoneNum]]];
 }
 
 

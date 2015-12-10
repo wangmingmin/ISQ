@@ -10,7 +10,7 @@
 #import "AnnouncementModel.h"
 #import "UIButton+AFNetworking.h"
 #import "SeconWebController.h"
-
+#import "zhanBoViewController.h"
 
 @implementation AnnouncementCell
 - (void)setAnnouncements:(NSArray *)announcements{
@@ -46,17 +46,18 @@
 
 - (void)announcementClicked:(UIButton *)button {
     
-    NSUserDefaults *userInfo = [NSUserDefaults standardUserDefaults];
-    NSString *userID = [userInfo objectForKey:MyUserID];
+//    NSUserDefaults *userInfo = [NSUserDefaults standardUserDefaults];
+//    NSString *userID = [userInfo objectForKey:MyUserID];
     NSDictionary *dic = [self.announcements objectAtIndex:button.tag];
      AnnouncementModel *announcement = [[AnnouncementModel alloc] initWithDataDic:dic];
-    if ([[dic objectForKey:@"titleUrl"] isEqualToString:@"SPRING_NIGHT"]) {
+    if ([[dic objectForKey:@"titleUrl"] isEqualToString:@"springVideoShow"]) {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
         SeconWebController *webVC = [storyboard instantiateViewControllerWithIdentifier:@"SeconWebController"];
-        NSString *url = [NSString stringWithFormat:@"%@%@",@"http://webapp.wisq.cn/Spring/index/uid/",userID];
-        webVC.theUrl = url;
+//        NSString *url = [NSString stringWithFormat:@"%@%@",@"http://webapp.wisq.cn/Spring/index/uid/",userID];
+//        webVC.theUrl = url;
+        zhanBoViewController * zhanBoView = [storyboard instantiateViewControllerWithIdentifier:@"zhanBoViewController"];
         [webVC setHidesBottomBarWhenPushed:YES];
-        [[self viewController].navigationController pushViewController:webVC animated:YES];
+        [[self viewController].navigationController pushViewController:zhanBoView animated:YES];
         
     }else{
         

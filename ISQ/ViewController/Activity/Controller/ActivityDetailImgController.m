@@ -13,7 +13,7 @@
 #import "MBProgressHUD.h"
 #import "MainViewController.h"
 
-@interface ActivityDetailImgController ()<MBProgressHUDDelegate,UIScrollViewDelegate,UIAlertViewDelegate>{
+@interface ActivityDetailImgController ()<MBProgressHUDDelegate,UIScrollViewDelegate>{
     
     ActivityDetailImagCell *cell;
     NSMutableArray *cellHeight;
@@ -32,6 +32,7 @@
     NSDictionary *theLikeDic;
     NSDictionary *userDic;
     NSString *useraccount;
+    NSMutableArray *phoneArray;
 }
 
 
@@ -41,6 +42,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    phoneArray = [[NSMutableArray alloc] init];
     self.activityDetailImgTableView.layer.borderWidth=0.5f;
     self.activityDetailImgTableView.layer.borderColor=[[UIColor lightGrayColor] colorWithAlphaComponent:0.5f].CGColor;
     self.praiseButton.layer.borderWidth=0.5f;
@@ -233,11 +235,13 @@
                     [joinView addSubview:joinPeople];
                      useraccount = [userDic objectForKey:@"userAccount"];
                     
-                    joinPeople.tag = [[userDic objectForKey:@"userAccount"] integerValue];
+                    [phoneArray addObject:[userDic objectForKey:@"userAccount"]];
+                    joinPeople.tag = i;
                     //如果是自己发起的活动
                       if (useraccount.length >5) {
                           
-                          numOfJoin.text=[NSString stringWithFormat:@"%@ 人参加活动   %@ %@ %@",data.joinNum,@"(",@"点击参与者昵称可与其电话联系",@")"];
+                          
+                          numOfJoin.text=[NSString stringWithFormat:@"%@ 人参加活动%@ %@ %@",data.joinNum,@"(",@"点击昵称可与其电话联系",@")"];
                           [joinPeople addTarget:self action:@selector(callAction:) forControlEvents:UIControlEventTouchUpInside];
                           
                     }
@@ -260,22 +264,9 @@
 
 - (void)callAction:(UIButton *)sender{
     
-//    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"%@%@",@"电话联系 ",sender.titleLabel.text] message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-//    
-//    [alertView show];
-    NSString *phoneNum = [NSString stringWithFormat:@"%ld",(long)sender.tag];
-    
+    NSString *phoneNum = [[NSString alloc] initWithFormat:@"%@",phoneArray[sender.tag]];
     //拨号
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[@"tel://" stringByAppendingString:phoneNum]]];
-}
-
-//- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-//
-//    if (<#condition#>) {
-//        <#statements#>
-//    }
-//    
-//}
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[@"tel://" stringByAppendingString:phoneNum]]];}
 
 -(void)foolBarView:(NSDictionary *)likeDic{
     
