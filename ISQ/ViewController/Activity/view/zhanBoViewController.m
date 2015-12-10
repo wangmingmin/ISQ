@@ -15,9 +15,8 @@
 static NSString * const reuseIdentifier = @"cell";
 #define backColor [UIColor groupTableViewBackgroundColor]
 #define httpServer @"http://121.41.18.126:8080/isqbms/getSpringVideoList.from?"
-#define httpDetailServer @"http://121.41.18.126:8080/isqbms/getSpringVideoDetail.from?"
 
-@interface zhanBoViewController ()<UIScrollViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
+@interface zhanBoViewController ()<UIScrollViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,VideoDetailController_forSpringDelegate,UIWebViewDelegate>
 @property (nonatomic, strong) UIScrollView * allScrollView;//节目列表总视图
 @property (nonatomic, strong) UIView * tabBarView;//春晚简介，最新动态，投票规则
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;//赶紧来报名吧
@@ -53,6 +52,8 @@ static NSString * const reuseIdentifier = @"cell";
     UICollectionView * FollowCollectionView;//我关注
     
     NSString * showBanner;
+    
+    BOOL isAddRefresh;//是否加载
 }
 
 - (void)viewDidLoad {
@@ -63,6 +64,24 @@ static NSString * const reuseIdentifier = @"cell";
     tabBarHeight = self.tabBarController.tabBar.frame.size.height;
     tabBarWidth = self.tabBarController.tabBar.frame.size.width;
     self.view.backgroundColor = backColor;
+    isAddRefresh = YES;
+    
+    
+    UITapGestureRecognizer * tapImageView = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapImageView:)];
+    self.imageView.userInteractionEnabled = YES;
+    [self.imageView addGestureRecognizer:tapImageView];
+}
+
+-(void)tapImageView:(UIGestureRecognizer *)sender
+{
+    UIWebView * web = [[UIWebView alloc] initWithFrame:self.view.frame];
+    web.delegate = self;
+    [self.view.window addSubview:web];
+    NSURL* url = [NSURL URLWithString:@"http://webapp.wisq.cn/Spring/index"];//创建URL
+    NSURLRequest* request = [NSURLRequest requestWithURL:url];//创建NSURLRequest
+    [web loadRequest:request];//加载
+    [(UIScrollView *)[[web subviews] objectAtIndex:0] setBounces:NO];
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
 }
 
 -(void)viewDidLayoutSubviews//storyboard中view的所有维度在layoutSubviews时会被计算和设置
@@ -89,6 +108,15 @@ static NSString * const reuseIdentifier = @"cell";
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
+    NSLog(@"relativeString = %@",request.mainDocumentURL.relativeString);
+    if ([request.mainDocumentURL.relativeString rangeOfString:@"isq_back_native"].location !=NSNotFound){
+        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
+        [webView removeFromSuperview];
+    }
+    return YES;
 }
 
 -(void)initTabBarView
@@ -126,7 +154,7 @@ static NSString * const reuseIdentifier = @"cell";
     [self.introduceBtn addTarget:self action:@selector(OnIntroduceBtn:) forControlEvents:UIControlEventTouchUpInside];
     [self.trendsBtn addTarget:self action:@selector(OnTrendsBtn:) forControlEvents:UIControlEventTouchUpInside];
     [self.voteBtn addTarget:self action:@selector(OnVoteBtn:) forControlEvents:UIControlEventTouchUpInside];
-
+    
 }
 
 -(void)initAllScrollView//初始化列表总视图
@@ -416,6 +444,7 @@ static NSString * const reuseIdentifier = @"cell";
         self.videoDetail=[self.storyboard instantiateViewControllerWithIdentifier:@"VideoDetail_forSpring"];
         palyView.title= self.videoDetail.title=dataNeed[@"title"];
         self.videoDetail.httpData=dataNeed;
+        self.videoDetail.delegate = self;
         [self.navigationController pushViewController:palyView animated:YES];
         [palyView addChildViewController:self.videoDetail];
         [palyView.view addSubview:self.videoDetail.view];
@@ -429,11 +458,23 @@ static NSString * const reuseIdentifier = @"cell";
         self.videoDetail=[self.storyboard instantiateViewControllerWithIdentifier:@"VideoDetail_forSpring"];
         palyView.title= self.videoDetail.title=dataIndexDic[@"title"];
         self.videoDetail.httpData=dataIndexDic;
+        self.videoDetail.delegate = self;
         [self.navigationController pushViewController:palyView animated:YES];
         [palyView addChildViewController:self.videoDetail];
         [palyView.view addSubview:self.videoDetail.view];
 
     }];
+}
+
+-(void)VideoDetailController_forSpringIsFinshedRefresh
+{
+    CGFloat offX = self.allScrollView.contentOffset.x;
+    int currentPage = offX/self.allScrollView.frame.size.width;
+    isAddRefresh = NO;
+    if (currentPage == 0) [self refreshCity];
+    if (currentPage == 1) [self refreshSpecial];
+    if (currentPage == 2) [self refreshRank];
+    if (currentPage == 3) [self refreshFollow];
 }
 
 #pragma 点击分享
@@ -493,7 +534,8 @@ static NSString * const reuseIdentifier = @"cell";
     id cityID = [user_info objectForKey:userCityID];
     paramesCityID[@"cityId"]=cityID;
 
-    NSString * httpUrl = [NSString stringWithFormat:@"%@type=city&row=%lu",httpServer,(self.arrayDataCity.count/10)*10];
+    NSString * httpUrl = [NSString stringWithFormat:@"%@type=city&row=%lu",httpServer,(self.arrayDataCity.count/10)*(isAddRefresh?10:1)];
+    isAddRefresh = YES;
     [ISQHttpTool getHttp:httpUrl contentType:nil params:paramesCityID success:^(id res) {
         NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:res options:NSJapaneseEUCStringEncoding error:nil];
 //        NSLog(@"showVoide city===== %@",dic);
@@ -508,34 +550,38 @@ static NSString * const reuseIdentifier = @"cell";
             
         }];
     } failure:^(NSError *erro) {
-        
+
     }];
 
 }
 
 -(void)refreshSpecial
 {
-    NSString * httpUrl = [NSString stringWithFormat:@"%@type=special&row=%lu",httpServer,(self.arrayDataSpecial.count/10)*10];
+    NSString * httpUrl = [NSString stringWithFormat:@"%@type=special&row=%lu",httpServer,(self.arrayDataSpecial.count/10)*(isAddRefresh?10:1)];
+    isAddRefresh = YES;
     [ISQHttpTool getHttp:httpUrl contentType:nil params:nil success:^(id res) {
         NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:res options:NSJapaneseEUCStringEncoding error:nil];
 //        NSLog(@"showVoide special===== %@",dic);
         self.arrayDataSpecial = dic[@"retData"];
         [SpecialCollectionView reloadData];
+
     } failure:^(NSError *erro) {
-        
+
     }];
 
 }
 -(void)refreshRank
 {
-    NSString * httpUrl = [NSString stringWithFormat:@"%@type=rank&row=%lu",httpServer,(self.arrayDataRank.count/10)*10];
+    NSString * httpUrl = [NSString stringWithFormat:@"%@type=rank&row=%lu",httpServer,(self.arrayDataRank.count/10)*(isAddRefresh?10:1)];
+    isAddRefresh = YES;
     [ISQHttpTool getHttp:httpUrl contentType:nil params:nil success:^(id res) {
         NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:res options:NSJapaneseEUCStringEncoding error:nil];
 //        NSLog(@"showVoide rank===== %@",dic);
         self.arrayDataRank = dic[@"retData"];
         [RankCollectionView reloadData];
+
     } failure:^(NSError *erro) {
-        
+
     }];
 
 }
@@ -546,14 +592,16 @@ static NSString * const reuseIdentifier = @"cell";
     id userAccountNumber = [user_info objectForKey:userAccount];
     paramesUserAccount[@"userAccount"]=userAccountNumber;
 
-    NSString * httpUrl = [NSString stringWithFormat:@"%@type=follow&row=%lu",httpServer,(self.arrayDataFollow.count/10)*10];
+    NSString * httpUrl = [NSString stringWithFormat:@"%@type=follow&row=%lu",httpServer,(self.arrayDataFollow.count/10)*(isAddRefresh?10:1)];
+    isAddRefresh = YES;
     [ISQHttpTool getHttp:httpUrl contentType:nil params:paramesUserAccount success:^(id res) {
         NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:res options:NSJapaneseEUCStringEncoding error:nil];
 //        NSLog(@"showVoide follow===== %@",dic);
         self.arrayDataFollow = dic[@"retData"];
         [FollowCollectionView reloadData];
+
     } failure:^(NSError *erro) {
-        
+
     }];
 
 }

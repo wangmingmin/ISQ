@@ -19,6 +19,7 @@
 #import "HotVideoModel.h"
 #import "MainViewController.h"
 #import "AppDelegate.h"
+#import "ISQCommonFunc.h"
 typedef NSInteger DWPLayerScreenSizeMode;
 
 @interface VideoDetailController_forSpring (){
@@ -91,21 +92,75 @@ typedef NSInteger DWPLayerScreenSizeMode;
     
     self.collectButton.layer.cornerRadius = self.shareButton.layer.cornerRadius = self.voteButton.layer.cornerRadius = 3.0;
     self.collectButton.layer.masksToBounds = self.shareButton.layer.masksToBounds = self.voteButton.layer.masksToBounds = YES;
+
+    if (UISCREENHEIGHT<600) {
+        UIEdgeInsets edge = self.collectButton.imageEdgeInsets;
+        edge.left = 0;
+        edge.right = 25;
+        edge.top = 5;
+        edge.bottom = 5;
+        self.collectButton.imageEdgeInsets = edge;
+        self.shareButton.imageEdgeInsets = edge;
+        
+        edge = self.collectButton.titleEdgeInsets;
+        edge.left = -5;
+        self.collectButton.titleEdgeInsets = edge;
+        self.shareButton.titleEdgeInsets = edge;
+        self.collectButton.titleLabel.font = [UIFont systemFontOfSize:11];
+        self.shareButton.titleLabel.font = [UIFont systemFontOfSize:11];
+    }
+
+    [self checkIfIsVoted];
+    
+    [self.player stop];
 }
 
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    
-    if (buttonIndex == 0) {
-        
-        //停止播放
-        [self.player stop];
-        
-        
-    }else if (buttonIndex == 1){
-        
-        //继续播放
-        [self.player play];
+    if (alertView.tag==0) {//首先进入页面判断是否允许播放
+        if (buttonIndex==1) {
+            AppDelegate *delget=(AppDelegate*)[[UIApplication sharedApplication]delegate];
+            
+            if ([delget.isWIFI isEqualToString:@"WIFI"]){
+                
+                [self.player play];
+                
+            }else {
+                
+                [self.player stop];
+                UIAlertView  *alerWIFI=[[UIAlertView alloc ]initWithTitle:@"流量使用提示" message:@"继续播放，运营商将收取流量费用"delegate:self cancelButtonTitle:@"停止播放" otherButtonTitles:@"继续播放", nil];
+                alerWIFI.tag = 1;
+                [alerWIFI show];
+                
+            }
+
+        }else if (buttonIndex==0){
+            [self.player stop];
+        }
+
+    }else if (alertView.tag==1){//再判断Wi-Fi
+        if (buttonIndex == 0) {
+            
+            //停止播放
+            [self.player stop];
+            
+            
+        }else if (buttonIndex == 1){
+            
+            //继续播放
+            [self.player play];
+            
+            
+            if (self.player.playbackState == MPMoviePlaybackStatePlaying) {
+                
+                
+            } else {
+                // 继续播放
+                image = [UIImage imageNamed:@"player-pausebutton"];
+                [self.player play];
+            }
+
+        }
     }
 }
 
@@ -126,38 +181,12 @@ typedef NSInteger DWPLayerScreenSizeMode;
     
 }
 
-- (void)viewWillAppear:(BOOL)animated{
-    
-    AppDelegate *delget=(AppDelegate*)[[UIApplication sharedApplication]delegate];
-    
-    if ([delget.isWIFI isEqualToString:@"WIFI"]){
-        
-        [self.player play];
-        
-    }else {
-        
-        [self.player stop];
-        UIAlertView  *alerWIFI=[[UIAlertView alloc ]initWithTitle:@"流量使用提示" message:@"继续播放，运营商将收取流量费用"delegate:self cancelButtonTitle:@"停止播放" otherButtonTitles:@"继续播放", nil];
-        
-        [alerWIFI show];
-        
-    }
-    
-}
-
-
 -(void)viewDidAppear:(BOOL)animated{
-    
-    
-    if (self.player.playbackState == MPMoviePlaybackStatePlaying) {
-        
-        
-    } else {
-        // 继续播放
-        image = [UIImage imageNamed:@"player-pausebutton"];
-        [self.player play];
-    }
-    
+    [super viewDidAppear:animated];
+    [self.player stop];
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"是否播放当前视屏" message:@"" delegate:self cancelButtonTitle:@"暂不" otherButtonTitles:@"播放", nil];
+    alert.tag = 0;
+    [alert show];
 }
 
 -(void)viewDidLayoutSubviews
@@ -183,10 +212,10 @@ typedef NSInteger DWPLayerScreenSizeMode;
         self.tableView_videoDetails.showsVerticalScrollIndicator = NO;
         [self.view addSubview:self.tableView_videoDetails];
         
-        NSLog(@"detail -----   detail=%@  httpdetail=%@ userface=%@ userNickName=%@",data.detail,self.httpData[@"detail"],data.userFace,data.userNickName);
     }
     
 }
+
 #pragma mark - scrollView delegate
 
 
@@ -390,7 +419,7 @@ typedef NSInteger DWPLayerScreenSizeMode;
 -(void)playerView{
     
     _player = [[DWMoviePlayerController alloc] initWithUserId:DWACCOUNT_USERID key:DWACCOUNT_APIKEY];
-    
+    self.player.shouldAutoplay = NO;
     _currentQuality = @"";
     [self addObserverForMPMoviePlayController];
     [self addTimer];
@@ -403,7 +432,8 @@ typedef NSInteger DWPLayerScreenSizeMode;
 {
     //    //轻量数据存储(获取CC视频码)
     //    NSUserDefaults *saveData=[NSUserDefaults standardUserDefaults];
-    
+    __block BOOL isAllowPlay = NO;
+
     self.player.videoId = data.videoID;
     
     self.player.timeoutSeconds = 10;
@@ -434,15 +464,25 @@ typedef NSInteger DWPLayerScreenSizeMode;
             return;
         }
         
+        if (blockSelf.playUrls==nil) {
+            isAllowPlay = NO;
+        }
         blockSelf.playUrls = playUrls;
         [blockSelf.player prepareToPlay];
         
-        [blockSelf.player play];
+        if (isAllowPlay) {
+            [blockSelf.player play];
+        }else {
+            [blockSelf.player stop];
+        }
         
         //        [blockSelf resetViewContent];
     };
     
     [self.player startRequestPlayInfo];
+    if (!isAllowPlay) {
+        [self.player stop];
+    }
 }
 
 # pragma mark 时间滑动条
@@ -920,6 +960,24 @@ typedef NSInteger DWPLayerScreenSizeMode;
 }
 
 #warning need to fix
+-(void)refresh
+{
+    NSString * strUrl = [NSString stringWithFormat:@"%@activeID=%@&userAccount=%@",httpDetailServer,self.httpData[@"activeID"],[user_info objectForKey:userAccount]];
+    [ISQHttpTool getHttp:strUrl contentType:nil params:nil success:^(id res) {
+        NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:res options:NSJapaneseEUCStringEncoding error:nil];
+        //        NSLog(@"resDic ************   %@",dic);
+        NSDictionary * dataNeed = dic[@"retData"];
+        self.httpData=dataNeed;
+        data = [HotVideoModel objectWithKeyValues:_httpData];
+        [self.tableView_videoDetails reloadData];
+        [self checkIfIsVoted];
+        
+    } failure:^(NSError *erro) {
+        
+    }];
+
+}
+
 //收藏
 - (IBAction)collectAction:(UIButton*)sender {
     NSMutableDictionary *Dic = [[NSMutableDictionary alloc] init];
@@ -929,10 +987,67 @@ typedef NSInteger DWPLayerScreenSizeMode;
 
 //投一票
 - (IBAction)voteAction:(UIButton*)sender {
-    NSMutableDictionary *Dic = [[NSMutableDictionary alloc] init];
-    Dic[@"activeID"] = data.activeID;
+//    NSMutableDictionary *Dic = [[NSMutableDictionary alloc] init];
+//    Dic[@"activeID"] = data.activeID;
 
+    //获取系统当前时间
+    NSDate *senddate = [NSDate date];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    NSString *time = [dateFormatter stringFromDate:senddate];
+    
+    //约定的key
+    NSString *key = @"michae12";
+    
+    //获取随机字符串
+    NSString *randomString = [self ret5bitString];
+    
+    NSString*stringParams = [NSString stringWithFormat:@"%@CurrentTime=%@;userAccount=%@%@digest=%@",@"name=video_vote;QRAPID=kentop;QRAPName=kentop;",time,[user_info objectForKey:userAccount],@"&",randomString];
+    //加密
+    ISQCommonFunc *commonfunc = [[ISQCommonFunc alloc] init];
+    NSString *text = [commonfunc encryptUseDES:stringParams key:key];
+    NSData *data = [text dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *token = [data base64Encoding];
+    NSString *name = @"video_vote";
+    
+    NSString *http = [NSString stringWithFormat:@"%@?name=%@&token=%@&activeID=%@",USER_HOT_VOTE,name,token,self.httpData[@"activeID"]];
+
+    [ISQHttpTool post:http contentType:nil params:nil success:^(id responseObj) {
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"成功" message:@"投票已成功，相同节目不可重投哦,感谢您的投票" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+        [alert show];
+
+        NSDictionary * dic=[NSJSONSerialization JSONObjectWithData:responseObj options:NSJapaneseEUCStringEncoding error:nil];
+        NSLog(@"dic vote = %@",dic);
+        [self refresh];
+        [self.delegate VideoDetailController_forSpringIsFinshedRefresh];
+    } failure:^(NSError *error) {
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"失败" message:@"投票失败咯，稍后请重投" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+        [alert show];
+    }];
 }
+
+-(void)checkIfIsVoted
+{
+    BOOL isVoted = [self.httpData[@"voteRestTime"] boolValue];
+    if(!isVoted){//没有投票
+        self.voteButton.backgroundColor = [UIColor colorWithRed:51.0/255 green:167.0/255 blue:255.0/255 alpha:1];
+        self.voteButton.userInteractionEnabled = true;
+        [self.voteButton setTitle:@"我来投一票" forState:UIControlStateNormal];
+    }else {
+        self.voteButton.backgroundColor = [UIColor lightGrayColor];
+        self.voteButton.userInteractionEnabled = false;
+        [self.voteButton setTitle:@"已经投票" forState:UIControlStateNormal];
+    }
+}
+
+//获取5位随机数
+- (NSString *)ret5bitString{
+    
+    char datas[5];
+    for (int x=0;x<5;datas[x++] = (char)('A' + (arc4random_uniform(26))));
+    return [[NSString alloc] initWithBytes:datas length:5 encoding:NSUTF8StringEncoding];
+}
+
 //分享
 - (IBAction)shareAction:(id)sender {
     NSMutableDictionary *shareDic=[NSMutableDictionary dictionary];

@@ -37,12 +37,12 @@
         [self addSubview:self.voteString];
 
         self.voteNum = [[UILabel alloc] init];
-        self.voteNum.frame = CGRectMake(3+self.voteString.frame.size.width, frame.size.height-44, 90, 44);
+        self.voteNum.frame = CGRectMake(3+self.voteString.frame.size.width, frame.size.height-50, 90, 50);
         self.voteNum.textColor = [UIColor colorWithRed:116.0/255 green:0.0/255 blue:0.0/255 alpha:1];
         self.voteNum.font = [UIFont systemFontOfSize:14];
         [self addSubview:self.voteNum];
 
-        CGFloat imageOriginY = self.address.frame.origin.y + self.address.frame.size.height + 2;
+        CGFloat imageOriginY = self.address.frame.origin.y + self.address.frame.size.height + 8;
         self.imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, imageOriginY, frame.size.width, frame.size.height-imageOriginY-self.voteNum.frame.size.height)];//120:90
         [self addSubview:self.imageView];
 
