@@ -11,7 +11,8 @@
 #import "zhanBo_CollectionViewCell.h"
 #import "ISQHttpTool.h"
 #import "VideoDetailController_forSpring.h"
-
+#import "HotVideoModel.h"
+#import "MainViewController.h"
 static NSString * const reuseIdentifier = @"cell";
 #define backColor [UIColor groupTableViewBackgroundColor]
 #define httpServer @"http://121.41.18.126:8080/isqbms/getSpringVideoList.from?"
@@ -382,7 +383,8 @@ static NSString * const reuseIdentifier = @"cell";
     cell.address.text = [NSString stringWithFormat:@"选送单位:%@",dataIndexDic[@"address"]];
     cell.voteNum.text = [NSString stringWithFormat:@"%ld",[dataIndexDic[@"voteNum"] integerValue]];
     
-    cell.tag = cell.shareBtn.tag = [dataIndexDic[@"activeID"] integerValue];
+    cell.tag = [dataIndexDic[@"activeID"] integerValue];
+    cell.shareBtn.tag = indexPath.row;
     [cell.shareBtn addTarget:self action:@selector(onShareVideo:) forControlEvents:UIControlEventTouchUpInside];
     
     NSString * imageUrlStr = dataIndexDic[@"image"];
@@ -480,23 +482,75 @@ static NSString * const reuseIdentifier = @"cell";
 #pragma 点击分享
 -(void)onShareVideo:(UIButton *)button
 {
-    NSInteger activeID = button.tag;
-    NSLog(@"NSInteger activeID = %ld",(long)activeID);
+    NSArray *data = [[NSArray alloc] init];
+    int pageNumber = self.movingView.center.x/(screenWidth/4);
+
+    if (pageNumber==0) {
+        data = self.arrayDataCity;
+    }
+    if (pageNumber==1) {
+        data = self.arrayDataSpecial;
+    }
+    if (pageNumber==2) {
+        data = self.arrayDataRank;
+    }
+    if (pageNumber==3) {
+        data = self.arrayDataFollow;
+    }
+    
+    NSDictionary * dataIndexDic = data[button.tag];
+    
+    HotVideoModel * dataHot = [HotVideoModel objectWithKeyValues:dataIndexDic];
+    
+    NSMutableDictionary *shareDic=[NSMutableDictionary dictionary];
+    NSString *imageurls = dataHot.image;
+    NSArray * imgUrlArray = [imageurls componentsSeparatedByString:@","];
+    shareDic[@"img"]= imgUrlArray?imgUrlArray[0]:@"";
+    shareDic[@"title"]=dataHot.title;
+    shareDic[@"desc"]=dataHot.detail;
+    shareDic[@"url"]=@"";
+    
+    [MainViewController theShareSDK:shareDic];
+
 }
 
 -(void)OnIntroduceBtn:(UIButton *)button//春晚简介
 {
-    
+    UIWebView * web = [[UIWebView alloc] initWithFrame:self.view.frame];
+    web.delegate = self;
+    [self.view.window addSubview:web];
+    NSURL* url = [NSURL URLWithString:@"http://webapp.wisq.cn//hot/cwzb/type/cwjj"];//创建URL
+    NSURLRequest* request = [NSURLRequest requestWithURL:url];//创建NSURLRequest
+    [web loadRequest:request];//加载
+    [(UIScrollView *)[[web subviews] objectAtIndex:0] setBounces:NO];
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+
 }
 
 -(void)OnTrendsBtn:(UIButton *)button//最新动态
 {
-    
+//    UIWebView * web = [[UIWebView alloc] initWithFrame:self.view.frame];
+//    web.delegate = self;
+//    [self.view.window addSubview:web];
+//    NSURL* url = [NSURL URLWithString:@"http://chunwan.cncn.org.cn/api/newslist.php?"];//创建URL
+//    NSURLRequest* request = [NSURLRequest requestWithURL:url];//创建NSURLRequest
+//    [web loadRequest:request];//加载
+//    [(UIScrollView *)[[web subviews] objectAtIndex:0] setBounces:NO];
+//    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+
 }
 
 -(void)OnVoteBtn:(UIButton *)button//投票规则
 {
-    
+    UIWebView * web = [[UIWebView alloc] initWithFrame:self.view.frame];
+    web.delegate = self;
+    [self.view.window addSubview:web];
+    NSURL* url = [NSURL URLWithString:@"http://webapp.wisq.cn/hot/cwzb/type/tpgz"];//创建URL
+    NSURLRequest* request = [NSURLRequest requestWithURL:url];//创建NSURLRequest
+    [web loadRequest:request];//加载
+    [(UIScrollView *)[[web subviews] objectAtIndex:0] setBounces:NO];
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+
 }
 
 
