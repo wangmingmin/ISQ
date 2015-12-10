@@ -7,13 +7,13 @@
 //
 
 #import "CollectionViewLayoutZhanBo.h"
-
+#define adjustment 43//微调一下高度
 @implementation CollectionViewLayoutZhanBo
 -(CGSize)collectionViewContentSize
 {
     NSInteger count = [self.collectionView numberOfItemsInSection:0];
     float width = self.collectionView.bounds.size.width;
-    float height= (8+(width-24)/2.0)*(count/2+count%2)+8;
+    float height= (8+(width-24)/2.0+adjustment)*(count/2+count%2)+8;
     CGSize  size = CGSizeMake(width, height);
     return size;
 }
@@ -29,8 +29,8 @@
     
     CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
     float width = (screenWidth-24)/2.0;
-    float height = width;
-    attributes.center = CGPointMake(8+width/2.0+(indexPath.row%2)*(width+8),8+width/2.0+(indexPath.row/2)*(width+8));
+    float height = width+adjustment;
+    attributes.center = CGPointMake(8+width/2.0+(indexPath.row%2)*(width+8),8+height/2.0+(indexPath.row/2)*(height+8));
     attributes.size = CGSizeMake(width, height);
     return attributes;
 }

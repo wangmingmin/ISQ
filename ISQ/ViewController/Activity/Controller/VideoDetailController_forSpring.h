@@ -15,7 +15,7 @@
 
 @end
 
-@interface VideoDetailController_forSpring : UIViewController<UITableViewDataSource,UITableViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UIGestureRecognizerDelegate,UIScrollViewDelegate>
+@interface VideoDetailController_forSpring : UIViewController<UITableViewDataSource,UITableViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UIGestureRecognizerDelegate,UIScrollViewDelegate,UIAlertViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
 @property (copy, nonatomic)NSString *videoId;
 @property (strong ,nonatomic) NSString *activeID;
