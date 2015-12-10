@@ -529,14 +529,14 @@ static NSString * const reuseIdentifier = @"cell";
 
 -(void)OnTrendsBtn:(UIButton *)button//最新动态
 {
-//    UIWebView * web = [[UIWebView alloc] initWithFrame:self.view.frame];
-//    web.delegate = self;
-//    [self.view.window addSubview:web];
-//    NSURL* url = [NSURL URLWithString:@"http://chunwan.cncn.org.cn/api/newslist.php?"];//创建URL
-//    NSURLRequest* request = [NSURLRequest requestWithURL:url];//创建NSURLRequest
-//    [web loadRequest:request];//加载
-//    [(UIScrollView *)[[web subviews] objectAtIndex:0] setBounces:NO];
-//    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+    UIWebView * web = [[UIWebView alloc] initWithFrame:self.view.frame];
+    web.delegate = self;
+    [self.view.window addSubview:web];
+    NSURL* url = [NSURL URLWithString:@"http://webapp.wisq.cn/springnews/lists"];//创建URL
+    NSURLRequest* request = [NSURLRequest requestWithURL:url];//创建NSURLRequest
+    [web loadRequest:request];//加载
+    [(UIScrollView *)[[web subviews] objectAtIndex:0] setBounces:NO];
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
 
 }
 

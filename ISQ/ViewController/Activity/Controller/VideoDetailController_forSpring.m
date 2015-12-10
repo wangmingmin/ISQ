@@ -1013,7 +1013,7 @@ typedef NSInteger DWPLayerScreenSizeMode;
     NSString *http = [NSString stringWithFormat:@"%@?name=%@&token=%@&activeID=%@",USER_HOT_VOTE,name,token,self.httpData[@"activeID"]];
 
     [ISQHttpTool post:http contentType:nil params:nil success:^(id responseObj) {
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"成功" message:@"投票已成功，相同节目不可重投哦,感谢您的投票" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"成功" message:@"投票已成功,感谢您的投票" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
         [alert show];
 
         NSDictionary * dic=[NSJSONSerialization JSONObjectWithData:responseObj options:NSJapaneseEUCStringEncoding error:nil];
