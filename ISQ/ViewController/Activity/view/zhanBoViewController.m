@@ -16,7 +16,7 @@ static NSString * const reuseIdentifier = @"cell";
 #define backColor [UIColor groupTableViewBackgroundColor]
 #define httpServer @"http://121.41.18.126:8080/isqbms/getSpringVideoList.from?"
 
-@interface zhanBoViewController ()<UIScrollViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,VideoDetailController_forSpringDelegate>
+@interface zhanBoViewController ()<UIScrollViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,VideoDetailController_forSpringDelegate,UIWebViewDelegate>
 @property (nonatomic, strong) UIScrollView * allScrollView;//节目列表总视图
 @property (nonatomic, strong) UIView * tabBarView;//春晚简介，最新动态，投票规则
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;//赶紧来报名吧
@@ -65,6 +65,23 @@ static NSString * const reuseIdentifier = @"cell";
     tabBarWidth = self.tabBarController.tabBar.frame.size.width;
     self.view.backgroundColor = backColor;
     isAddRefresh = YES;
+    
+    
+    UITapGestureRecognizer * tapImageView = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapImageView:)];
+    self.imageView.userInteractionEnabled = YES;
+    [self.imageView addGestureRecognizer:tapImageView];
+}
+
+-(void)tapImageView:(UIGestureRecognizer *)sender
+{
+    UIWebView * web = [[UIWebView alloc] initWithFrame:self.view.frame];
+    web.delegate = self;
+    [self.view.window addSubview:web];
+    NSURL* url = [NSURL URLWithString:@"http://webapp.wisq.cn/Spring/index"];//创建URL
+    NSURLRequest* request = [NSURLRequest requestWithURL:url];//创建NSURLRequest
+    [web loadRequest:request];//加载
+    [(UIScrollView *)[[web subviews] objectAtIndex:0] setBounces:NO];
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
 }
 
 -(void)viewDidLayoutSubviews//storyboard中view的所有维度在layoutSubviews时会被计算和设置
@@ -91,6 +108,15 @@ static NSString * const reuseIdentifier = @"cell";
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
+    NSLog(@"relativeString = %@",request.mainDocumentURL.relativeString);
+    if ([request.mainDocumentURL.relativeString rangeOfString:@"isq_back_native"].location !=NSNotFound){
+        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
+        [webView removeFromSuperview];
+    }
+    return YES;
 }
 
 -(void)initTabBarView
@@ -128,7 +154,7 @@ static NSString * const reuseIdentifier = @"cell";
     [self.introduceBtn addTarget:self action:@selector(OnIntroduceBtn:) forControlEvents:UIControlEventTouchUpInside];
     [self.trendsBtn addTarget:self action:@selector(OnTrendsBtn:) forControlEvents:UIControlEventTouchUpInside];
     [self.voteBtn addTarget:self action:@selector(OnVoteBtn:) forControlEvents:UIControlEventTouchUpInside];
-
+    
 }
 
 -(void)initAllScrollView//初始化列表总视图

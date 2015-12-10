@@ -92,7 +92,24 @@ typedef NSInteger DWPLayerScreenSizeMode;
     
     self.collectButton.layer.cornerRadius = self.shareButton.layer.cornerRadius = self.voteButton.layer.cornerRadius = 3.0;
     self.collectButton.layer.masksToBounds = self.shareButton.layer.masksToBounds = self.voteButton.layer.masksToBounds = YES;
-    
+
+    if (UISCREENHEIGHT<600) {
+        UIEdgeInsets edge = self.collectButton.imageEdgeInsets;
+        edge.left = 0;
+        edge.right = 25;
+        edge.top = 5;
+        edge.bottom = 5;
+        self.collectButton.imageEdgeInsets = edge;
+        self.shareButton.imageEdgeInsets = edge;
+        
+        edge = self.collectButton.titleEdgeInsets;
+        edge.left = -5;
+        self.collectButton.titleEdgeInsets = edge;
+        self.shareButton.titleEdgeInsets = edge;
+        self.collectButton.titleLabel.font = [UIFont systemFontOfSize:11];
+        self.shareButton.titleLabel.font = [UIFont systemFontOfSize:11];
+    }
+
     [self checkIfIsVoted];
     
     [self.player stop];
@@ -195,7 +212,6 @@ typedef NSInteger DWPLayerScreenSizeMode;
         self.tableView_videoDetails.showsVerticalScrollIndicator = NO;
         [self.view addSubview:self.tableView_videoDetails];
         
-        NSLog(@"detail -----   detail=%@  httpdetail=%@ userface=%@ userNickName=%@",data.detail,self.httpData[@"detail"],data.userFace,data.userNickName);
     }
     
 }
