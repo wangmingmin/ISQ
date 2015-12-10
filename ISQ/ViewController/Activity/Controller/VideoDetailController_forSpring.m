@@ -403,7 +403,7 @@ typedef NSInteger DWPLayerScreenSizeMode;
 -(void)playerView{
     
     _player = [[DWMoviePlayerController alloc] initWithUserId:DWACCOUNT_USERID key:DWACCOUNT_APIKEY];
-    
+    self.player.shouldAutoplay = NO;
     _currentQuality = @"";
     [self addObserverForMPMoviePlayController];
     [self addTimer];
