@@ -770,17 +770,28 @@ typedef NSInteger DWPLayerScreenSizeMode;
     if (tableView == self.tableview) {
         return 1;
     }
-    return 2;
+//    return 2;
+    
+    //暂时隐藏
+    return 1;
+
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if (tableView == self.tableview) {
         return 1;
     }
+//    if (tableView == self.tableView_videoDetails && section==0) {
+//        return 1;
+//    }
+//    return 6;
+    
+    //暂时隐藏
     if (tableView == self.tableView_videoDetails && section==0) {
-        return 1;
+        return 0;
     }
-    return 6;
+    return 0;
+
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{

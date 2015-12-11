@@ -14,10 +14,11 @@
 #import "HotVideoModel.h"
 #import "MainViewController.h"
 #import "SeconWebController.h"
+#import "SRRefreshView.h"
 static NSString * const reuseIdentifier = @"cell";
 #define backColor [UIColor groupTableViewBackgroundColor]
 
-@interface zhanBoViewController ()<UIScrollViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,VideoDetailController_forSpringDelegate>
+@interface zhanBoViewController ()<UIScrollViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,VideoDetailController_forSpringDelegate,SRRefreshDelegate>
 @property (nonatomic, strong) UIScrollView * allScrollView;//节目列表总视图
 @property (nonatomic, strong) UIView * tabBarView;//春晚简介，最新动态，投票规则
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;//赶紧来报名吧
@@ -38,6 +39,10 @@ static NSString * const reuseIdentifier = @"cell";
 @property (weak, nonatomic) IBOutlet UIButton *followBtn;
 
 @property (weak, nonatomic) VideoDetailController_forSpring *videoDetail;
+@property (nonatomic, strong) SRRefreshView *slimeViewCity;
+@property (nonatomic, strong) SRRefreshView *slimeViewSpecial;
+@property (nonatomic, strong) SRRefreshView *slimeViewRank;
+@property (nonatomic, strong) SRRefreshView *slimeViewFollow;
 @end
 
 @implementation zhanBoViewController
@@ -54,7 +59,8 @@ static NSString * const reuseIdentifier = @"cell";
     
     NSString * showBanner;
     
-    BOOL isAddRefresh;//是否加载
+    BOOL isAddRefresh;//是否row的行数多加10后再刷新，如果是no则依然获取相同数量的数据
+    BOOL isPullRefresh;//是否下拉刷新
 }
 
 - (void)viewDidLoad {
@@ -66,7 +72,7 @@ static NSString * const reuseIdentifier = @"cell";
     tabBarWidth = self.tabBarController.tabBar.frame.size.width;
     self.view.backgroundColor = backColor;
     isAddRefresh = YES;
-    
+    isPullRefresh = NO;
     
     UITapGestureRecognizer * tapImageView = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapImageView:)];
     self.imageView.userInteractionEnabled = YES;
@@ -79,6 +85,128 @@ static NSString * const reuseIdentifier = @"cell";
     webVC.theUrl = @"http://webapp.wisq.cn/Spring/index";
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
     [self.navigationController pushViewController:webVC animated:YES];
+}
+
+#pragma mark 上拉加载更多
+- (void)addFooter
+{
+    __block UICollectionView * vc = CityCollectionView;
+    __block UICollectionView * vc2 = SpecialCollectionView;
+    __block UICollectionView * vc3 = RankCollectionView;
+    __block UICollectionView * vc4 = FollowCollectionView;
+
+    // 添加上拉刷新尾部控件
+    [CityCollectionView addFooterWithCallback:^{
+        // 进入刷新状态就会回调这个Block
+        
+        //模拟延迟加载数据，因此2秒后才调用）
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            //结束刷新
+            [vc footerEndRefreshing];
+        });
+    }];
+    // 添加上拉刷新尾部控件
+    [SpecialCollectionView addFooterWithCallback:^{
+        // 进入刷新状态就会回调这个Block
+        
+        //模拟延迟加载数据，因此2秒后才调用）
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            //结束刷新
+            [vc2 footerEndRefreshing];
+        });
+    }];
+    // 添加上拉刷新尾部控件
+    [RankCollectionView addFooterWithCallback:^{
+        // 进入刷新状态就会回调这个Block
+        
+        //模拟延迟加载数据，因此2秒后才调用）
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            //结束刷新
+            [vc3 footerEndRefreshing];
+        });
+    }];
+    // 添加上拉刷新尾部控件
+    [FollowCollectionView addFooterWithCallback:^{
+        // 进入刷新状态就会回调这个Block
+        
+        //模拟延迟加载数据，因此2秒后才调用）
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            //结束刷新
+            [vc4 footerEndRefreshing];
+        });
+    }];
+
+}
+
+#pragma mark - 刷新
+
+- (SRRefreshView *)slimeViewCity
+{
+    if (!_slimeViewCity) {
+        _slimeViewCity = [[SRRefreshView alloc] init];
+        _slimeViewCity.delegate = self;
+        _slimeViewCity.upInset = 0;
+        _slimeViewCity.slimeMissWhenGoingBack = YES;
+        _slimeViewCity.slime.bodyColor = [UIColor grayColor];
+        _slimeViewCity.slime.skinColor = [UIColor grayColor];
+        _slimeViewCity.slime.lineWith = 1;
+        _slimeViewCity.slime.shadowBlur = 4;
+        _slimeViewCity.slime.shadowColor = [UIColor grayColor];
+        _slimeViewCity.backgroundColor = self.view.backgroundColor;
+        
+    }
+    return _slimeViewCity;
+}
+- (SRRefreshView *)slimeViewFollow
+{
+    if (!_slimeViewFollow) {
+        _slimeViewFollow = [[SRRefreshView alloc] init];
+        _slimeViewFollow.delegate = self;
+        _slimeViewFollow.upInset = 0;
+        _slimeViewFollow.slimeMissWhenGoingBack = YES;
+        _slimeViewFollow.slime.bodyColor = [UIColor grayColor];
+        _slimeViewFollow.slime.skinColor = [UIColor grayColor];
+        _slimeViewFollow.slime.lineWith = 1;
+        _slimeViewFollow.slime.shadowBlur = 4;
+        _slimeViewFollow.slime.shadowColor = [UIColor grayColor];
+        _slimeViewFollow.backgroundColor = self.view.backgroundColor;
+        
+    }
+    return _slimeViewFollow;
+}
+- (SRRefreshView *)slimeViewSpecial
+{
+    if (!_slimeViewSpecial) {
+        _slimeViewSpecial = [[SRRefreshView alloc] init];
+        _slimeViewSpecial.delegate = self;
+        _slimeViewSpecial.upInset = 0;
+        _slimeViewSpecial.slimeMissWhenGoingBack = YES;
+        _slimeViewSpecial.slime.bodyColor = [UIColor grayColor];
+        _slimeViewSpecial.slime.skinColor = [UIColor grayColor];
+        _slimeViewSpecial.slime.lineWith = 1;
+        _slimeViewSpecial.slime.shadowBlur = 4;
+        _slimeViewSpecial.slime.shadowColor = [UIColor grayColor];
+        _slimeViewSpecial.backgroundColor = self.view.backgroundColor;
+        
+    }
+    return _slimeViewSpecial;
+}
+- (SRRefreshView *)slimeViewRank
+{
+    if (!_slimeViewRank) {
+        _slimeViewRank = [[SRRefreshView alloc] init];
+        _slimeViewRank.delegate = self;
+        _slimeViewRank.upInset = 0;
+        _slimeViewRank.slimeMissWhenGoingBack = YES;
+        _slimeViewRank.slime.bodyColor = [UIColor grayColor];
+        _slimeViewRank.slime.skinColor = [UIColor grayColor];
+        _slimeViewRank.slime.lineWith = 1;
+        _slimeViewRank.slime.shadowBlur = 4;
+        _slimeViewRank.slime.shadowColor = [UIColor grayColor];
+        _slimeViewRank.backgroundColor = self.view.backgroundColor;
+        
+    }
+    return _slimeViewRank;
 }
 
 -(void)viewDidLayoutSubviews//storyboard中view的所有维度在layoutSubviews时会被计算和设置
@@ -164,6 +292,8 @@ static NSString * const reuseIdentifier = @"cell";
     [self initSpecialCollectionView];
     [self initRankCollectionView];
     [self initFollowCollectionView];
+    
+    [self addFooter];
 }
 
 -(void)initMovingView
@@ -175,6 +305,23 @@ static NSString * const reuseIdentifier = @"cell";
     self.movingView = [[UIView alloc] initWithFrame:CGRectMake(2, movingViewOriginY, screenWidth/4.0-4, 3)];
     self.movingView.backgroundColor = [UIColor colorWithRed:51.0/255 green:167.0/255 blue:245.0/255 alpha:1];
     [self.topButtonsView addSubview:self.movingView];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if (scrollView==CityCollectionView) {
+        [_slimeViewCity scrollViewDidScroll];
+    }
+    if (scrollView==SpecialCollectionView) {
+        [_slimeViewSpecial scrollViewDidScroll];
+    }
+    if (scrollView==RankCollectionView) {
+        [_slimeViewRank scrollViewDidScroll];
+    }
+    if (scrollView==FollowCollectionView) {
+        [_slimeViewFollow scrollViewDidScroll];
+    }
+
 }
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
@@ -194,26 +341,59 @@ static NSString * const reuseIdentifier = @"cell";
     CGFloat offY = scrollView.contentOffset.y;
     
     if (scrollView == CityCollectionView) {
-        if (offY > CityCollectionView.contentSize.height-CityCollectionView.frame.size.height) {
+        if (offY > CityCollectionView.contentSize.height-CityCollectionView.frame.size.height+50) {
             [self refreshCity];
         }
+        [_slimeViewCity scrollViewDidEndDraging];
     }
     if (scrollView == SpecialCollectionView) {
-        if (offY > SpecialCollectionView.contentSize.height-SpecialCollectionView.frame.size.height) {
+        if (offY > SpecialCollectionView.contentSize.height-SpecialCollectionView.frame.size.height+50) {
             [self refreshSpecial];
         }
+        [_slimeViewSpecial scrollViewDidEndDraging];
     }
     if (scrollView == RankCollectionView) {
-        if (offY > RankCollectionView.contentSize.height-RankCollectionView.frame.size.height) {
+        if (offY > RankCollectionView.contentSize.height-RankCollectionView.frame.size.height+50) {
             [self refreshRank];
         }
+        [_slimeViewRank scrollViewDidEndDraging];
     }
     if (scrollView == FollowCollectionView) {
-        if (offY > FollowCollectionView.contentSize.height-FollowCollectionView.frame.size.height) {
+        if (offY > FollowCollectionView.contentSize.height-FollowCollectionView.frame.size.height+50) {
             [self refreshFollow];
         }
+        [_slimeViewFollow scrollViewDidEndDraging];
     }
+    if (scrollView!=self.allScrollView) {
+        if (offY<-88) {
+            isPullRefresh = YES;
+        }
+    }
+}
 
+#pragma mark - slimeRefresh delegate
+//刷新列表
+- (void)slimeRefreshStartRefresh:(SRRefreshView *)refreshView
+{
+    CGFloat offX = self.allScrollView.contentOffset.x;
+    int currentPage = offX/self.allScrollView.frame.size.width;
+    if (currentPage == 0) [self.slimeViewCity endRefresh];
+    if (currentPage == 1) [self.slimeViewSpecial endRefresh];
+    if (currentPage == 2) [self.slimeViewRank endRefresh];
+    if (currentPage == 3) [self.slimeViewFollow endRefresh];
+}
+
+-(void)slimeRefreshEndRefresh:(SRRefreshView *)refreshView
+{
+    if (isPullRefresh) {
+        isPullRefresh = NO;
+        CGFloat offX = self.allScrollView.contentOffset.x;
+        int currentPage = offX/self.allScrollView.frame.size.width;
+        if (currentPage == 0) [self refreshCity];
+        if (currentPage == 1) [self refreshSpecial];
+        if (currentPage == 2) [self refreshRank];
+        if (currentPage == 3) [self refreshFollow];
+    }
 }
 
 - (IBAction)onCurrentCity:(UIButton *)sender {
@@ -272,7 +452,7 @@ static NSString * const reuseIdentifier = @"cell";
     [self.allScrollView addSubview:CityCollectionView];
     
     CityCollectionView.backgroundColor = backColor;
-
+    [CityCollectionView addSubview:self.slimeViewCity];
 }
 
 -(void)initSpecialCollectionView
@@ -287,7 +467,7 @@ static NSString * const reuseIdentifier = @"cell";
     [self.allScrollView addSubview:SpecialCollectionView];
     
     SpecialCollectionView.backgroundColor = backColor;
-
+    [SpecialCollectionView addSubview:self.slimeViewSpecial];
 }
 
 -(void)initRankCollectionView
@@ -302,7 +482,7 @@ static NSString * const reuseIdentifier = @"cell";
     [self.allScrollView addSubview:RankCollectionView];
     
     RankCollectionView.backgroundColor = backColor;
-
+    [RankCollectionView addSubview:self.slimeViewRank];
 }
 
 -(void)initFollowCollectionView
@@ -317,7 +497,7 @@ static NSString * const reuseIdentifier = @"cell";
     [self.allScrollView addSubview:FollowCollectionView];
     
     FollowCollectionView.backgroundColor = backColor;
-
+    [FollowCollectionView addSubview:self.slimeViewFollow];
 }
 
 #pragma mark <UICollectionViewDelegate>
