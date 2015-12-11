@@ -77,6 +77,7 @@ static NSString * const reuseIdentifier = @"cell";
 {
     SeconWebController *webVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SeconWebController"];
     webVC.theUrl = @"http://webapp.wisq.cn/Spring/index";
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
     [self.navigationController pushViewController:webVC animated:YES];
 }
 
@@ -508,6 +509,7 @@ static NSString * const reuseIdentifier = @"cell";
 {
     SeconWebController *webVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SeconWebController"];
     webVC.theUrl = @"http://webapp.wisq.cn//hot/cwzb/type/cwjj";
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
     [self.navigationController pushViewController:webVC animated:YES];
 
 }
@@ -516,6 +518,7 @@ static NSString * const reuseIdentifier = @"cell";
 {
     SeconWebController *webVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SeconWebController"];
     webVC.theUrl = @"http://webapp.wisq.cn/springnews/lists";
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
     [self.navigationController pushViewController:webVC animated:YES];
 
 }
@@ -524,6 +527,7 @@ static NSString * const reuseIdentifier = @"cell";
 {
     SeconWebController *webVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SeconWebController"];
     webVC.theUrl = @"http://webapp.wisq.cn/hot/cwzb/type/tpgz";
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
     [self.navigationController pushViewController:webVC animated:YES];
 
 }
