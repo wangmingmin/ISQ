@@ -97,7 +97,7 @@ typedef NSInteger DWPLayerScreenSizeMode;
     if (buttonIndex == 0) {
         
         //停止播放
-        [self.player pause];
+        [self.player stop];
         [self.navigationController popViewControllerAnimated:YES];
         
         
@@ -105,6 +105,15 @@ typedef NSInteger DWPLayerScreenSizeMode;
         
         //继续播放
         [self.player play];
+        if (self.player.playbackState == MPMoviePlaybackStatePlaying) {
+            
+            
+        } else {
+            // 继续播放
+            image = [UIImage imageNamed:@"player-pausebutton"];
+            [self.player play];
+        }
+
     }
 }
 
@@ -134,6 +143,13 @@ typedef NSInteger DWPLayerScreenSizeMode;
 
 - (void)viewWillAppear:(BOOL)animated{
 
+    
+}
+
+
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:YES];
+    [self.player stop];
     AppDelegate *delget=(AppDelegate*)[[UIApplication sharedApplication]delegate];
     
     if ([delget.isWIFI isEqualToString:@"WIFI"]){
@@ -147,21 +163,6 @@ typedef NSInteger DWPLayerScreenSizeMode;
         
         [alerWIFI show];
         
-    }
-
-}
-
-
--(void)viewDidAppear:(BOOL)animated{
-    
-   
-    if (self.player.playbackState == MPMoviePlaybackStatePlaying) {
-      
-        
-    } else {
-        // 继续播放
-        image = [UIImage imageNamed:@"player-pausebutton"];
-        [self.player play];
     }
     
 }
