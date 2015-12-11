@@ -16,7 +16,6 @@
 #import "SeconWebController.h"
 static NSString * const reuseIdentifier = @"cell";
 #define backColor [UIColor groupTableViewBackgroundColor]
-#define httpServer @"http://121.41.18.126:8080/isqbms/getSpringVideoList.from?"
 
 @interface zhanBoViewController ()<UIScrollViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,VideoDetailController_forSpringDelegate>
 @property (nonatomic, strong) UIScrollView * allScrollView;//节目列表总视图
@@ -455,7 +454,7 @@ static NSString * const reuseIdentifier = @"cell";
     }];
 }
 
--(void)VideoDetailController_forSpringIsFinshedRefresh
+-(void)VideoDetailController_forSpringIsFinshedRefresh//投票刷新
 {
     CGFloat offX = self.allScrollView.contentOffset.x;
     int currentPage = offX/self.allScrollView.frame.size.width;
@@ -466,6 +465,10 @@ static NSString * const reuseIdentifier = @"cell";
     if (currentPage == 3) [self refreshFollow];
 }
 
+-(void)VideoDetailController_forSpringIsFinshedFollow//关注刷新
+{
+    [self refreshFollow];
+}
 #pragma 点击分享
 -(void)onShareVideo:(UIButton *)button
 {
@@ -560,7 +563,7 @@ static NSString * const reuseIdentifier = @"cell";
     id cityID = [user_info objectForKey:userCityID];
     paramesCityID[@"cityId"]=cityID;
 
-    NSString * httpUrl = [NSString stringWithFormat:@"%@type=city&row=%lu",httpServer,(self.arrayDataCity.count/10)*(isAddRefresh?10:1)];
+    NSString * httpUrl = [NSString stringWithFormat:@"%@type=city&row=%lu",getSpringVideoListServer,(self.arrayDataCity.count/10)*(isAddRefresh?10:1)];
     isAddRefresh = YES;
     [ISQHttpTool getHttp:httpUrl contentType:nil params:paramesCityID success:^(id res) {
         NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:res options:NSJapaneseEUCStringEncoding error:nil];
@@ -583,7 +586,7 @@ static NSString * const reuseIdentifier = @"cell";
 
 -(void)refreshSpecial
 {
-    NSString * httpUrl = [NSString stringWithFormat:@"%@type=special&row=%lu",httpServer,(self.arrayDataSpecial.count/10)*(isAddRefresh?10:1)];
+    NSString * httpUrl = [NSString stringWithFormat:@"%@type=special&row=%lu",getSpringVideoListServer,(self.arrayDataSpecial.count/10)*(isAddRefresh?10:1)];
     isAddRefresh = YES;
     [ISQHttpTool getHttp:httpUrl contentType:nil params:nil success:^(id res) {
         NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:res options:NSJapaneseEUCStringEncoding error:nil];
@@ -598,7 +601,7 @@ static NSString * const reuseIdentifier = @"cell";
 }
 -(void)refreshRank
 {
-    NSString * httpUrl = [NSString stringWithFormat:@"%@type=rank&row=%lu",httpServer,(self.arrayDataRank.count/10)*(isAddRefresh?10:1)];
+    NSString * httpUrl = [NSString stringWithFormat:@"%@type=rank&row=%lu",getSpringVideoListServer,(self.arrayDataRank.count/10)*(isAddRefresh?10:1)];
     isAddRefresh = YES;
     [ISQHttpTool getHttp:httpUrl contentType:nil params:nil success:^(id res) {
         NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:res options:NSJapaneseEUCStringEncoding error:nil];
@@ -618,7 +621,7 @@ static NSString * const reuseIdentifier = @"cell";
     id userAccountNumber = [user_info objectForKey:userAccount];
     paramesUserAccount[@"userAccount"]=userAccountNumber;
 
-    NSString * httpUrl = [NSString stringWithFormat:@"%@type=follow&row=%lu",httpServer,(self.arrayDataFollow.count/10)*(isAddRefresh?10:1)];
+    NSString * httpUrl = [NSString stringWithFormat:@"%@type=follow&row=%lu",getSpringVideoListServer,(self.arrayDataFollow.count/10)*(isAddRefresh?10:1)];
     isAddRefresh = YES;
     [ISQHttpTool getHttp:httpUrl contentType:nil params:paramesUserAccount success:^(id res) {
         NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:res options:NSJapaneseEUCStringEncoding error:nil];

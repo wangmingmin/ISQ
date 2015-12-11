@@ -11,8 +11,8 @@
 #import "DWMoviePlayerController.h"
 @protocol VideoDetailController_forSpringDelegate <NSObject>
 
--(void)VideoDetailController_forSpringIsFinshedRefresh;
-
+-(void)VideoDetailController_forSpringIsFinshedRefresh;//投票刷新
+-(void)VideoDetailController_forSpringIsFinshedFollow;//关注刷新
 @end
 
 @interface VideoDetailController_forSpring : UIViewController<UITableViewDataSource,UITableViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UIGestureRecognizerDelegate,UIScrollViewDelegate,UIAlertViewDelegate>

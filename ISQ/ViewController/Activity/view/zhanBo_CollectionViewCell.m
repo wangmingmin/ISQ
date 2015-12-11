@@ -30,7 +30,7 @@
         [self addSubview:self.address];
         
         self.voteString = [[UILabel alloc] init];
-        self.voteString.frame = CGRectMake(3, frame.size.height-44, 30, 44);
+        self.voteString.frame = CGRectMake(3, frame.size.height-50, 30, 50);
         self.voteString.textColor = [UIColor colorWithRed:132.0/255 green:132.0/255 blue:132.0/255 alpha:1];
         self.voteString.font = [UIFont systemFontOfSize:12];
         self.voteString.text = @"得票:";
@@ -47,7 +47,7 @@
         [self addSubview:self.imageView];
 
         self.shareBtn = [[UIButton alloc] init];
-        self.shareBtn.frame = CGRectMake(frame.size.width-70, frame.size.height-44, 70, 44);
+        self.shareBtn.frame = CGRectMake(frame.size.width-70, frame.size.height-50, 70, 50);
         [self.shareBtn setTitleColor:[UIColor colorWithRed:132.0/255 green:132.0/255 blue:132.0/255 alpha:1] forState:UIControlStateNormal];
         [self.shareBtn setTitle:@"分享" forState:UIControlStateNormal];
         UIImage * image = [UIImage imageNamed:@"share"];

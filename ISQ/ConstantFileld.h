@@ -208,10 +208,24 @@
  */
 #define getLaunchActive  @"http://121.41.18.126:8080/isqbms/getLaunchActive.from"
 
+
+/**
+ *春晚展播
+ */
+#define getSpringVideoListServer @"http://121.41.18.126:8080/isqbms/getSpringVideoList.from?"
 /**
  *春晚详情
  */
 #define httpDetailServer @"http://121.41.18.126:8080/isqbms/getSpringVideoDetail.from?"
+
+/**
+ *春晚视频关注
+ */
+#define followVideoServer @"http://121.41.18.126:8080/isqbms/followSpringVideo.from?"
+/**
+ *春晚视频取消关注
+ */
+#define noFollowVideoServer @"http://121.41.18.126:8080/isqbms/noFollowSpringVideo.from?"
 
 #define user_info [NSUserDefaults standardUserDefaults]
 #endif

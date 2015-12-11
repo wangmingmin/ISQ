@@ -111,6 +111,7 @@ typedef NSInteger DWPLayerScreenSizeMode;
     }
 
     [self checkIfIsVoted];
+    [self checkIfIsFollow];
     
     [self.player stop];
 }
@@ -971,18 +972,61 @@ typedef NSInteger DWPLayerScreenSizeMode;
         data = [HotVideoModel objectWithKeyValues:_httpData];
         [self.tableView_videoDetails reloadData];
         [self checkIfIsVoted];
-        
+        [self checkIfIsFollow];
     } failure:^(NSError *erro) {
         
     }];
 
 }
 
-//收藏
+//关注
 - (IBAction)collectAction:(UIButton*)sender {
-    NSMutableDictionary *Dic = [[NSMutableDictionary alloc] init];
-    Dic[@"activeID"] = data.activeID;
-    
+    BOOL isCollect = [self.httpData[@"isCollect"] boolValue];
+    if (!isCollect) {
+        NSString * httpUrl = [NSString stringWithFormat:@"%@activeID=%@&userAccount=%@",followVideoServer,data.activeID,[user_info objectForKey:userAccount]];
+        [ISQHttpTool getHttp:httpUrl contentType:nil params:nil success:^(id responseObj) {
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"成功" message:@"关注已成功,可以在关注一栏查看" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+            [alert show];
+            
+            NSDictionary * dic=[NSJSONSerialization JSONObjectWithData:responseObj options:NSJapaneseEUCStringEncoding error:nil];
+            NSLog(@"dic attention = %@",dic);
+            [self refresh];
+            [self.delegate VideoDetailController_forSpringIsFinshedFollow];
+            
+        } failure:^(NSError *erro) {
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"失败" message:@"关注失败咯，稍后请重新关注" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+            [alert show];
+        }];
+
+    }else if (isCollect){
+        NSString * httpUrl = [NSString stringWithFormat:@"%@activeID=%@&userAccount=%@",noFollowVideoServer,data.activeID,[user_info objectForKey:userAccount]];
+        [ISQHttpTool getHttp:httpUrl contentType:nil params:nil success:^(id responseObj) {
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"成功" message:@"取消关注已成功,该节目已移出关注一栏" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+            [alert show];
+            
+            NSDictionary * dic=[NSJSONSerialization JSONObjectWithData:responseObj options:NSJapaneseEUCStringEncoding error:nil];
+            NSLog(@"dic attention = %@",dic);
+            [self refresh];
+            [self.delegate VideoDetailController_forSpringIsFinshedFollow];
+            
+        } failure:^(NSError *erro) {
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"失败" message:@"取消关注失败咯，稍后请重试" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+            [alert show];
+        }];
+
+    }
+}
+
+-(void)checkIfIsFollow
+{
+    BOOL isCollect = [self.httpData[@"isCollect"] boolValue];
+    if(!isCollect){//没有关注
+        [self.collectButton setTitle:@"关注" forState:UIControlStateNormal];
+        [self.collectButton setImage:[UIImage imageNamed:@"clickz"] forState:UIControlStateNormal];
+    }else {
+        [self.collectButton setTitle:@"取消关注" forState:UIControlStateNormal];
+        [self.collectButton setImage:nil forState:UIControlStateNormal];
+    }
 }
 
 //投一票
