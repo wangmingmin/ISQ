@@ -136,8 +136,8 @@
          isFristLoad=true;
          self.navigationController.navigationBar.hidden=NO;
          [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
-       [self.navigationController popToRootViewControllerAnimated:YES];
-     
+//       [self.navigationController popToRootViewControllerAnimated:YES];
+         [self.navigationController popViewControllerAnimated:YES];
      }
     if([request.mainDocumentURL.relativeString rangeOfString:@"http://map.baidu.com/mobile/webapp/index/streetview/ss_id"].location !=NSNotFound){
         
