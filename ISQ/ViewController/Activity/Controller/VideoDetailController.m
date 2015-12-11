@@ -89,31 +89,55 @@ typedef NSInteger DWPLayerScreenSizeMode;
     self.signelTap.delegate = self;
     [self.overlayView addGestureRecognizer:self.signelTap];
   
+    [self.player stop];
 }
 
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    
-    if (buttonIndex == 0) {
-        
-        //停止播放
-        [self.player stop];
-        [self.navigationController popViewControllerAnimated:YES];
-        
-        
-    }else if (buttonIndex == 1){
-        
-        //继续播放
-        [self.player play];
-        if (self.player.playbackState == MPMoviePlaybackStatePlaying) {
+    if (alertView.tag==0) {//首先进入页面判断是否允许播放
+        if (buttonIndex==1) {
+            AppDelegate *delget=(AppDelegate*)[[UIApplication sharedApplication]delegate];
             
+            if ([delget.isWIFI isEqualToString:@"WIFI"]){
+                
+                [self.player play];
+                
+            }else {
+                
+                [self.player stop];
+                UIAlertView  *alerWIFI=[[UIAlertView alloc ]initWithTitle:@"流量使用提示" message:@"继续播放，运营商将收取流量费用"delegate:self cancelButtonTitle:@"停止播放" otherButtonTitles:@"继续播放", nil];
+                alerWIFI.tag = 1;
+                [alerWIFI show];
+                
+            }
             
-        } else {
-            // 继续播放
-            image = [UIImage imageNamed:@"player-pausebutton"];
-            [self.player play];
+        }else if (buttonIndex==0){
+            [self.player stop];
         }
-
+        
+    }else if (alertView.tag==1){//再判断Wi-Fi
+        if (buttonIndex == 0) {
+            
+            //停止播放
+            [self.player stop];
+            
+            
+        }else if (buttonIndex == 1){
+            
+            //继续播放
+            [self.player play];
+            
+            
+            if (self.player.playbackState == MPMoviePlaybackStatePlaying) {
+                
+                
+            } else {
+                // 继续播放
+                image = [UIImage imageNamed:@"player-pausebutton"];
+                [self.player play];
+            }
+            
+        }
     }
 }
 
@@ -141,30 +165,12 @@ typedef NSInteger DWPLayerScreenSizeMode;
 
 }
 
-- (void)viewWillAppear:(BOOL)animated{
-
-    
-}
-
-
 -(void)viewDidAppear:(BOOL)animated{
-    [super viewDidAppear:YES];
+    [super viewDidAppear:animated];
     [self.player stop];
-    AppDelegate *delget=(AppDelegate*)[[UIApplication sharedApplication]delegate];
-    
-    if ([delget.isWIFI isEqualToString:@"WIFI"]){
-        
-        [self.player play];
-        
-    }else {
-        
-        [self.player pause];
-        UIAlertView  *alerWIFI=[[UIAlertView alloc ]initWithTitle:@"流量使用提示" message:@"继续播放，运营商将收取流量费用"delegate:self cancelButtonTitle:@"停止播放" otherButtonTitles:@"继续播放", nil];
-        
-        [alerWIFI show];
-        
-    }
-    
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"是否播放当前视屏" message:@"" delegate:self cancelButtonTitle:@"暂不" otherButtonTitles:@"播放", nil];
+    alert.tag = 0;
+    [alert show];
 }
 
 -(void)viewDidDisappear:(BOOL)animated
@@ -375,7 +381,7 @@ typedef NSInteger DWPLayerScreenSizeMode;
 -(void)playerView{
     
     _player = [[DWMoviePlayerController alloc] initWithUserId:DWACCOUNT_USERID key:DWACCOUNT_APIKEY];
-    
+    self.player.shouldAutoplay = NO;
     _currentQuality = @"";
     [self addObserverForMPMoviePlayController];
     [self addTimer];
@@ -388,6 +394,7 @@ typedef NSInteger DWPLayerScreenSizeMode;
 {
     //    //轻量数据存储(获取CC视频码)
     //    NSUserDefaults *saveData=[NSUserDefaults standardUserDefaults];
+    __block BOOL isAllowPlay = NO;
     
     self.player.videoId = data.videoID;
     
@@ -419,15 +426,25 @@ typedef NSInteger DWPLayerScreenSizeMode;
             return;
         }
         
+        if (blockSelf.playUrls==nil) {
+            isAllowPlay = NO;
+        }
         blockSelf.playUrls = playUrls;
         [blockSelf.player prepareToPlay];
         
-        [blockSelf.player play];
+        if (isAllowPlay) {
+            [blockSelf.player play];
+        }else {
+            [blockSelf.player stop];
+        }
         
-//        [blockSelf resetViewContent];
+        //        [blockSelf resetViewContent];
     };
     
     [self.player startRequestPlayInfo];
+    if (!isAllowPlay) {
+        [self.player stop];
+    }
 }
 
 # pragma mark 时间滑动条
