@@ -185,7 +185,7 @@ typedef NSInteger DWPLayerScreenSizeMode;
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     [self.player stop];
-    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"是否播放当前视屏" message:@"" delegate:self cancelButtonTitle:@"暂不" otherButtonTitles:@"播放", nil];
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"是否播放当前视屏" message:@"" delegate:self cancelButtonTitle:@"停止" otherButtonTitles:@"播放", nil];
     alert.tag = 0;
     [alert show];
 }
