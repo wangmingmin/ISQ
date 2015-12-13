@@ -112,7 +112,7 @@
             
             break;
         case 4:
-            joinView.x=15;
+            joinView.x=10;
             joinView.y=1;
             [cell addSubview:joinView];
             
@@ -193,7 +193,7 @@
     if (data.activeID) {
         joinView=[[UIView alloc]init];
        
-        joinView.width=UISCREENWIDTH-30;
+        joinView.width=UISCREENWIDTH-15;
         NSMutableDictionary *parames=[NSMutableDictionary dictionary];
         
         parames[@"activeID"]=data.activeID;
@@ -223,7 +223,7 @@
                         theY++;
                     }
                     UIButton *joinPeople=[[UIButton alloc]init];
-                    joinPeople.width=(joinView.width/4-8);
+                    joinPeople.width=(joinView.width/4);
                     joinPeople.height=17;
                     joinPeople.x= theX * joinPeople.width;
                     joinPeople.y=theY * (17+8)+3;
@@ -266,11 +266,14 @@
     
     NSString *phoneNum = [[NSString alloc] initWithFormat:@"%@",phoneArray[sender.tag]];
     //拨号
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[@"tel://" stringByAppendingString:phoneNum]]];}
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[@"tel://" stringByAppendingString:phoneNum]]];
+
+}
+
+
 
 -(void)foolBarView:(NSDictionary *)likeDic{
-    
-    
+        
     NSArray *arrayNormalImg=[[NSArray alloc ]initWithObjects:@"join",@"clickz",@"share", nil];
     NSArray *arrayligtImg=[[NSArray alloc ]initWithObjects:@"joinSelected",@"clickzSelect",@"shareSelected", nil];
     

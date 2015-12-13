@@ -365,7 +365,6 @@ bool theTop=true;
     if ([[segue identifier] isEqualToString:@"foodAction"]){
       
         NSString *url = [NSString stringWithFormat:@"%@%f,%f.html",RestaurantURL,locationCityDelegate.theLa,locationCityDelegate.theLo];
-        ISQLog(@"%f%f",locationCityDelegate.theLa,locationCityDelegate.theLo);
         
         SeconWebController *webVC = [segue destinationViewController];
         webVC.theUrl = url; 
@@ -383,7 +382,7 @@ bool theTop=true;
         webVC.theUrl = url;
     //居委会
     }else if ([[segue identifier] isEqualToString:@"committee"]){
-        NSString *url = [NSString stringWithFormat:@"%@",tenementURL];
+        NSString *url = [NSString stringWithFormat:@"%@%f,%f.html",officeURL,locationCityDelegate.theLa,locationCityDelegate.theLo];
         SeconWebController *webVC = [segue destinationViewController];
         webVC.theUrl = url;
     //物业

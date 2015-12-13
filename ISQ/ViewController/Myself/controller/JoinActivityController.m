@@ -29,7 +29,7 @@
     NSArray *arrayNormalImg;
     NSArray *arrayligtImg;
 }
-@property (nonatomic, strong) SRRefreshView         *slimeView;
+@property (nonatomic, strong) SRRefreshView *slimeView;
 @end
 
 @implementation JoinActivityController

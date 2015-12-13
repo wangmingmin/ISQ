@@ -1111,7 +1111,7 @@ typedef NSInteger DWPLayerScreenSizeMode;
     shareDic[@"img"]= imgUrlArray?imgUrlArray[0]:@"";
     shareDic[@"title"]=data.title;
     shareDic[@"desc"]=data.detail;
-    shareDic[@"url"]=@"";
+    shareDic[@"url"]=@"http://down.app.wisq.cn";
     
     [MainViewController theShareSDK:shareDic];
     

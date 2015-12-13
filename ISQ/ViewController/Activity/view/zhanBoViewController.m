@@ -679,7 +679,7 @@ static NSString * const reuseIdentifier = @"cell";
     shareDic[@"img"]= imgUrlArray?imgUrlArray[0]:@"";
     shareDic[@"title"]=dataHot.title;
     shareDic[@"desc"]=dataHot.detail;
-    shareDic[@"url"]=@"";
+    shareDic[@"url"]=@"http://down.app.wisq.cn";
     
     [MainViewController theShareSDK:shareDic];
 

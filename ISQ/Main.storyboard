@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="cJ8-6E-EKo">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="cJ8-6E-EKo">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -3285,7 +3285,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3X4-Y4-TnV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1565.5" y="-555.5"/>
+            <point key="canvasLocation" x="-1845.5" y="-1181.5"/>
         </scene>
         <!--发送求助-->
         <scene sceneID="gS8-Fy-TLg">
@@ -3620,7 +3620,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qMb-JH-0H0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1436.5" y="-1611.5"/>
+            <point key="canvasLocation" x="-1348.5" y="-1181.5"/>
         </scene>
         <!--查看求助-->
         <scene sceneID="x2n-ra-rCc">
@@ -4123,7 +4123,7 @@
                     </state>
                 </button>
             </objects>
-            <point key="canvasLocation" x="-700.5" y="-2082.5"/>
+            <point key="canvasLocation" x="-780.5" y="-2436.5"/>
         </scene>
         <!--Home View Controller-->
         <scene sceneID="PrC-sZ-gPV">
@@ -5317,7 +5317,7 @@
                                                                         <constraint firstAttribute="height" constant="33" id="sOD-YO-N6F"/>
                                                                     </constraints>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                                    <state key="normal" title="参加" image="joinSelected">
+                                                                    <state key="normal" title="   参加" image="joinSelected">
                                                                         <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                                     </state>
                                                                 </button>
@@ -5329,7 +5329,7 @@
                                                                         <constraint firstAttribute="height" constant="33" id="yUd-dY-Gax"/>
                                                                     </constraints>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                                    <state key="normal" title="分享" image="shareSelected">
+                                                                    <state key="normal" title="   分享" image="shareSelected">
                                                                         <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                                     </state>
                                                                 </button>
@@ -5894,7 +5894,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="activityDetaileImagCell0" rowHeight="72" id="jAC-vz-WDV" customClass="ActivityDetailImagCell">
-                                        <rect key="frame" x="0.0" y="72" width="375" height="72"/>
+                                        <rect key="frame" x="0.0" y="92" width="375" height="72"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jAC-vz-WDV" id="ryx-JK-SOO">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="72"/>
@@ -5927,7 +5927,7 @@
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="12" id="AnW-HI-XNf"/>
                                                             </constraints>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
@@ -5937,7 +5937,7 @@
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="13" id="bEH-2u-iMi"/>
                                                             </constraints>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
@@ -5976,7 +5976,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="activityDetaileImagCell1" rowHeight="81" id="bVw-kr-oAC" customClass="ActivityDetailImagCell">
-                                        <rect key="frame" x="0.0" y="144" width="375" height="81"/>
+                                        <rect key="frame" x="0.0" y="164" width="375" height="81"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bVw-kr-oAC" id="Qag-9u-5aZ">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="81"/>
@@ -5986,7 +5986,7 @@
                                         <animations/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="activityDetaileImagCell2" id="5gm-wW-zbS" customClass="ActivityDetailImagCell">
-                                        <rect key="frame" x="0.0" y="225" width="375" height="60"/>
+                                        <rect key="frame" x="0.0" y="245" width="375" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5gm-wW-zbS" id="yPD-aN-9ss">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
@@ -5996,7 +5996,7 @@
                                         <animations/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="activityDetaileImagCell3" rowHeight="35" id="muE-6C-5aS" customClass="ActivityDetailImagCell">
-                                        <rect key="frame" x="0.0" y="285" width="375" height="35"/>
+                                        <rect key="frame" x="0.0" y="305" width="375" height="35"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="muE-6C-5aS" id="wNq-fZ-40g">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="35"/>
@@ -6013,7 +6013,7 @@
                                         <animations/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="activityDetaileImagCell4" id="bzH-c4-rjv" customClass="ActivityDetailImagCell">
-                                        <rect key="frame" x="0.0" y="320" width="375" height="60"/>
+                                        <rect key="frame" x="0.0" y="340" width="375" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bzH-c4-rjv" id="7Qe-g8-GN8">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
@@ -6129,7 +6129,7 @@
                                 <color key="sectionIndexBackgroundColor" red="0.8862745098" green="0.92156862750000001" blue="0.92941176469999998" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="VideoDetailPlayerCell0" rowHeight="57" id="6A4-Tu-7Zl" userLabel="VideoDetailPlayerCell0" customClass="VideoDetailPlayerCell">
-                                        <rect key="frame" x="0.0" y="72" width="375" height="57"/>
+                                        <rect key="frame" x="0.0" y="92" width="375" height="57"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6A4-Tu-7Zl" id="XAG-ML-Qsr">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="57"/>
@@ -6139,7 +6139,7 @@
                                         <animations/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="VideoDetailPlayerCell1" rowHeight="72" id="fmy-oH-vJe" userLabel="VideoDetailPlayerCell1" customClass="VideoDetailPlayerCell">
-                                        <rect key="frame" x="0.0" y="129" width="375" height="72"/>
+                                        <rect key="frame" x="0.0" y="149" width="375" height="72"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fmy-oH-vJe" id="t3b-LF-qW0">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="72"/>
@@ -6221,7 +6221,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="VideoDetailPlayerCell2" id="LlA-xF-XQT" userLabel="VideoDetailPlayerCell2" customClass="VideoDetailPlayerCell">
-                                        <rect key="frame" x="0.0" y="201" width="375" height="57"/>
+                                        <rect key="frame" x="0.0" y="221" width="375" height="57"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="LlA-xF-XQT" id="umU-yV-gIZ">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="57"/>
@@ -6231,7 +6231,7 @@
                                         <animations/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="VideoDetailPlayerCell3" rowHeight="35" id="045-vU-Cxf" userLabel="VideoDetailPlayerCell3" customClass="VideoDetailPlayerCell">
-                                        <rect key="frame" x="0.0" y="258" width="375" height="35"/>
+                                        <rect key="frame" x="0.0" y="278" width="375" height="35"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="045-vU-Cxf" id="dwy-WP-o0u">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="35"/>
@@ -6248,7 +6248,7 @@
                                         <animations/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="VideoDetailPlayerCell4" id="gz7-up-qIl" userLabel="VideoDetailPlayerCell4" customClass="VideoDetailPlayerCell">
-                                        <rect key="frame" x="0.0" y="293" width="375" height="57"/>
+                                        <rect key="frame" x="0.0" y="313" width="375" height="57"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gz7-up-qIl" id="2vx-I0-Jps">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="57"/>
@@ -7675,7 +7675,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Kse-dT-5RL"/>
-        <segue reference="3AM-Ns-quN"/>
-        <segue reference="2Kb-Wn-41r"/>
+        <segue reference="K5Q-0k-Yu3"/>
+        <segue reference="Xf2-a7-gAb"/>
     </inferredMetricsTieBreakers>
 </document>
