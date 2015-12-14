@@ -23,12 +23,12 @@
 @interface LaunchActivityController ()<SRRefreshDelegate>{
     
     NSMutableArray *fromHttpData;
-    NSInteger launchRows;
+    NSInteger joinRows;
     HotVideoModel *data;
     NSArray *arrayNormalImg;
     NSArray *arrayligtImg;
 }
-@property (nonatomic, strong) SRRefreshView         *slimeView;
+@property (nonatomic, strong) SRRefreshView *slimeView;
 @end
 
 @implementation LaunchActivityController
@@ -38,7 +38,7 @@
     
     [self showHudInView:self.view hint:@"正在加载..."];
     fromHttpData = [[NSMutableArray alloc] init];
-    launchRows=0;
+    joinRows=0;
     arrayNormalImg=[[NSArray alloc ]initWithObjects:@"join",@"clickz",@"share", nil];
     arrayligtImg=[[NSArray alloc ]initWithObjects:@"joinSelected",@"clickzSelect",@"shareSelected", nil];
     [self loadJoinActivityData:0];
@@ -107,7 +107,7 @@
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             
             
-            [self loadJoinActivityData:launchRows];
+            [self loadJoinActivityData:joinRows];
             
             //结束刷新
             [vc.tableView footerEndRefreshing];
@@ -310,24 +310,22 @@
         
         if (rows==0) {
             
-            launchRows=0;
+            joinRows=0;
             
             fromHttpData = [[NSMutableArray alloc] init];
             
         }
-        NSArray *launchArry=[[NSArray alloc]init];
-        launchArry=[NSJSONSerialization JSONObjectWithData:responseObject options:NSJapaneseEUCStringEncoding error:nil];
+        NSArray *joinArry=[[NSArray alloc]init];
+        joinArry=[NSJSONSerialization JSONObjectWithData:responseObject options:NSJapaneseEUCStringEncoding error:nil];
         
-        if (launchArry) {
+        if (joinArry) {
             
-            if([[NSString stringWithFormat:@"%@",launchArry[0] ] isEqualToString:@"empty"]){
-                
+            if([[NSString stringWithFormat:@"%@",joinArry[0] ] isEqualToString:@"empty"]){
                 
             }else {
                 
-                launchRows=launchRows+[launchArry count];
-                [fromHttpData  addObjectsFromArray:launchArry];
-                
+                 joinRows=joinRows+[fromHttpData count];
+                [fromHttpData  addObjectsFromArray:joinArry];
                 
                 [self.tableView reloadData];
             }
@@ -335,7 +333,6 @@
         }
         
         [self hideHud];
-        
     } failure:^(NSError *erro) {
         
         [self hideHud];
