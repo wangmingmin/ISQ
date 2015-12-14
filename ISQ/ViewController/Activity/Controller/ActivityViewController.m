@@ -473,6 +473,11 @@
         
         NSString *uid = [userInfo objectForKey:MyUserID];
         NSDictionary *dict = fromHttpData[sender.tag];
+        if ([[dict objectForKey:@"titleUrl"] isEqualToString:@"springVideoShow"]) {
+            zhanBoViewController * zhanbo = [self.storyboard instantiateViewControllerWithIdentifier:@"zhanBoViewController"];
+            [self.navigationController pushViewController:zhanbo animated:YES];
+            return;
+        }
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
         SeconWebController *webVC = [storyboard instantiateViewControllerWithIdentifier:@"SeconWebController"];
         webVC.theUrl = [NSString stringWithFormat:@"%@%@%@%@",[dict objectForKey:@"titleUrl"],@"/uid/",uid,@".html"];
@@ -620,6 +625,10 @@
             hotModel *hotmodel = [hotModel objectWithKeyValues:fromHttpData[indexPath.row]];
             [cell.hotimage  setImageWithURL:[NSURL URLWithString:hotmodel.image] placeholderImage:[UIImage imageNamed:@"empty_photo"]];
             cell.contentLabel.text = hotmodel.content;
+            if (indexPath.row == 0) {
+                [cell.joinButton setImage:[UIImage imageNamed:@"icon_eye"] forState:UIControlStateNormal];
+                [cell.joinButton setTitle:@"   观看" forState:UIControlStateNormal];
+            }
             cell.shareButton.tag = indexPath.row;
             cell.joinButton.tag = indexPath.row;
             [cell.joinButton addTarget:self action:@selector(hotJoinAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -791,7 +800,6 @@
             
             NSString *uid = [userInfo objectForKey:MyUserID];
             NSDictionary *dict = fromHttpData[indexPath.row];
-            NSLog(@"dict---%@",dict);
             if ([[dict objectForKey:@"titleUrl"] isEqualToString:@"springVideoShow"]) {
                 zhanBoViewController * zhanbo = [self.storyboard instantiateViewControllerWithIdentifier:@"zhanBoViewController"];
                 [self.navigationController pushViewController:zhanbo animated:YES];

@@ -25,14 +25,7 @@
 
     UIView *chooseLine;
     BOOL isjoinActicity;
-    NSUserDefaults *userInfo;
-    NSMutableArray *joinDataArray;
-    NSMutableArray *launchDataArray;
-    HotVideoModel *data;
-    HotVideoModel *launchData;
-    NSInteger joinRows;
-    NSInteger launchRows;
-    
+
 }
 
 @end
