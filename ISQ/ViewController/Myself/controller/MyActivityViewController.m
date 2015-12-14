@@ -34,7 +34,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    
+    self.title = @"参加的活动";
     chooseLine = [[UIView alloc]initWithFrame:CGRectMake(0, 40, UISCREENWIDTH/2-0.5f, 3)];
     chooseLine.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"topBar_blue"]];
     [self.selectView addSubview:chooseLine];

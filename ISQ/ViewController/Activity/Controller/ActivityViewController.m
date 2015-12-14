@@ -273,7 +273,6 @@
        
         if (rows==0) {
             nearRows=0;
-            [nearData removeAllObjects];
             nearData = [[NSMutableArray alloc] init];
         }
         
@@ -307,6 +306,8 @@
     [self loadNearListData:0];
     
 }
+
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
