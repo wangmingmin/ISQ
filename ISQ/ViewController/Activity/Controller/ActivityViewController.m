@@ -27,6 +27,7 @@
 #import "SeconWebController.h"
 #import "ActivityDetailImgController.h"
 #import "AnnouncementModel.h"
+#import "zhanBoViewController.h"
 @interface ActivityViewController ()<SRRefreshDelegate>
 
 @property (nonatomic,strong) UIButton *leftButton;
@@ -790,6 +791,12 @@
             
             NSString *uid = [userInfo objectForKey:MyUserID];
             NSDictionary *dict = fromHttpData[indexPath.row];
+            NSLog(@"dict---%@",dict);
+            if ([[dict objectForKey:@"titleUrl"] isEqualToString:@"springVideoShow"]) {
+                zhanBoViewController * zhanbo = [self.storyboard instantiateViewControllerWithIdentifier:@"zhanBoViewController"];
+                [self.navigationController pushViewController:zhanbo animated:YES];
+                return;
+            }
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
             SeconWebController *webVC = [storyboard instantiateViewControllerWithIdentifier:@"SeconWebController"];
             webVC.theUrl = [NSString stringWithFormat:@"%@%@%@%@",[dict objectForKey:@"titleUrl"],@"/uid/",uid,@".html"];

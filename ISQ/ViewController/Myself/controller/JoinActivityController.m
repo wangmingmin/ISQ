@@ -40,9 +40,10 @@
     [self showHudInView:self.view hint:@"正在加载..."];
      fromHttpData = [[NSMutableArray alloc] init];
     joinRows=0;
+    
     arrayNormalImg=[[NSArray alloc ]initWithObjects:@"join",@"clickz",@"share", nil];
     arrayligtImg=[[NSArray alloc ]initWithObjects:@"joinSelected",@"clickzSelect",@"shareSelected", nil];
-    [self loadJoinActivityData:joinRows];
+    [self loadJoinActivityData:0];
     
     //刷新
     [self.tableView addSubview:self.slimeView];
@@ -108,7 +109,7 @@
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             
             
-           [self loadJoinActivityData:0];
+           [self loadJoinActivityData:joinRows ];
             
             //结束刷新
             [vc.tableView footerEndRefreshing];
@@ -310,10 +311,9 @@
                 
             }else {
                 
+                 joinRows=joinRows+[joinArry count];
                 [fromHttpData  addObjectsFromArray:joinArry];
-                joinRows=joinRows+[fromHttpData count];
-                
-                ISQLog(@"我的参加的---%@",fromHttpData);
+               
 
                 [self.tableView reloadData];
             }
