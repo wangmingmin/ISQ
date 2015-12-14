@@ -28,10 +28,10 @@ static NSString * const reuseIdentifier = @"cell";
 @property (nonatomic, strong) UIButton * voteBtn;//投票规则
 @property (nonatomic, strong) UIView * movingView;
 
-@property (nonatomic, strong) NSArray * arrayDataCity;
-@property (nonatomic, strong) NSArray * arrayDataSpecial;
-@property (nonatomic, strong) NSArray * arrayDataRank;
-@property (nonatomic, strong) NSArray * arrayDataFollow;
+@property (nonatomic, strong) NSMutableArray * arrayDataCity;
+@property (nonatomic, strong) NSMutableArray * arrayDataSpecial;
+@property (nonatomic, strong) NSMutableArray * arrayDataRank;
+@property (nonatomic, strong) NSMutableArray * arrayDataFollow;
 
 @property (weak, nonatomic) IBOutlet UIButton *cityBtn;
 @property (weak, nonatomic) IBOutlet UIButton *specialBtn;
@@ -387,6 +387,7 @@ static NSString * const reuseIdentifier = @"cell";
 {
     if (isPullRefresh) {
         isPullRefresh = NO;
+        isAddRefresh = NO;
         CGFloat offX = self.allScrollView.contentOffset.x;
         int currentPage = offX/self.allScrollView.frame.size.width;
         if (currentPage == 0) [self refreshCity];
@@ -554,6 +555,13 @@ static NSString * const reuseIdentifier = @"cell";
     cell.shareBtn.tag = indexPath.row;
     [cell.shareBtn addTarget:self action:@selector(onShareVideo:) forControlEvents:UIControlEventTouchUpInside];
     
+    if (collectionView == SpecialCollectionView) {//专场不显示投票数
+        cell.voteString.text = @"浏览数:";
+        cell.voteString.frame = CGRectMake(cell.voteString.frame.origin.x, cell.voteString.frame.origin.y, 40, cell.voteString.frame.size.height);
+        cell.voteNum.frame = CGRectMake(3+cell.voteString.frame.size.width, cell.voteNum.frame.origin.y, cell.frame.size.width, cell.voteNum.frame.size.height);
+        cell.voteNum.text = [NSString stringWithFormat:@"%ld",[dataIndexDic[@"viewNum"] integerValue]];
+    }
+    
     NSString * imageUrlStr = dataIndexDic[@"image"];
     if (imageUrlStr.length != 0) {
         
@@ -614,6 +622,11 @@ static NSString * const reuseIdentifier = @"cell";
         palyView.title= self.videoDetail.title=dataNeed[@"title"];
         self.videoDetail.httpData=dataNeed;
         self.videoDetail.delegate = self;
+        if (collectionView == SpecialCollectionView) {
+            self.videoDetail.isSpecial = YES;
+        }else {
+            self.videoDetail.isSpecial = NO;
+        }
         [self.navigationController pushViewController:palyView animated:YES];
         [palyView addChildViewController:self.videoDetail];
         [palyView.view addSubview:self.videoDetail.view];
@@ -628,6 +641,11 @@ static NSString * const reuseIdentifier = @"cell";
         palyView.title= self.videoDetail.title=dataIndexDic[@"title"];
         self.videoDetail.httpData=dataIndexDic;
         self.videoDetail.delegate = self;
+        if (collectionView == SpecialCollectionView) {
+            self.videoDetail.isSpecial = YES;
+        }else {
+            self.videoDetail.isSpecial = NO;
+        }
         [self.navigationController pushViewController:palyView animated:YES];
         [palyView addChildViewController:self.videoDetail];
         [palyView.view addSubview:self.videoDetail.view];
@@ -649,6 +667,16 @@ static NSString * const reuseIdentifier = @"cell";
 -(void)VideoDetailController_forSpringIsFinshedFollow//关注刷新
 {
     [self refreshFollow];
+}
+
+-(void)VideoDetailController_forSpringRefreshViewNum//专场浏览数刷新
+{
+    CGFloat offX = self.allScrollView.contentOffset.x;
+    int currentPage = offX/self.allScrollView.frame.size.width;
+    if (currentPage == 1) {
+        isAddRefresh = NO;
+        [self refreshSpecial];
+    };
 }
 #pragma 点击分享
 -(void)onShareVideo:(UIButton *)button
@@ -722,10 +750,10 @@ static NSString * const reuseIdentifier = @"cell";
         self.videoDetail.httpData=@{};
     }
     if (self.arrayDataCity == nil && self.arrayDataFollow==nil && self.arrayDataRank==nil && self.arrayDataSpecial==nil) {
-        self.arrayDataCity = [[NSArray alloc] init];
-        self.arrayDataSpecial = [[NSArray alloc] init];
-        self.arrayDataRank = [[NSArray alloc] init];
-        self.arrayDataFollow = [[NSArray alloc] init];
+        self.arrayDataCity = [[NSMutableArray alloc] init];
+        self.arrayDataSpecial = [[NSMutableArray alloc] init];
+        self.arrayDataRank = [[NSMutableArray alloc] init];
+        self.arrayDataFollow = [[NSMutableArray alloc] init];
         [self refresh];
     }else{
         
@@ -746,13 +774,20 @@ static NSString * const reuseIdentifier = @"cell";
     
     id cityID = [user_info objectForKey:userCityID];
     paramesCityID[@"cityId"]=cityID;
-
-    NSString * httpUrl = [NSString stringWithFormat:@"%@type=city&row=%lu",getSpringVideoListServer,(self.arrayDataCity.count/10)*(isAddRefresh?10:1)];
+    
+    NSInteger rowsCount = (self.arrayDataCity.count/10)*(isAddRefresh?10:1);
+    paramesCityID[@"rows"] =[NSString stringWithFormat:@"%ld",(long)rowsCount];
+    
+    NSString * httpUrl = [NSString stringWithFormat:@"%@type=city",getSpringVideoListServer];
     isAddRefresh = YES;
     [ISQHttpTool getHttp:httpUrl contentType:nil params:paramesCityID success:^(id res) {
         NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:res options:NSJapaneseEUCStringEncoding error:nil];
-//        NSLog(@"showVoide city===== %@",dic);
-        self.arrayDataCity = dic[@"retData"];
+        //        NSLog(@"showVoide city===== %@",dic);
+        if (rowsCount == self.arrayDataCity.count) {
+            [self.arrayDataCity addObjectsFromArray:dic[@"retData"]];
+        }else {
+            self.arrayDataCity = dic[@"retData"];
+        }
         showBanner = [[NSString alloc] init];
         showBanner = dic[@"showBanner"];
         [CityCollectionView reloadData];
@@ -763,60 +798,85 @@ static NSString * const reuseIdentifier = @"cell";
             
         }];
     } failure:^(NSError *erro) {
-
+        
     }];
-
+    
 }
 
 -(void)refreshSpecial
 {
-    NSString * httpUrl = [NSString stringWithFormat:@"%@type=special&row=%lu",getSpringVideoListServer,(self.arrayDataSpecial.count/10)*(isAddRefresh?10:1)];
+    NSMutableDictionary *paramesRows=[NSMutableDictionary dictionary];
+    
+    NSInteger rowsCount = (self.arrayDataSpecial.count/10)*(isAddRefresh?10:1);
+    paramesRows[@"rows"] =[NSString stringWithFormat:@"%ld",(long)rowsCount];
+    
+    NSString * httpUrl = [NSString stringWithFormat:@"%@type=special",getSpringVideoListServer];
     isAddRefresh = YES;
-    [ISQHttpTool getHttp:httpUrl contentType:nil params:nil success:^(id res) {
+    [ISQHttpTool getHttp:httpUrl contentType:nil params:paramesRows success:^(id res) {
         NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:res options:NSJapaneseEUCStringEncoding error:nil];
-//        NSLog(@"showVoide special===== %@",dic);
-        self.arrayDataSpecial = dic[@"retData"];
+        //        NSLog(@"showVoide special===== %@",dic);
+        if (rowsCount == self.arrayDataSpecial.count) {
+            [self.arrayDataSpecial addObjectsFromArray:dic[@"retData"]];
+        }else {
+            self.arrayDataSpecial = dic[@"retData"];
+        }
         [SpecialCollectionView reloadData];
-
+        
     } failure:^(NSError *erro) {
-
+        
     }];
-
+    
 }
 -(void)refreshRank
 {
-    NSString * httpUrl = [NSString stringWithFormat:@"%@type=rank&row=%lu",getSpringVideoListServer,(self.arrayDataRank.count/10)*(isAddRefresh?10:1)];
+    NSMutableDictionary *paramesRows=[NSMutableDictionary dictionary];
+    
+    NSInteger rowsCount = (self.arrayDataRank.count/10)*(isAddRefresh?10:1);
+    paramesRows[@"rows"] =[NSString stringWithFormat:@"%ld",(long)rowsCount];
+    
+    NSString * httpUrl = [NSString stringWithFormat:@"%@type=rank",getSpringVideoListServer];
     isAddRefresh = YES;
-    [ISQHttpTool getHttp:httpUrl contentType:nil params:nil success:^(id res) {
+    [ISQHttpTool getHttp:httpUrl contentType:nil params:paramesRows success:^(id res) {
         NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:res options:NSJapaneseEUCStringEncoding error:nil];
-//        NSLog(@"showVoide rank===== %@",dic);
-        self.arrayDataRank = dic[@"retData"];
+        //        NSLog(@"showVoide rank===== %@",dic);
+        if (rowsCount == self.arrayDataRank.count) {
+            [self.arrayDataRank addObjectsFromArray:dic[@"retData"]];
+        }else {
+            self.arrayDataRank = dic[@"retData"];
+        }
         [RankCollectionView reloadData];
-
+        
     } failure:^(NSError *erro) {
-
+        
     }];
-
+    
 }
 -(void)refreshFollow
 {
     NSMutableDictionary *paramesUserAccount=[NSMutableDictionary dictionary];
-
+    
     id userAccountNumber = [user_info objectForKey:userAccount];
     paramesUserAccount[@"userAccount"]=userAccountNumber;
-
-    NSString * httpUrl = [NSString stringWithFormat:@"%@type=follow&row=%lu",getSpringVideoListServer,(self.arrayDataFollow.count/10)*(isAddRefresh?10:1)];
+    
+    NSInteger rowsCount = (self.arrayDataFollow.count/10)*(isAddRefresh?10:1);
+    paramesUserAccount[@"rows"] =[NSString stringWithFormat:@"%ld",(long)rowsCount];
+    
+    NSString * httpUrl = [NSString stringWithFormat:@"%@type=follow",getSpringVideoListServer];
     isAddRefresh = YES;
     [ISQHttpTool getHttp:httpUrl contentType:nil params:paramesUserAccount success:^(id res) {
         NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:res options:NSJapaneseEUCStringEncoding error:nil];
-//        NSLog(@"showVoide follow===== %@",dic);
-        self.arrayDataFollow = dic[@"retData"];
+        //        NSLog(@"showVoide follow===== %@",dic);
+        if (rowsCount == self.arrayDataFollow.count) {
+            [self.arrayDataFollow addObjectsFromArray:dic[@"retData"]];
+        }else {
+            self.arrayDataFollow = dic[@"retData"];
+        }
         [FollowCollectionView reloadData];
-
+        
     } failure:^(NSError *erro) {
-
+        
     }];
-
+    
 }
 
 @end
