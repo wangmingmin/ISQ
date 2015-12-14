@@ -14,6 +14,9 @@
     NSInteger count = [self.collectionView numberOfItemsInSection:0];
     float width = self.collectionView.bounds.size.width;
     float height= (8+(width-24)/2.0+adjustment)*(count/2+count%2)+8;
+    if (height <= self.collectionView.frame.size.height) {
+        height = self.collectionView.frame.size.height+1;
+    }
     CGSize  size = CGSizeMake(width, height);
     return size;
 }

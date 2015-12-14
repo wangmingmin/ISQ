@@ -775,7 +775,7 @@ static NSString * const reuseIdentifier = @"cell";
     id cityID = [user_info objectForKey:userCityID];
     paramesCityID[@"cityId"]=cityID;
     
-    NSInteger rowsCount = (self.arrayDataCity.count/10)*(isAddRefresh?10:1);
+    NSInteger rowsCount = (self.arrayDataCity.count/10)*(isAddRefresh?10:0);
     paramesCityID[@"rows"] =[NSString stringWithFormat:@"%ld",(long)rowsCount];
     
     NSString * httpUrl = [NSString stringWithFormat:@"%@type=city",getSpringVideoListServer];
@@ -807,7 +807,7 @@ static NSString * const reuseIdentifier = @"cell";
 {
     NSMutableDictionary *paramesRows=[NSMutableDictionary dictionary];
     
-    NSInteger rowsCount = (self.arrayDataSpecial.count/10)*(isAddRefresh?10:1);
+    NSInteger rowsCount = (self.arrayDataSpecial.count/10)*(isAddRefresh?10:0);
     paramesRows[@"rows"] =[NSString stringWithFormat:@"%ld",(long)rowsCount];
     
     NSString * httpUrl = [NSString stringWithFormat:@"%@type=special",getSpringVideoListServer];
@@ -831,7 +831,7 @@ static NSString * const reuseIdentifier = @"cell";
 {
     NSMutableDictionary *paramesRows=[NSMutableDictionary dictionary];
     
-    NSInteger rowsCount = (self.arrayDataRank.count/10)*(isAddRefresh?10:1);
+    NSInteger rowsCount = (self.arrayDataRank.count/10)*(isAddRefresh?10:0);
     paramesRows[@"rows"] =[NSString stringWithFormat:@"%ld",(long)rowsCount];
     
     NSString * httpUrl = [NSString stringWithFormat:@"%@type=rank",getSpringVideoListServer];
@@ -858,7 +858,7 @@ static NSString * const reuseIdentifier = @"cell";
     id userAccountNumber = [user_info objectForKey:userAccount];
     paramesUserAccount[@"userAccount"]=userAccountNumber;
     
-    NSInteger rowsCount = (self.arrayDataFollow.count/10)*(isAddRefresh?10:1);
+    NSInteger rowsCount = (self.arrayDataFollow.count/10)*(isAddRefresh?10:0);
     paramesUserAccount[@"rows"] =[NSString stringWithFormat:@"%ld",(long)rowsCount];
     
     NSString * httpUrl = [NSString stringWithFormat:@"%@type=follow",getSpringVideoListServer];
