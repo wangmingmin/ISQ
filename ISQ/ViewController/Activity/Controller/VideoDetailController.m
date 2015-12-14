@@ -153,7 +153,7 @@ typedef NSInteger DWPLayerScreenSizeMode;
     self.buttonPlay = [[UIButton alloc] initWithFrame:CGRectMake(0, self.tableview.frame.origin.y, UISCREENWIDTH, [cellHeight[0] floatValue])];
     self.buttonPlay.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.2];
     UIButton * buttonP = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 60)];
-    buttonP.center = CGPointMake(UISCREENWIDTH/2.0, self.buttonPlay.frame.size.height/2.0-buttonP.frame.size.height/2.0);
+    buttonP.center = CGPointMake(UISCREENWIDTH/2.0, self.buttonPlay.frame.size.height/2.0-buttonP.frame.size.height/2.0+10);
     [buttonP setImage:[UIImage imageNamed:@"mideoImg.png"] forState:UIControlStateNormal];
     [buttonP addTarget:self action:@selector(onButtonToPlay:) forControlEvents:UIControlEventTouchUpInside];
     [self.buttonPlay addSubview:buttonP];
