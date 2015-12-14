@@ -8,7 +8,7 @@
 
 #import "zhanBo_CollectionViewCell.h"
 @interface zhanBo_CollectionViewCell()
-@property (strong, nonatomic) UILabel * voteString;
+
 @end
 
 @implementation zhanBo_CollectionViewCell

@@ -14,4 +14,6 @@
 @property (strong, nonatomic) UIImageView * imageView;
 @property (strong, nonatomic) UILabel * voteNum;//得票
 @property (strong, nonatomic) UIButton * shareBtn;
+
+@property (strong, nonatomic) UILabel * voteString;
 @end

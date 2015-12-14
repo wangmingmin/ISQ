@@ -13,6 +13,7 @@
 
 -(void)VideoDetailController_forSpringIsFinshedRefresh;//投票刷新
 -(void)VideoDetailController_forSpringIsFinshedFollow;//关注刷新
+-(void)VideoDetailController_forSpringRefreshViewNum;//专场浏览数刷新
 @end
 
 @interface VideoDetailController_forSpring : UIViewController<UITableViewDataSource,UITableViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UIGestureRecognizerDelegate,UIScrollViewDelegate,UIAlertViewDelegate>
@@ -24,6 +25,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *collectButton;
 @property (weak, nonatomic) IBOutlet UIButton *voteButton;
 @property (weak, nonatomic) IBOutlet UIButton *shareButton;
+@property (assign, nonatomic) BOOL isSpecial;
 @property (weak, nonatomic) id <VideoDetailController_forSpringDelegate>delegate;
 - (IBAction)collectAction:(id)sender;
 - (IBAction)voteAction:(id)sender;

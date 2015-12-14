@@ -57,6 +57,10 @@ typedef NSInteger DWPLayerScreenSizeMode;
 @property (assign, nonatomic)NSTimeInterval historyPlaybackTime;
 @property (strong, nonatomic)UITableView * tableView_videoDetails;
 @property (weak, nonatomic) IBOutlet UIView *tabbarview;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *collectBtnRightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *voteBtnWIdthConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *shareBtnLeftConstraint;
+@property (strong, nonatomic) UIButton * buttonPlay;
 @end
 
 @implementation VideoDetailController_forSpring
@@ -114,54 +118,43 @@ typedef NSInteger DWPLayerScreenSizeMode;
     [self checkIfIsFollow];
     
     [self.player stop];
+    
+    
+    if (self.isSpecial) {//专场不能投票，改变按钮的LayoutConstraint（Auto Layout）
+        self.voteBtnWIdthConstraint.constant = 0;
+        self.collectBtnRightConstraint.constant = 10;
+        self.shareBtnLeftConstraint.constant = 10;
+    }
+
 }
 
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if (alertView.tag==0) {//首先进入页面判断是否允许播放
-        if (buttonIndex==1) {
-            AppDelegate *delget=(AppDelegate*)[[UIApplication sharedApplication]delegate];
-            
-            if ([delget.isWIFI isEqualToString:@"WIFI"]){
-                
-                [self.player play];
-                
-            }else {
-                
-                [self.player stop];
-                UIAlertView  *alerWIFI=[[UIAlertView alloc ]initWithTitle:@"流量使用提示" message:@"继续播放，运营商将收取流量费用"delegate:self cancelButtonTitle:@"停止播放" otherButtonTitles:@"继续播放", nil];
-                alerWIFI.tag = 1;
-                [alerWIFI show];
-                
-            }
+    if (buttonIndex == 0) {
+        
+        //停止播放
+        [self.player stop];
+        
+        
+    }else if (buttonIndex == 1){
+        [self.buttonPlay removeFromSuperview];
+        self.hiddenAll = YES;
+        [self showBasicViews];
+        self.hiddenDelaySeconds = 5;
 
-        }else if (buttonIndex==0){
-            [self.player stop];
-        }
-
-    }else if (alertView.tag==1){//再判断Wi-Fi
-        if (buttonIndex == 0) {
-            
-            //停止播放
-            [self.player stop];
+        //继续播放
+        [self.player play];
+        
+        
+        if (self.player.playbackState == MPMoviePlaybackStatePlaying) {
             
             
-        }else if (buttonIndex == 1){
-            
-            //继续播放
+        } else {
+            // 继续播放
+            image = [UIImage imageNamed:@"player-pausebutton"];
             [self.player play];
-            
-            
-            if (self.player.playbackState == MPMoviePlaybackStatePlaying) {
-                
-                
-            } else {
-                // 继续播放
-                image = [UIImage imageNamed:@"player-pausebutton"];
-                [self.player play];
-            }
-
         }
+        
     }
 }
 
@@ -185,9 +178,19 @@ typedef NSInteger DWPLayerScreenSizeMode;
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     [self.player stop];
-    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"是否播放当前视屏" message:@"" delegate:self cancelButtonTitle:@"停止" otherButtonTitles:@"播放", nil];
-    alert.tag = 0;
-    [alert show];
+    
+    self.buttonPlay = [[UIButton alloc] initWithFrame:CGRectMake(0, self.tableview.frame.origin.y, UISCREENWIDTH, [cellHeight[0] floatValue])];
+    self.buttonPlay.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.2];
+    UIButton * buttonP = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 60)];
+    buttonP.center = CGPointMake(UISCREENWIDTH/2.0, self.buttonPlay.frame.size.height/2.0-buttonP.frame.size.height/2.0);
+    [buttonP setImage:[UIImage imageNamed:@"mideoImg.png"] forState:UIControlStateNormal];
+    [buttonP addTarget:self action:@selector(onButtonToPlay:) forControlEvents:UIControlEventTouchUpInside];
+    [self.buttonPlay addSubview:buttonP];
+    [self.view addSubview:self.buttonPlay];
+    
+    self.hiddenAll = NO;
+    [self hiddenAllView];
+    self.hiddenDelaySeconds = 0;
 }
 
 -(void)viewDidLayoutSubviews
@@ -200,6 +203,7 @@ typedef NSInteger DWPLayerScreenSizeMode;
 {
     [super viewDidDisappear:animated];
     [self.player stop];
+    [self.delegate VideoDetailController_forSpringRefreshViewNum];
 }
 
 -(void)initTableView_videoDetails
@@ -217,6 +221,28 @@ typedef NSInteger DWPLayerScreenSizeMode;
     
 }
 
+
+-(void)onButtonToPlay:(UIButton *)button
+{
+    AppDelegate *delget=(AppDelegate*)[[UIApplication sharedApplication]delegate];
+    
+    if ([delget.isWIFI isEqualToString:@"WIFI"]){
+        [self.buttonPlay removeFromSuperview];
+        self.hiddenAll = YES;
+        [self showBasicViews];
+        self.hiddenDelaySeconds = 5;
+
+        [self.player play];
+        
+    }else {
+        
+        [self.player stop];
+        UIAlertView  *alerWIFI=[[UIAlertView alloc ]initWithTitle:@"流量使用提示" message:@"继续播放，运营商将收取流量费用"delegate:self cancelButtonTitle:@"停止播放" otherButtonTitles:@"继续播放", nil];
+        alerWIFI.tag = 1;
+        [alerWIFI show];
+        
+    }
+}
 #pragma mark - scrollView delegate
 
 
@@ -912,6 +938,7 @@ typedef NSInteger DWPLayerScreenSizeMode;
         
         [plaCell addSubview:self.videoBackgroundView];
         [plaCell addSubview:self.overlayView];
+
         return plaCell;
     }
     
