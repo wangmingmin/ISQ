@@ -792,7 +792,7 @@ typedef NSInteger DWPLayerScreenSizeMode;
             
             break;
         case 4:
-            joinView.x=15;
+            joinView.x=10;
             joinView.y=1;
             [plaCell addSubview:joinView];
             
@@ -836,7 +836,7 @@ typedef NSInteger DWPLayerScreenSizeMode;
     if (data.activeID) {
         joinView=[[UIView alloc]init];
         
-        joinView.width=UISCREENWIDTH-30;
+        joinView.width=UISCREENWIDTH-20;
         NSMutableDictionary *parames=[NSMutableDictionary dictionary];
         
         parames[@"activeID"]=data.activeID;

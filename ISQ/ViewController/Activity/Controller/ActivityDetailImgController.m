@@ -193,7 +193,7 @@
     if (data.activeID) {
         joinView=[[UIView alloc]init];
        
-        joinView.width=UISCREENWIDTH-15;
+        joinView.width=UISCREENWIDTH-20;
         NSMutableDictionary *parames=[NSMutableDictionary dictionary];
         
         parames[@"activeID"]=data.activeID;
