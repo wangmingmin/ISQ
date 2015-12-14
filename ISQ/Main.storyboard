@@ -6551,15 +6551,17 @@
                                             <action selector="collectAction:" destination="XQp-xd-ZCl" eventType="touchUpInside" id="nHf-kd-rhH"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rbz-er-w86">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rbz-er-w86">
                                         <rect key="frame" x="122" y="9" width="132" height="32"/>
                                         <animations/>
                                         <color key="backgroundColor" red="0.20000000000000001" green="0.65490196079999996" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="132" id="hz2-CK-t35"/>
                                         </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <state key="normal" title="我来投一票">
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="4" maxX="0.0" maxY="4"/>
+                                        <state key="normal" title="我来投一票" image="icon_vote.png">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <state key="highlighted">
@@ -7665,6 +7667,7 @@
         <image name="home3.1" width="27" height="40"/>
         <image name="home4" width="27" height="40"/>
         <image name="home4.1" width="27" height="40"/>
+        <image name="icon_vote.png" width="44" height="45"/>
         <image name="join" width="29" height="29"/>
         <image name="joinSelected" width="29" height="29"/>
         <image name="mybg" width="375" height="145"/>

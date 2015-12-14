@@ -651,6 +651,7 @@
 		9D330A051C15AA7A002D056B /* CollectionViewLayoutZhanBo.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D330A001C15AA7A002D056B /* CollectionViewLayoutZhanBo.m */; };
 		9D330A061C15AA7A002D056B /* zhanBo_CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D330A021C15AA7A002D056B /* zhanBo_CollectionViewCell.m */; };
 		9D330A071C15AA7A002D056B /* zhanBoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D330A041C15AA7A002D056B /* zhanBoViewController.m */; };
+		9D4B86491C1EA5E400D81F10 /* icon_vote.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D4B86481C1EA5E400D81F10 /* icon_vote.png */; };
 		9DA69DED1C17D1950098549A /* VideoDetailController_forSpring.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DA69DEC1C17D1950098549A /* VideoDetailController_forSpring.m */; };
 		B8CEE3B31C10021000863F0E /* ActivityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8CEE3B21C10021000863F0E /* ActivityViewController.m */; };
 		B8CEE3B81C10022500863F0E /* ActivityDetailImgController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8CEE3B51C10022500863F0E /* ActivityDetailImgController.m */; };
@@ -1761,6 +1762,7 @@
 		9D330A021C15AA7A002D056B /* zhanBo_CollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = zhanBo_CollectionViewCell.m; sourceTree = "<group>"; };
 		9D330A031C15AA7A002D056B /* zhanBoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zhanBoViewController.h; sourceTree = "<group>"; };
 		9D330A041C15AA7A002D056B /* zhanBoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = zhanBoViewController.m; sourceTree = "<group>"; };
+		9D4B86481C1EA5E400D81F10 /* icon_vote.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_vote.png; sourceTree = "<group>"; };
 		9DA69DEB1C17D1950098549A /* VideoDetailController_forSpring.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoDetailController_forSpring.h; sourceTree = "<group>"; };
 		9DA69DEC1C17D1950098549A /* VideoDetailController_forSpring.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoDetailController_forSpring.m; sourceTree = "<group>"; };
 		B8CEE3B11C10021000863F0E /* ActivityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityViewController.h; sourceTree = "<group>"; };
@@ -4002,6 +4004,7 @@
 				04D9AB761AAFE1F800C79FBA /* LaunchScreen.xib */,
 				042DC1551B049FD3003FC922 /* Main.storyboard */,
 				04D9AB741AAFE1F800C79FBA /* Images.xcassets */,
+				9D4B86481C1EA5E400D81F10 /* icon_vote.png */,
 				041D3C7E1BD88E89009AF32C /* upload-status-fail.png */,
 				04C3F28C1C009B1F00292C8C /* empty_photo.png */,
 				041D3C7F1BD88E89009AF32C /* mideoImg.png */,
@@ -4490,6 +4493,7 @@
 				046CD03D1B1C333F00FAACBE /* group_joinpublicgroup@2x.png in Resources */,
 				0493A5671BE6F1010018D792 /* player-volume-box.png in Resources */,
 				046CD0301B1C333F00FAACBE /* account.png in Resources */,
+				9D4B86491C1EA5E400D81F10 /* icon_vote.png in Resources */,
 				046CD00E1B1C333F00FAACBE /* chatBar_more_cameraSelected@2x.png in Resources */,
 				0493A5681BE6F1010018D792 /* player-volume-box@2x.png in Resources */,
 				046CCFE61B1C333F00FAACBE /* chat_location_preview@2x.png in Resources */,
