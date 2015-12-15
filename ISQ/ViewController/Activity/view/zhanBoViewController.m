@@ -15,9 +15,7 @@
 #import "MainViewController.h"
 #import "SeconWebController.h"
 #import "SRRefreshView.h"
-#import "EMSearchBar.h"
-#import "EMSearchDisplayController.h"
-
+#import "searchTableViewController.h"
 static NSString * const reuseIdentifier = @"cell";
 #define backColor [UIColor groupTableViewBackgroundColor]
 
@@ -46,9 +44,6 @@ static NSString * const reuseIdentifier = @"cell";
 @property (nonatomic, strong) SRRefreshView *slimeViewSpecial;
 @property (nonatomic, strong) SRRefreshView *slimeViewRank;
 @property (nonatomic, strong) SRRefreshView *slimeViewFollow;
-
-@property (strong, nonatomic) EMSearchBar *searchBar;
-@property (strong, nonatomic) EMSearchDisplayController *searchController;
 
 @end
 
@@ -84,8 +79,6 @@ static NSString * const reuseIdentifier = @"cell";
     UITapGestureRecognizer * tapImageView = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapImageView:)];
     self.imageView.userInteractionEnabled = YES;
     [self.imageView addGestureRecognizer:tapImageView];
-    
-//    [self.view addSubview:self.searchBar];
 }
 
 -(void)tapImageView:(UIGestureRecognizer *)sender
@@ -95,95 +88,6 @@ static NSString * const reuseIdentifier = @"cell";
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
     [self.navigationController pushViewController:webVC animated:YES];
 }
-
-#pragma mark - getter
-
-//- (UISearchBar *)searchBar
-//{
-//    if (_searchBar == nil) {
-//        _searchBar = [[EMSearchBar alloc] initWithFrame: CGRectMake(0, 0, self.view.frame.size.width, 44)];
-//        _searchBar.delegate = self;
-//        _searchBar.placeholder = NSLocalizedString(@"search", @"Search");
-//        _searchBar.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleRightMargin;
-//        _searchBar.backgroundColor = [UIColor colorWithRed:0.747 green:0.756 blue:0.751 alpha:1.000];
-//    }
-//    
-//    return _searchBar;
-//}
-//
-//- (EMSearchDisplayController *)searchController
-//{
-//    if (_searchController == nil) {
-//        _searchController = [[EMSearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
-//        _searchController.editingStyle = UITableViewCellEditingStyleInsert | UITableViewCellEditingStyleDelete;
-//        _searchController.delegate = self;
-//        _searchController.searchResultsTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-//        
-//        __weak zhanBoViewController *weakSelf = self;
-//        [_searchController setCellForRowAtIndexPathCompletion:^UITableViewCell *(UITableView *tableView, NSIndexPath *indexPath) {
-//            static NSString *CellIdentifier = @"ContactListCell";
-//            BaseTableViewCell *cell = (BaseTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-//            
-//            if (cell == nil) {
-//                cell = [[BaseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-//            }
-//            
-//            EMBuddy *buddy = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
-//            cell.imageView.image = [UIImage imageNamed:@"chatListCellHead.png"];
-//            cell.textLabel.text = buddy.username;
-//            
-//            return cell;
-//        }];
-//        
-//        [_searchController setCanEditRowAtIndexPath:^BOOL(UITableView *tableView, NSIndexPath *indexPath) {
-//            if ([weakSelf.blockSelectedUsernames count] > 0) {
-//                EMBuddy *buddy = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
-//                return ![weakSelf isBlockUsername:buddy.username];
-//            }
-//            
-//            return YES;
-//        }];
-//        
-//        [_searchController setHeightForRowAtIndexPathCompletion:^CGFloat(UITableView *tableView, NSIndexPath *indexPath) {
-//            return 50;
-//        }];
-//        
-//        [_searchController setDidSelectRowAtIndexPathCompletion:^(UITableView *tableView, NSIndexPath *indexPath) {
-//            EMBuddy *buddy = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
-//            if (![weakSelf.selectedContacts containsObject:buddy])
-//            {
-//                NSInteger section = [weakSelf sectionForString:buddy.username];
-//                if (section >= 0) {
-//                    NSMutableArray *tmpArray = [weakSelf.dataSource objectAtIndex:section];
-//                    NSInteger row = [tmpArray indexOfObject:buddy];
-//                    [weakSelf.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section] animated:NO scrollPosition:UITableViewScrollPositionNone];
-//                }
-//                
-//                [weakSelf.selectedContacts addObject:buddy];
-//                [weakSelf reloadFooterView];
-//            }
-//        }];
-//        
-//        [_searchController setDidDeselectRowAtIndexPathCompletion:^(UITableView *tableView, NSIndexPath *indexPath) {
-//            [tableView deselectRowAtIndexPath:indexPath animated:YES];
-//            
-//            EMBuddy *buddy = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
-//            if ([weakSelf.selectedContacts containsObject:buddy]) {
-//                NSInteger section = [weakSelf sectionForString:buddy.username];
-//                if (section >= 0) {
-//                    NSMutableArray *tmpArray = [weakSelf.dataSource objectAtIndex:section];
-//                    NSInteger row = [tmpArray indexOfObject:buddy];
-//                    [weakSelf.tableView deselectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section] animated:NO];
-//                }
-//                
-//                [weakSelf.selectedContacts removeObject:buddy];
-//                [weakSelf reloadFooterView];
-//            }
-//        }];
-//    }
-//    
-//    return _searchController;
-//}
 
 #pragma mark 上拉加载更多
 - (void)addFooter
@@ -977,4 +881,17 @@ static NSString * const reuseIdentifier = @"cell";
     
 }
 
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"searchDisplay"]) {
+        
+        CATransition *animation = [CATransition animation];
+        [animation setDuration:3.3];
+        [animation setType:@"MoveIn"];
+        [animation setSubtype:kCATransitionFromBottom];
+        [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
+        [self.navigationController.view.layer addAnimation:animation forKey:nil];
+
+    }
+}
 @end

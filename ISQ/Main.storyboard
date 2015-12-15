@@ -1855,6 +1855,57 @@
             </objects>
             <point key="canvasLocation" x="2793.5" y="1795.5"/>
         </scene>
+        <!--Search Table View Controller-->
+        <scene sceneID="X2V-Ry-fnH">
+            <objects>
+                <tableViewController hidesBottomBarWhenPushed="YES" id="CMu-3y-scQ" customClass="searchTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="BxJ-wJ-JTR">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <searchBar key="tableHeaderView" contentMode="redraw" placeholder="请输入节目全名" id="YkS-wG-XLc">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <textInputTraits key="textInputTraits" autocorrectionType="no"/>
+                            <connections>
+                                <outlet property="delegate" destination="CMu-3y-scQ" id="kA7-m8-2cq"/>
+                            </connections>
+                        </searchBar>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="21e-lZ-edD">
+                                <rect key="frame" x="0.0" y="72" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="21e-lZ-edD" id="NCM-3D-gfA">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="CMu-3y-scQ" id="9RX-X5-MVa"/>
+                            <outlet property="delegate" destination="CMu-3y-scQ" id="b7e-ak-kNG"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="Oyn-Bo-ugO"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <outlet property="searchBar" destination="YkS-wG-XLc" id="bGn-pJ-sGZ"/>
+                        <outlet property="searchDisplayController" destination="8Mk-uW-ScK" id="lTd-IZ-yoS"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="QEQ-ZF-kpe" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <searchDisplayController id="8Mk-uW-ScK">
+                    <connections>
+                        <outlet property="delegate" destination="CMu-3y-scQ" id="Ija-vA-gU3"/>
+                        <outlet property="searchBar" destination="YkS-wG-XLc" id="X0P-gk-ERb"/>
+                        <outlet property="searchContentsController" destination="CMu-3y-scQ" id="f26-DH-sX9"/>
+                        <outlet property="searchResultsDataSource" destination="CMu-3y-scQ" id="xeA-pO-Dbe"/>
+                        <outlet property="searchResultsDelegate" destination="CMu-3y-scQ" id="9WQ-pj-6cH"/>
+                    </connections>
+                </searchDisplayController>
+            </objects>
+            <point key="canvasLocation" x="578.5" y="803.5"/>
+        </scene>
         <!--Setting View Controller-->
         <scene sceneID="pfp-BT-k1I">
             <objects>
@@ -3552,7 +3603,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="A9j-eq-f8q" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2651.5" y="382.5"/>
+            <point key="canvasLocation" x="1695.5" y="-1.5"/>
         </scene>
         <!--修改密码-->
         <scene sceneID="WJI-dW-6Pv">

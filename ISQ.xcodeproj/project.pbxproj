@@ -652,6 +652,7 @@
 		9D330A061C15AA7A002D056B /* zhanBo_CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D330A021C15AA7A002D056B /* zhanBo_CollectionViewCell.m */; };
 		9D330A071C15AA7A002D056B /* zhanBoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D330A041C15AA7A002D056B /* zhanBoViewController.m */; };
 		9D4B86491C1EA5E400D81F10 /* icon_vote.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D4B86481C1EA5E400D81F10 /* icon_vote.png */; };
+		9D7FC5541C1FA44100E07136 /* searchTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D7FC5531C1FA44100E07136 /* searchTableViewController.m */; };
 		9DA69DED1C17D1950098549A /* VideoDetailController_forSpring.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DA69DEC1C17D1950098549A /* VideoDetailController_forSpring.m */; };
 		B8CEE3B31C10021000863F0E /* ActivityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8CEE3B21C10021000863F0E /* ActivityViewController.m */; };
 		B8CEE3B81C10022500863F0E /* ActivityDetailImgController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8CEE3B51C10022500863F0E /* ActivityDetailImgController.m */; };
@@ -1763,6 +1764,8 @@
 		9D330A031C15AA7A002D056B /* zhanBoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zhanBoViewController.h; sourceTree = "<group>"; };
 		9D330A041C15AA7A002D056B /* zhanBoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = zhanBoViewController.m; sourceTree = "<group>"; };
 		9D4B86481C1EA5E400D81F10 /* icon_vote.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_vote.png; sourceTree = "<group>"; };
+		9D7FC5521C1FA44100E07136 /* searchTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = searchTableViewController.h; sourceTree = "<group>"; };
+		9D7FC5531C1FA44100E07136 /* searchTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = searchTableViewController.m; sourceTree = "<group>"; };
 		9DA69DEB1C17D1950098549A /* VideoDetailController_forSpring.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoDetailController_forSpring.h; sourceTree = "<group>"; };
 		9DA69DEC1C17D1950098549A /* VideoDetailController_forSpring.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoDetailController_forSpring.m; sourceTree = "<group>"; };
 		B8CEE3B11C10021000863F0E /* ActivityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityViewController.h; sourceTree = "<group>"; };
@@ -4143,6 +4146,8 @@
 				9D330A021C15AA7A002D056B /* zhanBo_CollectionViewCell.m */,
 				9D330A031C15AA7A002D056B /* zhanBoViewController.h */,
 				9D330A041C15AA7A002D056B /* zhanBoViewController.m */,
+				9D7FC5521C1FA44100E07136 /* searchTableViewController.h */,
+				9D7FC5531C1FA44100E07136 /* searchTableViewController.m */,
 			);
 			name = springVideoShow;
 			path = view;
@@ -4589,6 +4594,7 @@
 				045E438C1B2A77B300ADACF3 /* MWCaptionView.m in Sources */,
 				045E440C1B2A781200ADACF3 /* ChatViewController+Category.m in Sources */,
 				04EF14FC1BF9E9DC00F4A079 /* hotCell.m in Sources */,
+				9D7FC5541C1FA44100E07136 /* searchTableViewController.m in Sources */,
 				045E441A1B2A781200ADACF3 /* EMChatVideoBubbleView.m in Sources */,
 				0430EB061C12C8A100FB92F8 /* MessageViewController.m in Sources */,
 				045E43A61B2A77B300ADACF3 /* PSTCollectionView.m in Sources */,
