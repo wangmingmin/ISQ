@@ -141,7 +141,7 @@
         cell = [tableView dequeueReusableCellWithIdentifier:@"sendHelpCell4" forIndexPath:indexPath];
         cell.sendHelplable1.text=@"居委会";
         NSString *str2 = @"百步亭";
-        sortbutton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 150, 20)];
+        sortbutton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 150, 30)];
         [sortbutton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [cell.chooseButton addSubview:sortbutton];
         if ([self.communityName hasPrefix:str2]) {

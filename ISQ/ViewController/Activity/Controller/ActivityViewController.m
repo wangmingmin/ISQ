@@ -301,11 +301,11 @@
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
 }
 
--(void)viewDidAppear:(BOOL)animated{
-    
-    [self loadNearListData:0];
-    
-}
+//-(void)viewDidAppear:(BOOL)animated{
+//    
+//    [self loadNearListData:0];
+//    
+//}
 
 
 - (void)didReceiveMemoryWarning {
