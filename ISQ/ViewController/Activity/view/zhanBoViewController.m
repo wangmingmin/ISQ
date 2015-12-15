@@ -880,18 +880,4 @@ static NSString * const reuseIdentifier = @"cell";
     }];
     
 }
-
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ([segue.identifier isEqualToString:@"searchDisplay"]) {
-        
-        CATransition *animation = [CATransition animation];
-        [animation setDuration:3.3];
-        [animation setType:@"MoveIn"];
-        [animation setSubtype:kCATransitionFromBottom];
-        [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
-        [self.navigationController.view.layer addAnimation:animation forKey:nil];
-
-    }
-}
 @end

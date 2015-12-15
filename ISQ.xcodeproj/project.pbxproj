@@ -653,6 +653,7 @@
 		9D330A071C15AA7A002D056B /* zhanBoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D330A041C15AA7A002D056B /* zhanBoViewController.m */; };
 		9D4B86491C1EA5E400D81F10 /* icon_vote.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D4B86481C1EA5E400D81F10 /* icon_vote.png */; };
 		9D7FC5541C1FA44100E07136 /* searchTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D7FC5531C1FA44100E07136 /* searchTableViewController.m */; };
+		9D7FC55A1C1FB9B300E07136 /* libUMessage_Sdk_1.2.2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D7FC5581C1FB9B300E07136 /* libUMessage_Sdk_1.2.2.a */; };
 		9DA69DED1C17D1950098549A /* VideoDetailController_forSpring.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DA69DEC1C17D1950098549A /* VideoDetailController_forSpring.m */; };
 		B8CEE3B31C10021000863F0E /* ActivityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8CEE3B21C10021000863F0E /* ActivityViewController.m */; };
 		B8CEE3B81C10022500863F0E /* ActivityDetailImgController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8CEE3B51C10022500863F0E /* ActivityDetailImgController.m */; };
@@ -1766,6 +1767,8 @@
 		9D4B86481C1EA5E400D81F10 /* icon_vote.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_vote.png; sourceTree = "<group>"; };
 		9D7FC5521C1FA44100E07136 /* searchTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = searchTableViewController.h; sourceTree = "<group>"; };
 		9D7FC5531C1FA44100E07136 /* searchTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = searchTableViewController.m; sourceTree = "<group>"; };
+		9D7FC5581C1FB9B300E07136 /* libUMessage_Sdk_1.2.2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libUMessage_Sdk_1.2.2.a; path = "友盟推送/libUMessage_Sdk_1.2.2.a"; sourceTree = "<group>"; };
+		9D7FC5591C1FB9B300E07136 /* UMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UMessage.h; path = "友盟推送/UMessage.h"; sourceTree = "<group>"; };
 		9DA69DEB1C17D1950098549A /* VideoDetailController_forSpring.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoDetailController_forSpring.h; sourceTree = "<group>"; };
 		9DA69DEC1C17D1950098549A /* VideoDetailController_forSpring.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoDetailController_forSpring.m; sourceTree = "<group>"; };
 		B8CEE3B11C10021000863F0E /* ActivityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityViewController.h; sourceTree = "<group>"; };
@@ -1817,6 +1820,7 @@
 				0405CD1E1ACA9615005D0985 /* CoreLocation.framework in Frameworks */,
 				045B61151AC8FD000051C11B /* MapKit.framework in Frameworks */,
 				041966DA1BF0A091003684E6 /* libWeiboSDK.a in Frameworks */,
+				9D7FC55A1C1FB9B300E07136 /* libUMessage_Sdk_1.2.2.a in Frameworks */,
 				045B5E1F1AC8D2840051C11B /* ImageIO.framework in Frameworks */,
 				041E297F1AC3953800885BAB /* libxml2.dylib in Frameworks */,
 				041966D11BF0A091003684E6 /* TwitterConnection.framework in Frameworks */,
@@ -3993,6 +3997,7 @@
 				045870571AB911E40026FE13 /* DDPageControl */,
 				04050E8B1AB126F000AADBBD /* ViewControllers */,
 				04D9ABD81AB02E3C00C79FBA /* customNavigationItem */,
+				9D7FC5571C1FB99500E07136 /* UMessage */,
 				04D9AB8D1AAFE3DD00C79FBA /* image */,
 				04D9AB681AAFE1F800C79FBA /* AppDelegate.h */,
 				04D9AB691AAFE1F800C79FBA /* AppDelegate.m */,
@@ -4151,6 +4156,15 @@
 			);
 			name = springVideoShow;
 			path = view;
+			sourceTree = "<group>";
+		};
+		9D7FC5571C1FB99500E07136 /* UMessage */ = {
+			isa = PBXGroup;
+			children = (
+				9D7FC5581C1FB9B300E07136 /* libUMessage_Sdk_1.2.2.a */,
+				9D7FC5591C1FB9B300E07136 /* UMessage.h */,
+			);
+			name = UMessage;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -5045,6 +5059,7 @@
 					"$(PROJECT_DIR)/ISQ/ShareSDK/ShareSDK/Extend/WeChatSDK",
 					"$(PROJECT_DIR)/ISQ/shareSDK/Extend/SinaWeiboSDK",
 					"$(PROJECT_DIR)/ISQ/shareSDK/Extend/WeChatSDK",
+					"$(PROJECT_DIR)/ISQ/友盟推送",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
@@ -5111,6 +5126,7 @@
 					"$(PROJECT_DIR)/ISQ/ShareSDK/ShareSDK/Extend/WeChatSDK",
 					"$(PROJECT_DIR)/ISQ/shareSDK/Extend/SinaWeiboSDK",
 					"$(PROJECT_DIR)/ISQ/shareSDK/Extend/WeChatSDK",
+					"$(PROJECT_DIR)/ISQ/友盟推送",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";

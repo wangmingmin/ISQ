@@ -29,6 +29,18 @@
     self.searchDisplayController.searchResultsDataSource = self;
     self.searchDisplayController.searchResultsDelegate = self;
     
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+    self.view.alpha = 0;
+    [UIView animateWithDuration:0.3 animations:^{
+        self.view.alpha = 1;
+    }];
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
     [self.searchBar becomeFirstResponder];
 }
 
@@ -59,13 +71,18 @@
         }
     }
     // Configure the cell...
-    cell.backgroundColor = [UIColor redColor];
     return cell;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 150;
+}
+
+-(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 /*
 // Override to support conditional editing of the table view.
