@@ -6003,7 +6003,7 @@
                         <barButtonItem key="rightBarButtonItem" title="搜索" id="wf6-MQ-xbx">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
-                                <segue destination="RTz-d8-MAj" kind="presentation" identifier="searchDisplay" modalTransitionStyle="coverVertical" id="0WJ-LH-RaM"/>
+                                <segue destination="RTz-d8-MAj" kind="push" identifier="searchDisplay" id="0WJ-LH-RaM"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -7101,6 +7101,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="RTz-d8-MAj" sceneMemberID="viewController">
                     <toolbarItems/>
+                    <navigationItem key="navigationItem" id="CtR-P6-I4O"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="gtB-Dd-MaS">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>

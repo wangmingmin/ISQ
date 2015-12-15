@@ -29,8 +29,8 @@
     self.searchDisplayController.searchResultsDataSource = self;
     self.searchDisplayController.searchResultsDelegate = self;
     
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+//    [self.navigationController setNavigationBarHidden:YES animated:YES];
+//    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
     self.view.alpha = 0;
     [UIView animateWithDuration:0.3 animations:^{
         self.view.alpha = 1;
