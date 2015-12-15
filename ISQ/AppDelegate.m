@@ -17,6 +17,7 @@
 #import "UMessage.h"
 
 #define UMSYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
+#define _IPHONE80_ 80000
 
 @interface AppDelegate (){
     BMKMapManager* _mapManager;
@@ -36,6 +37,8 @@ bool islogin=false;
 @synthesize networkStatic,isBackground;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    [self pushUM:launchOptions];
+
      [[EaseMob sharedInstance].chatManager setIsUseIp:NO];
     self.window.backgroundColor = [UIColor whiteColor];
     
@@ -65,7 +68,6 @@ bool islogin=false;
     
     //检查版本更新
 //    [self onCheckVersion];
-    
     return YES;
     
     
@@ -115,24 +117,8 @@ bool islogin=false;
 #endif
     
     //for log
-//    [UMessage setLogEnabled:YES];
+    [UMessage setLogEnabled:YES];
 
-}
-
-- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
-{
-    [UMessage registerDeviceToken:deviceToken];
-    NSLog(@"＊＊＊＊＊＊＊%@＊＊＊＊＊＊＊",[[[[deviceToken description] stringByReplacingOccurrencesOfString: @"<" withString: @""]
-                                stringByReplacingOccurrencesOfString: @">" withString: @""]
-                               stringByReplacingOccurrencesOfString: @" " withString: @""]);
-    
-}
-
-- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
-{
-    //如果注册不成功，打印错误信息，可以在网上找到对应的解决方案
-    //如果注册成功，可以删掉这个方法
-    NSLog(@"application:didFailToRegisterForRemoteNotificationsWithError: %@", error);
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo

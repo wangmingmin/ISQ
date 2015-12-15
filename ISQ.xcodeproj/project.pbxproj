@@ -4216,7 +4216,7 @@
 				TargetAttributes = {
 					04D9AB601AAFE1F800C79FBA = {
 						CreatedOnToolsVersion = 6.1.1;
-						DevelopmentTeam = N87EEQVPCA;
+						DevelopmentTeam = LVXFK64L4V;
 						SystemCapabilities = {
 							com.apple.Maps.iOS = {
 								enabled = 1;
@@ -5063,9 +5063,9 @@
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = cn.wisq.isq;
+				PRODUCT_BUNDLE_IDENTIFIER = "cn.ai-shequ.isq1";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "3f34f1c0-5a39-4d1a-aded-3db103d7bc7a";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "armv7 armv7s arm64";
 			};
@@ -5130,9 +5130,9 @@
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = cn.wisq.isq;
+				PRODUCT_BUNDLE_IDENTIFIER = "cn.ai-shequ.isq1";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "3f34f1c0-5a39-4d1a-aded-3db103d7bc7a";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "armv7 armv7s arm64";
 			};

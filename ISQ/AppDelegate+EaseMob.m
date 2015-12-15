@@ -8,6 +8,7 @@
 
 #import "AppDelegate+EaseMob.h"
 #import "ApplyViewController.h"
+#import "UMessage.h"
 /**
  *  本类中做了EaseMob初始化和推送等操作
  */
@@ -152,6 +153,12 @@
 // 将得到的deviceToken传给SDK
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
     [[EaseMob sharedInstance] application:application didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+    
+    [UMessage registerDeviceToken:deviceToken];
+    NSLog(@"＊＊＊＊＊＊＊%@＊＊＊＊＊＊＊",[[[[deviceToken description] stringByReplacingOccurrencesOfString: @"<" withString: @""]
+                                stringByReplacingOccurrencesOfString: @">" withString: @""]
+                               stringByReplacingOccurrencesOfString: @" " withString: @""]);
+
 }
 
 // 注册deviceToken失败，此处失败，与环信SDK无关，一般是您的环境配置或者证书配置有误
@@ -165,6 +172,9 @@
 //    [alert show];
     
     NSLog(@"APNS证书没有找到------%@",error.description);
+    
+    NSLog(@"application:didFailToRegisterForRemoteNotificationsWithError: %@", error);
+
 }
 
 // 注册推送
