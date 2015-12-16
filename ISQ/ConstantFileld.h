@@ -78,6 +78,7 @@
 #define housekeepingURL  @"http://webapp.wisq.cn/Housekeeping/lists/"  //家政
 #define MedicalURL  @"http://webapp.wisq.cn/Medical/lists/location/"  //医疗
 #define tenementURL   @"http://webapp.wisq.cn/Yetopen"   //物业
+#define discuss   @"http://webapp.wisq.cn/talk/"    //议事厅
 #define officeURL  @"http://webapp.wisq.cn/office/lists/location/"  //居委会
 #define communityNewThing @"http://webapp.wisq.cn/Communitynews/lists/cid/" //新鲜事
 

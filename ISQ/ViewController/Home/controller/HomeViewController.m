@@ -361,30 +361,35 @@ bool theTop=true;
     
     AppDelegate *locationCityDelegate;
      locationCityDelegate = (AppDelegate*)[[UIApplication sharedApplication]delegate];
+    
     //美食
     if ([[segue identifier] isEqualToString:@"foodAction"]){
       
         NSString *url = [NSString stringWithFormat:@"%@%f,%f.html",RestaurantURL,locationCityDelegate.theLa,locationCityDelegate.theLo];
         
         SeconWebController *webVC = [segue destinationViewController];
-        webVC.theUrl = url; 
+        webVC.theUrl = url;
+        
     //家政
     }else if ([[segue identifier] isEqualToString:@"housekeeping"]){
         
         NSString *url = [NSString stringWithFormat:@"%@%f,%f.html",housekeepingURL,locationCityDelegate.theLa,locationCityDelegate.theLo];
         SeconWebController *webVC = [segue destinationViewController];
         webVC.theUrl = url;
+        
     //医疗
     }else if ([[segue identifier] isEqualToString:@"Medical"]){
     
         NSString *url = [NSString stringWithFormat:@"%@%f,%f.html",MedicalURL,locationCityDelegate.theLa,locationCityDelegate.theLo];
         SeconWebController *webVC = [segue destinationViewController];
         webVC.theUrl = url;
+        
     //居委会
     }else if ([[segue identifier] isEqualToString:@"committee"]){
         NSString *url = [NSString stringWithFormat:@"%@%f,%f.html",officeURL,locationCityDelegate.theLa,locationCityDelegate.theLo];
         SeconWebController *webVC = [segue destinationViewController];
         webVC.theUrl = url;
+        
     //物业
     }else if ([[segue identifier] isEqualToString:@"tenement"]){
         SeconWebController *webVC = [segue destinationViewController];
@@ -396,26 +401,31 @@ bool theTop=true;
             NSString *url = [NSString stringWithFormat:@"%@",tenementURL];
             webVC.theUrl = url;
         }
+        
    //议事厅
     }else if ([[segue identifier] isEqualToString:@"discuss"]){        
-        NSString *url = [NSString stringWithFormat:@"%@",tenementURL];
         SeconWebController *webVC = [segue destinationViewController];
-        webVC.theUrl = url;
+        if ([[saveCityName objectForKey:saveCommunityName] hasPrefix:@"百步亭"]) {
+            webVC.theUrl = discuss;
+        }else{
+            NSString *url = [NSString stringWithFormat:@"%@",tenementURL];
+            webVC.theUrl = url;
+        }
+
     //新鲜事
     }else if ([[segue identifier] isEqualToString:@"communityNewThing"]){
         NSString *communityID = [saveCityName objectForKey:userCommunityID];
         NSString *url = [NSString stringWithFormat:@"%@%@",communityNewThing,communityID];
         SeconWebController *webVC = [segue destinationViewController];
         webVC.theUrl = url;
-    }else if ([[segue identifier] isEqualToString:@"news_text"]){
         
+    //新鲜事列表进入详情
+    }else if ([[segue identifier] isEqualToString:@"news_text"]){
         
         NSIndexPath *indexPath=[self.tabelview indexPathForSelectedRow];
         orderModel = [OrderDetailModel objectWithKeyValues:contentDic[indexPath.row-5]];
         NSString *nid = orderModel.newsid;
-
         NSString *url = [NSString stringWithFormat:@"%@/nid/%@",@"http://webapp.wisq.cn/Communitynews/detail/",nid];
-        
         SeconWebController *webVC = [segue destinationViewController];
         webVC.theUrl = url;
         
