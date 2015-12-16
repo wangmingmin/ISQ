@@ -99,7 +99,7 @@
             [cell addSubview:photosView];
             break;
         case 2:
-            contentLabel.x=55;
+            contentLabel.x=65;
             contentLabel.y=1;
             [cell addSubview:contentLabel];
             break;
@@ -130,8 +130,8 @@
     photosView = [[UIView alloc] init];
     NSString *imageurls = data.image;
     imgUrlArray = [imageurls componentsSeparatedByString:@","];
-    photosView.width=UISCREENWIDTH-55;
-    photosView.x=55;
+    photosView.width=UISCREENWIDTH-65;
+    photosView.x=65;
     
     int theX=0;
     int theY=0;

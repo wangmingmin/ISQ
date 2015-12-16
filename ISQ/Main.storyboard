@@ -5489,17 +5489,17 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="empty_photo.png" translatesAutoresizingMaskIntoConstraints="NO" id="RMI-i6-qAV">
-                                                    <rect key="frame" x="4" y="11" width="45" height="45"/>
+                                                    <rect key="frame" x="10" y="11" width="45" height="45"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="45" id="DAK-FV-gz7"/>
                                                         <constraint firstAttribute="height" constant="45" id="Lp3-vJ-Pn4"/>
                                                     </constraints>
                                                 </imageView>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TjG-qY-dCF">
-                                                    <rect key="frame" x="50" y="9" width="325" height="60"/>
+                                                    <rect key="frame" x="56" y="9" width="319" height="60"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="优惠：新洲土鸡蛋打折促销" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KVu-jB-7cY">
-                                                            <rect key="frame" x="8" y="3" width="317" height="20"/>
+                                                            <rect key="frame" x="8" y="3" width="311" height="20"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="20" id="M8E-bp-dK5"/>
                                                             </constraints>
@@ -5508,7 +5508,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="时间：2015-11-21~2015-11~30" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OiN-Lo-1z8">
-                                                            <rect key="frame" x="8" y="27" width="317" height="12"/>
+                                                            <rect key="frame" x="8" y="27" width="311" height="12"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="12" id="AnW-HI-XNf"/>
                                                             </constraints>
@@ -5517,7 +5517,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="地点：" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZV1-MF-RLV">
-                                                            <rect key="frame" x="8" y="44" width="317" height="13"/>
+                                                            <rect key="frame" x="8" y="44" width="311" height="13"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="13" id="bEH-2u-iMi"/>
                                                             </constraints>
@@ -5543,7 +5543,7 @@
                                             <constraints>
                                                 <constraint firstItem="TjG-qY-dCF" firstAttribute="top" secondItem="ryx-JK-SOO" secondAttribute="top" constant="9" id="5pc-mz-6df"/>
                                                 <constraint firstAttribute="bottom" secondItem="TjG-qY-dCF" secondAttribute="bottom" constant="3" id="JqV-Gp-EvF"/>
-                                                <constraint firstItem="RMI-i6-qAV" firstAttribute="leading" secondItem="ryx-JK-SOO" secondAttribute="leading" constant="4" id="ccS-0y-OTr"/>
+                                                <constraint firstItem="RMI-i6-qAV" firstAttribute="leading" secondItem="ryx-JK-SOO" secondAttribute="leading" constant="10" id="ccS-0y-OTr"/>
                                                 <constraint firstItem="TjG-qY-dCF" firstAttribute="leading" secondItem="RMI-i6-qAV" secondAttribute="trailing" constant="1" id="f4c-KE-M3g"/>
                                                 <constraint firstAttribute="trailing" secondItem="TjG-qY-dCF" secondAttribute="trailing" id="fQT-ZG-l1b"/>
                                                 <constraint firstItem="RMI-i6-qAV" firstAttribute="top" secondItem="ryx-JK-SOO" secondAttribute="top" constant="11" id="rNo-AM-Oet"/>

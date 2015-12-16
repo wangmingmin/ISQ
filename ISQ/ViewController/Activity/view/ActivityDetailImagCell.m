@@ -12,16 +12,6 @@
 @synthesize userHeadImg;
 
 
-- (void)awakeFromNib {
-    
-    self.userHeadImg.layer.cornerRadius=22.5f;
-    self.userHeadImg.layer.masksToBounds=YES;
-    self.userHeadImg.layer.borderWidth=0.3f;
-    self.userHeadImg.layer.borderColor=[[UIColor lightGrayColor]colorWithAlphaComponent:0.4f].CGColor;
-    
-    
-}
-
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
 
