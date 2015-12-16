@@ -24,18 +24,29 @@
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    
+//    self.tableView.tableHeaderView = self.searchBar;
+    
     self.searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
     self.searchBar.delegate = self;
     self.searchDisplayController.delegate = self;
     self.searchDisplayController.searchResultsDataSource = self;
     self.searchDisplayController.searchResultsDelegate = self;
-    
+    self.searchDisplayController.searchResultsTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 //    [self.navigationController setNavigationBarHidden:YES animated:YES];
 //    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
     self.view.alpha = 0;
     [UIView animateWithDuration:0.3 animations:^{
         self.view.alpha = 1;
     }];
+
+    NSString * stringType = @"";
+    if ([self.type isEqualToString:@"city"]) stringType = @"当前市节目搜索";
+    if ([self.type isEqualToString:@"special"]) stringType = @"专场节目搜索";
+    if ([self.type isEqualToString:@"rank"]) stringType = @"排行榜节目搜索";
+    if ([self.type isEqualToString:@"follow"]) stringType = @"我关注节目搜索";
+    self.title = stringType;
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -71,8 +82,16 @@
             [view removeFromSuperview];
         }
     }
+    
+    
     // Configure the cell...
+    if (tableView==self.searchDisplayController.searchResultsTableView) {
+        [cell.textLabel setText:@"searchDisplayController"];
+        
+    }
+    else{
         [cell.textLabel setText:@"tableView"];
+    }
 
     return cell;
 }
@@ -116,6 +135,7 @@
         }else {
             self.dataSearch = [[NSArray alloc] initWithArray:data];
             [self.tableView reloadData];
+            [self.searchDisplayController.searchResultsTableView reloadData];
         }
     } failure:^(NSError *erro) {
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"查询失败" message:@"稍后请重试" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
