@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface searchTableViewController : UITableViewController
-
+@property (strong, nonatomic) NSString * type;
 @end

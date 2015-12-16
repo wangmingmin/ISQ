@@ -880,4 +880,16 @@ static NSString * const reuseIdentifier = @"cell";
     }];
     
 }
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"searchDisplayView"]) {
+        int pageNumber = self.movingView.center.x/(screenWidth/4);
+        searchTableViewController * search = segue.destinationViewController;
+        if (pageNumber==0) search.type = @"city";
+        if (pageNumber==1) search.type = @"special";
+        if (pageNumber==2) search.type = @"rank";
+        if (pageNumber==3) search.type = @"follow";
+    }
+}
 @end

@@ -1858,7 +1858,7 @@
         <!--Search Table View Controller-->
         <scene sceneID="X2V-Ry-fnH">
             <objects>
-                <tableViewController hidesBottomBarWhenPushed="YES" id="CMu-3y-scQ" customClass="searchTableViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="searchDisplayView" hidesBottomBarWhenPushed="YES" id="CMu-3y-scQ" customClass="searchTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="BxJ-wJ-JTR">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -6003,7 +6003,7 @@
                         <barButtonItem key="rightBarButtonItem" title="搜索" id="wf6-MQ-xbx">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
-                                <segue destination="CMu-3y-scQ" kind="push" id="7S9-of-sYt"/>
+                                <segue destination="CMu-3y-scQ" kind="push" identifier="searchDisplayView" id="7S9-of-sYt"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

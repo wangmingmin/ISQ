@@ -226,8 +226,8 @@
                    
                    
                }else{
-                   NSString * string_id = [user_info objectForKey:MyUserID];
-                   [UMessage removeAlias:string_id type:AliasTypeForUM response:nil];//删除友盟别名绑定
+//                   NSString * string_id = [user_info objectForKey:MyUserID];
+//                   [UMessage removeAlias:string_id type:AliasTypeForUM response:nil];//删除友盟别名绑定
                    ISQLog(@"exit ok");
                     //清除用户信息，表示退出登录，退出的时候，这里根本没有执行，原因，没有初始化
                    [user_info removeObjectForKey:userPassword];

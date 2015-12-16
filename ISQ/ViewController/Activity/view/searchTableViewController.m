@@ -7,14 +7,15 @@
 //
 
 #import "searchTableViewController.h"
+#import "ISQHttpTool.h"
 
 @interface searchTableViewController ()<UISearchBarDelegate,UISearchDisplayDelegate>
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (strong, nonatomic) UISearchDisplayController * searchDisplayController;
+@property (strong, nonatomic) NSArray * dataSearch;
 @end
 
 @implementation searchTableViewController
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -56,7 +57,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 1;
+    return self.dataSearch.count;
 }
 
 
@@ -82,6 +83,47 @@
 -(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+-(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    NSString * httpStr = [NSString stringWithFormat:@"%@type=%@",getSpringVideoListServer,self.type];
+    
+    NSMutableDictionary *parames=[NSMutableDictionary dictionary];
+    
+    if ([self.type isEqualToString:@"city"]) {
+        id cityID = [user_info objectForKey:userCityID];
+        parames[@"cityId"]=cityID;
+    }
+    if ([self.type isEqualToString:@"follow"]) {
+        id userAccountNumber = [user_info objectForKey:userAccount];
+        parames[@"userAccount"]=userAccountNumber;
+    }
+
+    NSInteger rowsCount = 0;
+    parames[@"rows"] =[NSString stringWithFormat:@"%ld",(long)rowsCount];
+
+    parames[@"title"] =searchBar.text;//标题(加标题字段为搜索接口)
+
+    [ISQHttpTool getHttp:httpStr contentType:nil params:parames success:^(id res) {
+        NSDictionary * dic = [NSJSONSerialization JSONObjectWithData:res options:NSJapaneseEUCStringEncoding error:nil];
+        NSLog(@"search item dic = %@",dic);
+        NSArray * data = dic[@"retData"];
+        if (data.count == 0) {
+            
+        }else {
+            self.dataSearch = [[NSArray alloc] initWithArray:data];
+            [self.tableView reloadData];
+        }
+    } failure:^(NSError *erro) {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"查询失败" message:@"稍后请重试" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+        [alert show];
+    }];
+}
+
+-(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(nullable NSString *)searchString
+{
+    return YES;
 }
 /*
 // Override to support conditional editing of the table view.
