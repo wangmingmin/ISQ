@@ -24,6 +24,7 @@ static NSString * const reuseIdentifier = @"cell";
 @property (nonatomic, strong) UIView * tabBarView;//春晚简介，最新动态，投票规则
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;//赶紧来报名吧
 @property (weak, nonatomic) IBOutlet UIView *topButtonsView;//当前市、看专场、排行榜、我关注
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *searchItemButton;
 @property (nonatomic, strong) UIButton * introduceBtn;//春晚简介
 @property (nonatomic, strong) UIButton * trendsBtn;//最新动态
 @property (nonatomic, strong) UIButton * voteBtn;//投票规则
@@ -39,7 +40,7 @@ static NSString * const reuseIdentifier = @"cell";
 @property (weak, nonatomic) IBOutlet UIButton *rankBtn;
 @property (weak, nonatomic) IBOutlet UIButton *followBtn;
 
-@property (weak, nonatomic) VideoDetailController_forSpring *videoDetail;
+@property (strong, nonatomic) VideoDetailController_forSpring *videoDetail;
 @property (nonatomic, strong) SRRefreshView *slimeViewCity;
 @property (nonatomic, strong) SRRefreshView *slimeViewSpecial;
 @property (nonatomic, strong) SRRefreshView *slimeViewRank;
@@ -431,6 +432,16 @@ static NSString * const reuseIdentifier = @"cell";
     self.specialBtn.selected = pageNumber==1?YES:NO;
     self.rankBtn.selected = pageNumber==2?YES:NO;
     self.followBtn.selected = pageNumber==3?YES:NO;
+    
+#warning 暂时隐藏
+    if (pageNumber ==2 || pageNumber ==3) {
+//        self.navigationItem.hidesBackButton = YES;
+//        for (UIBarButtonItem * button in self.navigationItem.rightBarButtonItems) {
+//            button.customView.hidden = YES;
+//        };
+    }else {
+
+    }
 }
 /*
 #pragma mark - Navigation
@@ -890,6 +901,13 @@ static NSString * const reuseIdentifier = @"cell";
         if (pageNumber==1) search.type = @"special";
         if (pageNumber==2) search.type = @"rank";
         if (pageNumber==3) search.type = @"follow";
+        
+        search.searched = ^(NSString * type){
+            if ([type isEqualToString:@"city"]) [self refreshCity];
+            if ([type isEqualToString:@"special"]) [self refreshSpecial];
+            if ([type isEqualToString:@"rank"]) [self refreshRank];
+            if ([type isEqualToString:@"follow"]) [self refreshFollow];
+        };
     }
 }
 @end

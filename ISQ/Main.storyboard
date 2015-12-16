@@ -6000,10 +6000,10 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="春晚展播" id="eQu-5G-9TK">
-                        <barButtonItem key="rightBarButtonItem" image="search" id="wf6-MQ-xbx">
+                        <barButtonItem key="rightBarButtonItem" image="search" id="5Bs-tZ-qea">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
-                                <segue destination="CMu-3y-scQ" kind="push" identifier="searchDisplayView" id="7S9-of-sYt"/>
+                                <segue destination="CMu-3y-scQ" kind="push" identifier="searchDisplayView" id="5kc-FS-BdO"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -6014,6 +6014,7 @@
                         <outlet property="followBtn" destination="P9t-Me-NSM" id="58H-FI-nyw"/>
                         <outlet property="imageView" destination="7cb-nG-613" id="Y5R-fu-zIk"/>
                         <outlet property="rankBtn" destination="Ddf-ux-EjG" id="Fda-yR-VSC"/>
+                        <outlet property="searchItemButton" destination="5Bs-tZ-qea" id="xCl-Mp-LYA"/>
                         <outlet property="specialBtn" destination="XPi-Ji-Aa0" id="kjw-8F-cMo"/>
                         <outlet property="topButtonsView" destination="TOI-hg-tG9" id="i67-uD-9js"/>
                     </connections>

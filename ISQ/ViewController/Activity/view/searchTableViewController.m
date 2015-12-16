@@ -8,14 +8,21 @@
 
 #import "searchTableViewController.h"
 #import "ISQHttpTool.h"
-
-@interface searchTableViewController ()<UISearchBarDelegate,UISearchDisplayDelegate>
+#import "HotVideoModel.h"
+#import "MainViewController.h"
+#import "VideoDetailController_forSpring.h"
+@interface searchTableViewController ()<UISearchBarDelegate,UISearchDisplayDelegate,VideoDetailController_forSpringDelegate>
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (strong, nonatomic) UISearchDisplayController * searchDisplayController;
 @property (strong, nonatomic) NSArray * dataSearch;
+@property (strong, nonatomic) VideoDetailController_forSpring *videoDetail;
 @end
 
 @implementation searchTableViewController
+{
+    float width;
+    float height;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -26,7 +33,9 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
 //    self.tableView.tableHeaderView = self.searchBar;
-    
+    width = (UISCREENWIDTH-24)/2.0;
+    height = width+43;
+
     self.searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
     self.searchBar.delegate = self;
     self.searchDisplayController.delegate = self;
@@ -34,6 +43,8 @@
     self.searchDisplayController.searchResultsDelegate = self;
     self.searchDisplayController.searchResultsTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
+    self.searchDisplayController.searchResultsTableView.backgroundColor = [UIColor groupTableViewBackgroundColor];
 //    [self.navigationController setNavigationBarHidden:YES animated:YES];
 //    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
     self.view.alpha = 0;
@@ -68,7 +79,11 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.dataSearch.count;
+    NSInteger rows = self.dataSearch.count;
+    if (tableView==self.tableView) {
+        rows = 0;
+    }
+    return rows;
 }
 
 
@@ -82,15 +97,95 @@
             [view removeFromSuperview];
         }
     }
-    
-    
+    cell.backgroundColor = [UIColor groupTableViewBackgroundColor];
+
+    NSDictionary * dataIndexDic = self.dataSearch[indexPath.row];
     // Configure the cell...
     if (tableView==self.searchDisplayController.searchResultsTableView) {
-        [cell.textLabel setText:@"searchDisplayController"];
+        UIView * cellView = [[UIView alloc] initWithFrame:CGRectMake(8, 8, width, height)];
+        cellView.layer.borderColor = [UIColor colorWithRed:220.0/255 green:220.0/255 blue:220.0/255 alpha:1].CGColor;
+        cellView.layer.borderWidth = 0.8;
+        cellView.backgroundColor = [UIColor whiteColor];
+        [cell.contentView addSubview:cellView];
         
+        UILabel * title = [[UILabel alloc] init];
+        title.frame = CGRectMake(3, 2, cellView.frame.size.width-6, 30);
+        title.textColor = [UIColor colorWithRed:80.0/255 green:80.0/255 blue:80.0/255 alpha:1];
+        [cellView addSubview:title];
+        
+        UILabel *address = [[UILabel alloc] init];
+        address.frame = CGRectMake(3,2+title.frame.size.height,cellView.frame.size.width-6, 15);
+        address.textColor = [UIColor colorWithRed:132.0/255 green:132.0/255 blue:132.0/255 alpha:1];
+        address.font = [UIFont systemFontOfSize:12];
+        [cellView addSubview:address];
+        
+        UILabel *voteString = [[UILabel alloc] init];
+        voteString.frame = CGRectMake(3, cellView.frame.size.height-50, 30, 50);
+        voteString.textColor = [UIColor colorWithRed:132.0/255 green:132.0/255 blue:132.0/255 alpha:1];
+        voteString.font = [UIFont systemFontOfSize:12];
+        voteString.text = @"得票:";
+        [cellView addSubview:voteString];
+        
+        UILabel *voteNum = [[UILabel alloc] init];
+        voteNum.frame = CGRectMake(3+voteString.frame.size.width, cellView.frame.size.height-50, 90, 50);
+        voteNum.textColor = [UIColor colorWithRed:116.0/255 green:0.0/255 blue:0.0/255 alpha:1];
+        voteNum.font = [UIFont systemFontOfSize:14];
+        [cellView addSubview:voteNum];
+        
+        CGFloat imageOriginY = address.frame.origin.y + address.frame.size.height + 8;
+        UIImageView* imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, imageOriginY, cellView.frame.size.width, cellView.frame.size.height-imageOriginY-voteNum.frame.size.height)];//120:90
+        [cellView addSubview:imageView];
+        
+        UIButton* shareBtn = [[UIButton alloc] init];
+        shareBtn.frame = CGRectMake(cellView.frame.size.width-70, cellView.frame.size.height-50, 70, 50);
+        [shareBtn setTitleColor:[UIColor colorWithRed:132.0/255 green:132.0/255 blue:132.0/255 alpha:1] forState:UIControlStateNormal];
+        [shareBtn setTitle:@"分享" forState:UIControlStateNormal];
+        UIImage * image = [UIImage imageNamed:@"share"];
+        [shareBtn setImage:image forState:UIControlStateNormal];
+        shareBtn.titleLabel.font = [UIFont systemFontOfSize:12];
+        [cellView addSubview:shareBtn];
+
+#pragma data
+        title.text = [NSString stringWithFormat:@"%@",dataIndexDic[@"title"]];
+        address.text = [NSString stringWithFormat:@"选送单位:%@",dataIndexDic[@"address"]];
+        voteNum.text = [NSString stringWithFormat:@"%ld",[dataIndexDic[@"voteNum"] integerValue]];
+        
+        cellView.tag = shareBtn.tag = cell.contentView.tag=indexPath.row;
+        [shareBtn addTarget:self action:@selector(onShareVideo:) forControlEvents:UIControlEventTouchUpInside];
+        UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onCellToShow:)];
+        cellView.userInteractionEnabled = YES;
+        [cellView addGestureRecognizer:tap];
+        
+        if ([self.type isEqualToString:@"special"]) {//专场不显示投票数
+            voteString.text = @"浏览数:";
+            voteString.frame = CGRectMake(voteString.frame.origin.x, voteString.frame.origin.y, 40, voteString.frame.size.height);
+            voteNum.frame = CGRectMake(3+voteString.frame.size.width, voteNum.frame.origin.y, cellView.frame.size.width, voteNum.frame.size.height);
+            voteNum.text = [NSString stringWithFormat:@"%ld",[dataIndexDic[@"viewNum"] integerValue]];
+        }
+        
+        NSString * imageUrlStr = dataIndexDic[@"image"];
+        if (imageUrlStr.length != 0) {
+            
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                
+                [ISQHttpTool getHttp:imageUrlStr contentType:nil params:nil success:^(id image) {
+                    // 耗时的操作
+                    UIImage * image2 = [UIImage imageWithData:image];//120:90
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        // 更新界面
+                        imageView.image = image2;
+                    });
+                } failure:^(NSError *erro) {
+                    
+                }];
+                
+            });
+            
+        }
+
     }
     else{
-        [cell.textLabel setText:@"tableView"];
+//        [cell.textLabel setText:@"tableView"];
     }
 
     return cell;
@@ -98,7 +193,7 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 150;
+    return height+16;
 }
 
 -(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
@@ -107,6 +202,11 @@
 }
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    [self refresh];
+}
+
+-(void)refresh
 {
     NSString * httpStr = [NSString stringWithFormat:@"%@type=%@",getSpringVideoListServer,self.type];
     
@@ -120,12 +220,12 @@
         id userAccountNumber = [user_info objectForKey:userAccount];
         parames[@"userAccount"]=userAccountNumber;
     }
-
+    
     NSInteger rowsCount = 0;
     parames[@"rows"] =[NSString stringWithFormat:@"%ld",(long)rowsCount];
-
-    parames[@"title"] =searchBar.text;//标题(加标题字段为搜索接口)
-
+    
+    parames[@"title"] =self.searchBar.text;//标题(加标题字段为搜索接口)
+    
     [ISQHttpTool getHttp:httpStr contentType:nil params:parames success:^(id res) {
         NSDictionary * dic = [NSJSONSerialization JSONObjectWithData:res options:NSJapaneseEUCStringEncoding error:nil];
         NSLog(@"search item dic = %@",dic);
@@ -141,7 +241,97 @@
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"查询失败" message:@"稍后请重试" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
         [alert show];
     }];
+
 }
+#pragma 点击分享
+-(void)onShareVideo:(UIButton *)button
+{
+    NSDictionary * dataIndexDic = self.dataSearch[button.tag];
+    
+    HotVideoModel * dataHot = [HotVideoModel objectWithKeyValues:dataIndexDic];
+    
+    NSMutableDictionary *shareDic=[NSMutableDictionary dictionary];
+    NSString *imageurls = dataHot.image;
+    NSArray * imgUrlArray = [imageurls componentsSeparatedByString:@","];
+    shareDic[@"img"]= imgUrlArray?imgUrlArray[0]:@"";
+    shareDic[@"title"]=dataHot.title;
+    shareDic[@"desc"]=dataHot.detail;
+    shareDic[@"url"]=@"http://down.app.wisq.cn";
+    
+    [MainViewController theShareSDK:shareDic];
+    
+}
+
+#pragma 观看
+-(void)onCellToShow:(UIGestureRecognizer *)sender
+{
+    NSDictionary * dataIndexDic = self.dataSearch[sender.view.tag];
+    
+    NSString * strUrl = [NSString stringWithFormat:@"%@activeID=%@&userAccount=%@",httpDetailServer,dataIndexDic[@"activeID"],[user_info objectForKey:userAccount]];
+    [ISQHttpTool getHttp:strUrl contentType:nil params:nil success:^(id res) {
+        NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:res options:NSJapaneseEUCStringEncoding error:nil];
+        //        NSLog(@"resDic ************   %@",dic);
+        NSDictionary * dataNeed = dic[@"retData"];
+        
+        UIViewController * palyView = [[UIViewController alloc] init];
+        palyView.view.frame = self.view.frame;
+        palyView.edgesForExtendedLayout = UIRectEdgeNone;
+        palyView.view.backgroundColor = [UIColor whiteColor];
+        self.videoDetail=[self.storyboard instantiateViewControllerWithIdentifier:@"VideoDetail_forSpring"];
+        palyView.title= self.videoDetail.title=dataNeed[@"title"];
+        self.videoDetail.httpData=dataNeed;
+        self.videoDetail.delegate = self;
+        if ([self.type isEqualToString:@"special"]) {
+            self.videoDetail.isSpecial = YES;
+        }else {
+            self.videoDetail.isSpecial = NO;
+        }
+        [self.navigationController pushViewController:palyView animated:YES];
+        [palyView addChildViewController:self.videoDetail];
+        [palyView.view addSubview:self.videoDetail.view];
+        
+    } failure:^(NSError *erro) {
+        //如果失败换一个数据dataIndexDic
+        UIViewController * palyView = [[UIViewController alloc] init];
+        palyView.view.frame = self.view.frame;
+        palyView.edgesForExtendedLayout = UIRectEdgeNone;
+        palyView.view.backgroundColor = [UIColor whiteColor];
+        self.videoDetail=[self.storyboard instantiateViewControllerWithIdentifier:@"VideoDetail_forSpring"];
+        palyView.title= self.videoDetail.title=dataIndexDic[@"title"];
+        self.videoDetail.httpData=dataIndexDic;
+        self.videoDetail.delegate = self;
+        if ([self.type isEqualToString:@"special"]) {
+            self.videoDetail.isSpecial = YES;
+        }else {
+            self.videoDetail.isSpecial = NO;
+        }
+        [self.navigationController pushViewController:palyView animated:YES];
+        [palyView addChildViewController:self.videoDetail];
+        [palyView.view addSubview:self.videoDetail.view];
+        
+    }];
+
+}
+
+-(void)VideoDetailController_forSpringIsFinshedRefresh//投票刷新
+{
+    [self refresh];
+    self.searched(self.type);
+}
+
+-(void)VideoDetailController_forSpringIsFinshedFollow//关注刷新
+{
+    self.searched(@"follow");
+}
+
+-(void)VideoDetailController_forSpringRefreshViewNum//专场浏览数刷新
+{
+    if ([self.type isEqualToString:@"special"]) {
+        [self refresh];
+        self.searched(self.type);
+    }
+}
+
 /*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
