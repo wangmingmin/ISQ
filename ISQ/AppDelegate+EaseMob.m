@@ -153,11 +153,24 @@
 // 将得到的deviceToken传给SDK
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
     [[EaseMob sharedInstance] application:application didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+    NSString * string_id = [user_info objectForKey:MyUserID];
     
     [UMessage registerDeviceToken:deviceToken];
     NSLog(@"＊＊＊＊＊＊＊%@＊＊＊＊＊＊＊",[[[[deviceToken description] stringByReplacingOccurrencesOfString: @"<" withString: @""]
                                 stringByReplacingOccurrencesOfString: @">" withString: @""]
                                stringByReplacingOccurrencesOfString: @" " withString: @""]);
+    
+    //添加友盟别名绑定
+    [UMessage addAlias:string_id type:AliasTypeForUM response:^(id responseObject, NSError *error) {
+        if(responseObject)
+        {
+//            [self showMessageAlert:@"绑定成功！"];
+        }
+        else
+        {
+//            [self showMessageAlert:error.localizedDescription];
+        }
+    }];
 
 }
 

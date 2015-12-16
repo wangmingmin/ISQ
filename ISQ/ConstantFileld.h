@@ -63,7 +63,7 @@
 #define userCity_province @"userCity_province" //省份与城市
 #define  alertcomment  @"http://web.app.wisq.cn:8080/json/hx/alertcomment"   //修改备注
 
-
+#define AliasTypeForUM @"cn.aishequ.isq1" //友盟的别名类别
 //图片url
 #define theImgURL @"http://admin.app.ai-shequ.cn:81" //图片URL
 
