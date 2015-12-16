@@ -72,6 +72,8 @@
         }
     }
     // Configure the cell...
+        [cell.textLabel setText:@"tableView"];
+
     return cell;
 }
 
@@ -119,11 +121,6 @@
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"查询失败" message:@"稍后请重试" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
         [alert show];
     }];
-}
-
--(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(nullable NSString *)searchString
-{
-    return YES;
 }
 /*
 // Override to support conditional editing of the table view.

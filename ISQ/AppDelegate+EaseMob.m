@@ -153,7 +153,7 @@
 // 将得到的deviceToken传给SDK
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
     [[EaseMob sharedInstance] application:application didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
-    NSString * string_id = [user_info objectForKey:MyUserID];
+    NSString * string_id = [NSString stringWithFormat:@"%ld",[[user_info objectForKey:MyUserID] integerValue]];
     
     [UMessage registerDeviceToken:deviceToken];
     NSLog(@"＊＊＊＊＊＊＊%@＊＊＊＊＊＊＊",[[[[deviceToken description] stringByReplacingOccurrencesOfString: @"<" withString: @""]
