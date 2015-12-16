@@ -434,13 +434,12 @@ static NSString * const reuseIdentifier = @"cell";
     self.followBtn.selected = pageNumber==3?YES:NO;
     
 #warning 暂时隐藏
-    if (pageNumber ==2 || pageNumber ==3) {
-//        self.navigationItem.hidesBackButton = YES;
-//        for (UIBarButtonItem * button in self.navigationItem.rightBarButtonItems) {
-//            button.customView.hidden = YES;
-//        };
+    if (pageNumber ==2 || pageNumber ==3) {//排行榜和关注暂时不能搜索
+        self.searchItemButton.image = nil;
+        [self.searchItemButton setEnabled:NO];
     }else {
-
+        self.searchItemButton.image = [UIImage imageNamed:@"search"];
+        [self.searchItemButton setEnabled:YES];
     }
 }
 /*
