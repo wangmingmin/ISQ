@@ -45,8 +45,6 @@
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     self.searchDisplayController.searchResultsTableView.backgroundColor = [UIColor groupTableViewBackgroundColor];
-//    [self.navigationController setNavigationBarHidden:YES animated:YES];
-//    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
     self.view.alpha = 0;
     [UIView animateWithDuration:0.3 animations:^{
         self.view.alpha = 1;
@@ -58,6 +56,19 @@
     if ([self.type isEqualToString:@"rank"]) stringType = @"排行榜节目搜索";
     if ([self.type isEqualToString:@"follow"]) stringType = @"我关注节目搜索";
     self.title = stringType;
+    
+    UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(nothing:)];
+    [self.searchDisplayController.searchResultsTableView addGestureRecognizer:tap];
+    UITapGestureRecognizer * tap1 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(nothing:)];
+    [self.tableView addGestureRecognizer:tap1];
+    UITapGestureRecognizer * tap2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(nothing:)];
+    [self.view addGestureRecognizer:tap2];
+
+}
+
+-(void)nothing:(UIGestureRecognizer *)sender
+{
+    //只是修改一下用户体验而已
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -98,7 +109,8 @@
         }
     }
     cell.backgroundColor = [UIColor groupTableViewBackgroundColor];
-
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
     NSDictionary * dataIndexDic = self.dataSearch[indexPath.row];
     // Configure the cell...
     if (tableView==self.searchDisplayController.searchResultsTableView) {
@@ -204,6 +216,7 @@
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
     [self refresh];
+    [searchBar resignFirstResponder];
 }
 
 -(void)refresh
@@ -242,6 +255,16 @@
         [alert show];
     }];
 
+}
+
+-(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
+{
+    if (searchString.length == 0) {
+        [self.searchDisplayController setActive:NO animated:NO];
+        self.dataSearch = @[];
+        [self.searchDisplayController.searchResultsTableView reloadData];
+    }
+    return YES;
 }
 #pragma 点击分享
 -(void)onShareVideo:(UIButton *)button
