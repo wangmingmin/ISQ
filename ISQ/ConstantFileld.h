@@ -230,4 +230,5 @@
 #define noFollowVideoServer @"http://121.41.18.126:8080/isqbms/noFollowSpringVideo.from?"
 
 #define user_info [NSUserDefaults standardUserDefaults]
+
 #endif
