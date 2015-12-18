@@ -516,6 +516,7 @@
         self.pageControl.currentPage = pageNumber;
         self.pageControl.pageIndicatorTintColor = [UIColor grayColor];
         self.pageControl.currentPageIndicatorTintColor = [UIColor groupTableViewBackgroundColor];
+        self.pageControl.userInteractionEnabled = NO;
         [self.view.window addSubview:self.pageControl];
     }
     
@@ -629,6 +630,16 @@ static const CGFloat MAX_SCALE = 1.0;
         scaleImageView.center = CGPointMake(scrollView.contentSize.width/2 + offsetX,scrollView.contentSize.height/2 + offsetY);
         
         scrollView.contentSize = CGSizeMake(scrollView.contentSize.width+offsetX, scrollView.contentSize.height+offsetY);//要显示类容的大小
+    }
+}
+
+-(void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale
+{
+    //解决事件响应问题(在大scrollView滑动时候禁止小scrollView滑动，否则经常会有无法翻页的bug)，ios8之后对响应事件更加规范，这对我们编写代码要求更加高
+    if (scale<=scrollView.minimumZoomScale) {
+        scrollView.scrollEnabled = NO;
+    }else{
+        scrollView.scrollEnabled = YES;
     }
 }
 
