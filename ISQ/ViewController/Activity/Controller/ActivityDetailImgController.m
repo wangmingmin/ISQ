@@ -635,7 +635,7 @@ static const CGFloat MAX_SCALE = 1.0;
 
 -(void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale
 {
-    //解决事件响应问题(在大scrollView滑动时候禁止小scrollView滑动，否则经常会有无法翻页的bug)，ios8之后对响应事件更加规范，这对我们编写代码要求更加高
+    //解决事件响应问题(在大scrollView滑动时候禁止内嵌scrollView滑动，否则经常会有无法翻页的bug)，ios8之后对响应事件更加规范，这对我们编写代码要求更加高
     if (scale<=scrollView.minimumZoomScale) {
         scrollView.scrollEnabled = NO;
     }else{
