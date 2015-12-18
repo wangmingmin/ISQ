@@ -36,6 +36,7 @@
 }
 
 @property (strong, nonatomic)NSMutableArray * imageViewsArr;
+@property (strong, nonatomic)UIPageControl * pageControl;
 @end
 
 @implementation ActivityDetailImgController
@@ -507,7 +508,17 @@
 
     imgScroView.contentOffset = CGPointMake(pageNumber*UISCREENWIDTH, imgScroView.contentOffset.y);
     [self.view.window addSubview:imgScroView];
-
+    
+#pragma pageControl
+    if (imgArry2.count > 1) {
+        self.pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, UISCREENHEIGHT-60, UISCREENWIDTH, 30)];
+        self.pageControl.numberOfPages = imgArry2.count;
+        self.pageControl.currentPage = pageNumber;
+        self.pageControl.pageIndicatorTintColor = [UIColor grayColor];
+        self.pageControl.currentPageIndicatorTintColor = [UIColor groupTableViewBackgroundColor];
+        [self.view.window addSubview:self.pageControl];
+    }
+    
  /*
     NSString *imageurls = data.hqImage;
     NSArray *imgArry2=[imageurls componentsSeparatedByString:@","];
@@ -621,16 +632,17 @@ static const CGFloat MAX_SCALE = 1.0;
     }
 }
 
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     if (scrollView == imgScroView) {
-        
+        int pageNumber = scrollView.contentOffset.x/scrollView.frame.size.width;
+        self.pageControl.currentPage = pageNumber;
     }
 }
 
 -(void)Hidden{
     [imgScroView removeFromSuperview];
+    [self.pageControl removeFromSuperview];
 }
 
 
