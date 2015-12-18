@@ -163,32 +163,6 @@
     photosView.height= 60 * ( imgUrlArray.count /3 >=1 ? theY+1:1) +theY*8;
     [cellHeight addObject:[NSString stringWithFormat:@"%f",photosView.height]];
     
-#pragma hqImage
-    NSString *imageurls2 = data.hqImage;
-    NSArray *imgArry2=[imageurls2 componentsSeparatedByString:@","];
-    
-    self.imageViewsArr = [[NSMutableArray alloc] init];
-    imgScroView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, UISCREENWIDTH, UISCREENHEIGHT)];
-    imgScroView.delegate = self;
-    imgScroView.backgroundColor = [UIColor blackColor];
-    imgScroView.pagingEnabled = YES;
-    imgScroView.contentSize = CGSizeMake(UISCREENWIDTH* imgArry2.count, imgScroView.frame.size.height);
-    
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(Hidden)];
-    imgScroView.userInteractionEnabled = YES;
-    [imgScroView addGestureRecognizer:tap];
-    
-    for (int i=0; i<imgArry2.count; i++) {
-        [ISQHttpTool getHttp:imgArry2[i] contentType:nil params:nil success:^(id imagedata) {
-            UIImage * image = [UIImage imageWithData:imagedata];
-            UIImageView * imageViewDownload = [[UIImageView alloc] initWithImage:image];
-            [self.imageViewsArr addObject:imageViewDownload];
-
-        } failure:^(NSError *erro) {
-            
-        }];
-
-    }
 
 }
 
@@ -497,18 +471,42 @@
 
 //点击详情图片
 -(void)imgClik:(UIGestureRecognizer*)sender{
-    //图片获取在theImg方法中，可能会消耗一点内存
     NSInteger pageNumber = sender.view.tag;
+    
+#pragma hqImage
+    NSString *imageurls2 = data.hqImage;
+    NSArray *imgArry2=[imageurls2 componentsSeparatedByString:@","];
+    
+    self.imageViewsArr = [[NSMutableArray alloc] init];
+    imgScroView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, UISCREENWIDTH, UISCREENHEIGHT)];
+    imgScroView.delegate = self;
+    imgScroView.backgroundColor = [UIColor blackColor];
+    imgScroView.pagingEnabled = YES;
+    imgScroView.contentSize = CGSizeMake(UISCREENWIDTH* imgArry2.count, imgScroView.frame.size.height);
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(Hidden)];
+    imgScroView.userInteractionEnabled = YES;
+    [imgScroView addGestureRecognizer:tap];
+    
+    for (int i=0; i<imgArry2.count; i++) {
+        [ISQHttpTool getHttp:imgArry2[i] contentType:nil params:nil success:^(id imagedata) {
+            UIImage * image = [UIImage imageWithData:imagedata];
+            UIImageView * imageViewDownload = [[UIImageView alloc] initWithImage:image];
+            [self.imageViewsArr addObject:imageViewDownload];
+            
+            UIScrollView * scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(UISCREENWIDTH*i+5, 20, UISCREENWIDTH-10, imgScroView.frame.size.height-40)];
+            scrollView.tag = i;
+            [self scrollview:scrollView AddScaleImageView:imageViewDownload];
+            [imgScroView addSubview:scrollView];
+
+        } failure:^(NSError *erro) {
+            
+        }];
+        
+    }
+
     imgScroView.contentOffset = CGPointMake(pageNumber*UISCREENWIDTH, imgScroView.contentOffset.y);
     [self.view.window addSubview:imgScroView];
-
-    for (int i=0; i<self.imageViewsArr.count; i++) {
-        UIScrollView * scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(UISCREENWIDTH*i+5, 20, UISCREENWIDTH-10, imgScroView.frame.size.height-40)];
-        scrollView.tag = i;
-        UIImageView * imageViewDownload = self.imageViewsArr[i];
-        [self scrollview:scrollView AddScaleImageView:imageViewDownload];
-        [imgScroView addSubview:scrollView];
-    }
 
  /*
     NSString *imageurls = data.hqImage;
