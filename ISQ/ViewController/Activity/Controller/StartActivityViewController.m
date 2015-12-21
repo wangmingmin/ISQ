@@ -904,6 +904,8 @@
         
         [self hideHud];
         [self.navigationItem.rightBarButtonItem setEnabled:YES];
+        
+        NSLog(@"error---%@",error);
         [self warning:@"上传失败，请检查网络状况"];
     }];
     

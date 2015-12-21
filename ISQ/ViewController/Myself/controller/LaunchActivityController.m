@@ -20,7 +20,7 @@
 #import "ActivityDetailImgController.h"
 #import "VideoDetailController.h"
 #import "MainViewController.h"
-@interface LaunchActivityController ()<SRRefreshDelegate>{
+@interface LaunchActivityController (){
     
     NSMutableArray *fromHttpData;
     NSInteger joinRows;
@@ -28,7 +28,7 @@
     NSArray *arrayNormalImg;
     NSArray *arrayligtImg;
 }
-@property (nonatomic, strong) SRRefreshView *slimeView;
+@property (nonatomic, strong) SRRefreshView         *slimeView;
 @end
 
 @implementation LaunchActivityController
@@ -38,10 +38,11 @@
     
     [self showHudInView:self.view hint:@"正在加载..."];
     fromHttpData = [[NSMutableArray alloc] init];
+    
     joinRows=0;
     arrayNormalImg=[[NSArray alloc ]initWithObjects:@"join",@"clickz",@"share", nil];
     arrayligtImg=[[NSArray alloc ]initWithObjects:@"joinSelected",@"clickzSelect",@"shareSelected", nil];
-    [self loadJoinActivityData:0];
+    [self loadJoinActivityData:joinRows];
     
     //刷新
     [self.tableView addSubview:self.slimeView];
@@ -107,7 +108,7 @@
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             
             
-            [self loadJoinActivityData:joinRows];
+            [self loadJoinActivityData:0];
             
             //结束刷新
             [vc.tableView footerEndRefreshing];
@@ -324,8 +325,10 @@
                 
             }else {
                 
-                 joinRows=joinRows+[fromHttpData count];
                 [fromHttpData  addObjectsFromArray:joinArry];
+                joinRows=joinRows+[fromHttpData count];
+                
+                ISQLog(@"我发起的---%@",fromHttpData);
                 
                 [self.tableView reloadData];
             }

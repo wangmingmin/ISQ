@@ -34,8 +34,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    
     theCache=[[EGOCache alloc]init];
     self.title = @"设置";
     
@@ -78,7 +76,6 @@
 //获取版本数据
 -(void)getVersionData{
     NSString *URL = APP_URL;
-    
     
     [self showHudInView:self.view hint:@"正在检查..."];
     
@@ -257,6 +254,7 @@
            [appllication openURL:[NSURL URLWithString:trackViewUrl]];
            
        }else if (alertView.tag == 902){
+           [self showHudInView:self.view hint:@"正在清除..."];
            //清理缓存文件
            NSFileManager *fileManager=[NSFileManager defaultManager];
            if ([fileManager fileExistsAtPath:imagePath]) {
@@ -271,7 +269,7 @@
            [[SDImageCache sharedImageCache] cleanDisk];
            
            [self CacheSize];
-           
+           [self hideHud];
            [self.settingTableView reloadData];
        }
 
