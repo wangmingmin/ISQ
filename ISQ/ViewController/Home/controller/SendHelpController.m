@@ -21,10 +21,11 @@
     NSString *myAdress;
     NSString *myPhone;
     UIButton *sortbutton;
-    
+    NSArray *listArray;
+    NSMutableArray *juweihuiListArray;
+    NSMutableArray *contactNameListArray;
 }
 
-@property (nonatomic, strong) NSArray *sortTypes;
 @property (nonatomic, assign) NSInteger selectedSortType;
 
 @end
@@ -36,6 +37,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.selectedSortType = 0;
+    listArray = [[NSArray alloc] init];
+    juweihuiListArray = [[NSMutableArray alloc] init];
+    contactNameListArray = [[NSMutableArray alloc] init];
     sendHelpDelegate=(AppDelegate*)[[UIApplication sharedApplication]delegate];
     userInfos=[NSUserDefaults standardUserDefaults];
     //键盘隐藏
@@ -46,6 +50,28 @@
     [self.sendHelpTableview addGestureRecognizer:tapGestureRecognizer];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardChange:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardChange:) name:UIKeyboardWillHideNotification object:nil];
+    [self loadGetJuweihuiListData];
+    
+}
+
+//如果是百步亭社区，获取对应居委会数据
+- (void)loadGetJuweihuiListData{
+
+    [ISQHttpTool getHttp:getJuweihuiList contentType:nil params:nil success:^(id reponseObject) {
+        
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:reponseObject options:NSJapaneseEUCStringEncoding error:nil];
+        listArray = [NSArray arrayWithArray:dic[@"retData"]];
+        for (NSDictionary *dic in listArray) {
+            [juweihuiListArray addObject:dic[@"title"]];
+            [contactNameListArray addObject:dic[@"contact"]];
+        }
+
+        [self.sendHelpTableview reloadData];
+        
+    } failure:^(NSError *erro) {
+        
+    }];
+    
 }
 
 
@@ -105,27 +131,13 @@
             }
         }else if (indexPath.row == 5){
             cell.sendHelplable1.text=@"受理人";
+
             NSString *str2 = @"百步亭";
             if ([self.communityName hasPrefix:str2]) {
-                if (self.selectedSortType == 0) {
-                    cell.sendHelp_ed.text = @"杨光杰";
-                }else if (self.selectedSortType == 1){
-                    cell.sendHelp_ed.text = @"朱铮";
-                }else if (self.selectedSortType == 2){
-                    cell.sendHelp_ed.text = @"张丽";
-                }else if (self.selectedSortType == 3){
-                    cell.sendHelp_ed.text = @"李素珍";
-                }else if (self.selectedSortType == 4){
-                    cell.sendHelp_ed.text = @"陈文琦";
-                }else if (self.selectedSortType == 5){
-                    cell.sendHelp_ed.text = @"秦永庆";
-                }else if (self.selectedSortType == 6){
-                    cell.sendHelp_ed.text = @"王再红";
-                }else if (self.selectedSortType == 7){
-                    cell.sendHelp_ed.text = @"刘颖";
-                }else if (self.selectedSortType == 8){
-                    cell.sendHelp_ed.text = @"姜元海";
+                if (contactNameListArray.count > 0) {
                     
+                    cell.sendHelp_ed.text = contactNameListArray[self.selectedSortType];
+
                 }
                 
             }else{
@@ -141,14 +153,16 @@
         cell = [tableView dequeueReusableCellWithIdentifier:@"sendHelpCell4" forIndexPath:indexPath];
         cell.sendHelplable1.text=@"居委会";
         NSString *str2 = @"百步亭";
-        sortbutton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 150, 30)];
+        sortbutton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 150, 20)];
         [sortbutton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [cell.chooseButton addSubview:sortbutton];
         if ([self.communityName hasPrefix:str2]) {
-            self.sortTypes = @[@"一居委会",@"二居委会",@"三居委会",@"四居委会",@"文卉苑居委会",@"悦秀苑居委会",@"景兰苑居委会",@"现代城居委会",@"幸福时代居委会"];
-            [sortbutton setTitle:self.sortTypes[self.selectedSortType] forState:UIControlStateNormal];
-            [sortbutton setBackgroundImage:[UIImage imageNamed:@"sort"] forState:UIControlStateNormal];
-            [sortbutton addTarget:self action:@selector(sortSelectButton:) forControlEvents:UIControlEventTouchUpInside];
+            if (juweihuiListArray.count >0) {
+                [sortbutton setTitle:juweihuiListArray[self.selectedSortType] forState:UIControlStateNormal];
+                [sortbutton setBackgroundImage:[UIImage imageNamed:@"sort"] forState:UIControlStateNormal];
+                [sortbutton addTarget:self action:@selector(sortSelectButton:) forControlEvents:UIControlEventTouchUpInside];
+            }
+           
         }else{
             cell.sendHelp_ed.placeholder=@"居委会";
             
@@ -174,7 +188,7 @@
 //百步亭社区居委会选择
 - (void)sortSelectButton:(UIButton *)button{
     [ActionSheetStringPicker showPickerWithTitle:@"请选择居委会"
-                                            rows:self.sortTypes
+                                            rows:juweihuiListArray
                                 initialSelection:self.selectedSortType
                                        doneBlock:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
                                            [sortbutton setTitle:selectedValue forState:UIControlStateNormal];

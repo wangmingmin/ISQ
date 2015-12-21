@@ -72,6 +72,8 @@
 
 //房产
 #define realEstateURL @"http://m.fang.com/esf/wuhan/?cstype=ds&utm_source=hezuomwuhan&utm_medium=click&utm_term=glhwuhan&utm_content=asq&utm_campaign=20150510app"
+//是百步亭社区的适合，获取找书记获取居委会数据
+#define getJuweihuiList  @"http://121.41.18.126:8080/isqbms/getJuweihuiList.from"
 
 //首页h5
 #define RestaurantURL  @"http://webapp.wisq.cn/Restaurant/lists/location/" //美食
