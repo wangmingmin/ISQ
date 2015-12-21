@@ -6929,59 +6929,6 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="222"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mj5-dJ-6m8">
-                                                    <rect key="frame" x="10" y="215" width="355" height="30"/>
-                                                    <subviews>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2bR-8h-ZmM">
-                                                            <rect key="frame" x="0.0" y="0.0" width="118" height="30"/>
-                                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="height" constant="30" id="MdX-qD-hbd"/>
-                                                            </constraints>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                            <state key="normal" title="0参加" image="join">
-                                                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                                            </state>
-                                                        </button>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jb7-TV-Ked">
-                                                            <rect key="frame" x="237" y="0.0" width="118" height="30"/>
-                                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="height" constant="30" id="QjR-2Q-tUQ"/>
-                                                            </constraints>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                            <state key="normal" title=" 分享" image="share">
-                                                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                                            </state>
-                                                        </button>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5yS-th-yjd">
-                                                            <rect key="frame" x="119" y="0.0" width="117" height="30"/>
-                                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="height" constant="30" id="wYd-mN-i17"/>
-                                                            </constraints>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                            <state key="normal" title="0赞" image="clickz">
-                                                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                                            </state>
-                                                        </button>
-                                                    </subviews>
-                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                    <constraints>
-                                                        <constraint firstItem="2bR-8h-ZmM" firstAttribute="width" secondItem="5yS-th-yjd" secondAttribute="width" id="Es4-qI-HiX"/>
-                                                        <constraint firstItem="2bR-8h-ZmM" firstAttribute="width" secondItem="jb7-TV-Ked" secondAttribute="width" id="Mb1-Sj-T79"/>
-                                                        <constraint firstAttribute="height" constant="30" id="X9o-Xr-Tjl"/>
-                                                        <constraint firstAttribute="bottom" secondItem="5yS-th-yjd" secondAttribute="bottom" id="XsG-th-8dy"/>
-                                                        <constraint firstItem="5yS-th-yjd" firstAttribute="leading" secondItem="2bR-8h-ZmM" secondAttribute="trailing" constant="1" id="abZ-qa-0eU"/>
-                                                        <constraint firstItem="2bR-8h-ZmM" firstAttribute="leading" secondItem="mj5-dJ-6m8" secondAttribute="leading" id="jcJ-6H-Hsk"/>
-                                                        <constraint firstItem="2bR-8h-ZmM" firstAttribute="height" secondItem="jb7-TV-Ked" secondAttribute="height" id="kuc-g6-NPz"/>
-                                                        <constraint firstAttribute="bottom" secondItem="jb7-TV-Ked" secondAttribute="bottom" id="rOG-Pq-gcH"/>
-                                                        <constraint firstItem="2bR-8h-ZmM" firstAttribute="height" secondItem="5yS-th-yjd" secondAttribute="height" id="uqu-k0-c2L"/>
-                                                        <constraint firstAttribute="bottom" secondItem="2bR-8h-ZmM" secondAttribute="bottom" id="vTh-vg-Qjj"/>
-                                                        <constraint firstItem="jb7-TV-Ked" firstAttribute="leading" secondItem="5yS-th-yjd" secondAttribute="trailing" constant="1" id="xP0-UC-u9x"/>
-                                                        <constraint firstAttribute="trailing" secondItem="jb7-TV-Ked" secondAttribute="trailing" id="xvP-58-O91"/>
-                                                    </constraints>
-                                                </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7vX-qG-PP5">
                                                     <rect key="frame" x="10" y="1" width="355" height="213"/>
                                                     <subviews>
@@ -7055,24 +7002,13 @@
                                                 <constraint firstItem="7vX-qG-PP5" firstAttribute="top" secondItem="58h-uM-8l7" secondAttribute="topMargin" constant="-7" id="387-uK-zrs"/>
                                                 <constraint firstAttribute="bottom" secondItem="7vX-qG-PP5" secondAttribute="bottom" constant="8" id="4VD-7s-GcH"/>
                                                 <constraint firstItem="7vX-qG-PP5" firstAttribute="leading" secondItem="58h-uM-8l7" secondAttribute="leadingMargin" constant="2" id="JAl-B6-GLF"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="mj5-dJ-6m8" secondAttribute="bottom" id="Ryy-hu-Jb5"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="7vX-qG-PP5" secondAttribute="trailing" constant="2" id="bVO-NM-2WX"/>
-                                                <constraint firstItem="mj5-dJ-6m8" firstAttribute="leading" secondItem="58h-uM-8l7" secondAttribute="leadingMargin" constant="2" id="mPw-MG-O7O"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="mj5-dJ-6m8" secondAttribute="trailing" constant="2" id="tH3-zh-S2k"/>
                                             </constraints>
-                                            <variation key="default">
-                                                <mask key="subviews">
-                                                    <exclude reference="mj5-dJ-6m8"/>
-                                                </mask>
-                                            </variation>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
-                                            <outlet property="clickzButton" destination="5yS-th-yjd" id="oNT-95-vjw"/>
                                             <outlet property="describeLabel" destination="gjn-m1-8OE" id="CX6-Pj-f3f"/>
-                                            <outlet property="joinButton" destination="2bR-8h-ZmM" id="We9-2r-xCj"/>
                                             <outlet property="nickName" destination="cDt-E0-pVA" id="zJc-lU-nq9"/>
-                                            <outlet property="shareButton" destination="jb7-TV-Ked" id="oOM-3V-HGW"/>
                                             <outlet property="timeLabel" destination="QB8-bh-V4s" id="0sf-hS-a1B"/>
                                             <outlet property="titleLabel" destination="01H-Gv-Lr2" id="PCa-r9-jlY"/>
                                             <outlet property="userFace" destination="xWE-oL-vfM" id="4or-z2-HFD"/>
@@ -7148,7 +7084,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Kse-dT-5RL"/>
-        <segue reference="3AM-Ns-quN"/>
-        <segue reference="2Kb-Wn-41r"/>
+        <segue reference="R5Z-s7-Zai"/>
+        <segue reference="9PT-S3-BFP"/>
     </inferredMetricsTieBreakers>
 </document>
