@@ -35,7 +35,8 @@
     NSMutableArray *phoneArray;
 }
 
-
+@property (strong, nonatomic)NSMutableArray * imageViewsArr;
+@property (strong, nonatomic)UIPageControl * pageControl;
 @end
 
 @implementation ActivityDetailImgController
@@ -65,7 +66,6 @@
     [self joinPeople];
     
 }
-
 
 #pragma mark UITableViewDataSource
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -163,6 +163,8 @@
     
     photosView.height= 60 * ( imgUrlArray.count /3 >=1 ? theY+1:1) +theY*8;
     [cellHeight addObject:[NSString stringWithFormat:@"%f",photosView.height]];
+    
+
 }
 
 #pragma  mark 内容
@@ -470,8 +472,55 @@
 
 //点击详情图片
 -(void)imgClik:(UIGestureRecognizer*)sender{
+    NSInteger pageNumber = sender.view.tag;
     
+#pragma hqImage
+    NSString *imageurls2 = data.hqImage;
+    NSArray *imgArry2=[imageurls2 componentsSeparatedByString:@","];
     
+    self.imageViewsArr = [[NSMutableArray alloc] init];
+    imgScroView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, UISCREENWIDTH, UISCREENHEIGHT)];
+    imgScroView.delegate = self;
+    imgScroView.backgroundColor = [UIColor blackColor];
+    imgScroView.pagingEnabled = YES;
+    imgScroView.contentSize = CGSizeMake(UISCREENWIDTH* imgArry2.count, imgScroView.frame.size.height);
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(Hidden)];
+    imgScroView.userInteractionEnabled = YES;
+    [imgScroView addGestureRecognizer:tap];
+    
+    for (int i=0; i<imgArry2.count; i++) {
+        [ISQHttpTool getHttp:imgArry2[i] contentType:nil params:nil success:^(id imagedata) {
+            UIImage * image = [UIImage imageWithData:imagedata];
+            UIImageView * imageViewDownload = [[UIImageView alloc] initWithImage:image];
+            [self.imageViewsArr addObject:imageViewDownload];
+            
+            UIScrollView * scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(UISCREENWIDTH*i+5, 20, UISCREENWIDTH-10, imgScroView.frame.size.height-40)];
+            scrollView.tag = i;
+            [self scrollview:scrollView AddScaleImageView:imageViewDownload];
+            [imgScroView addSubview:scrollView];
+
+        } failure:^(NSError *erro) {
+            
+        }];
+        
+    }
+
+    imgScroView.contentOffset = CGPointMake(pageNumber*UISCREENWIDTH, imgScroView.contentOffset.y);
+    [self.view.window addSubview:imgScroView];
+    
+#pragma pageControl
+    if (imgArry2.count > 1) {
+        self.pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, UISCREENHEIGHT-60, UISCREENWIDTH, 30)];
+        self.pageControl.numberOfPages = imgArry2.count;
+        self.pageControl.currentPage = pageNumber;
+        self.pageControl.pageIndicatorTintColor = [UIColor grayColor];
+        self.pageControl.currentPageIndicatorTintColor = [UIColor groupTableViewBackgroundColor];
+        self.pageControl.userInteractionEnabled = NO;
+        [self.view.window addSubview:self.pageControl];
+    }
+    
+ /*
     NSString *imageurls = data.hqImage;
     NSArray *imgArry2=[imageurls componentsSeparatedByString:@","];
     
@@ -531,42 +580,80 @@
     [HUD show:YES];
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(Hidden)];
     [HUD.customView addGestureRecognizer:tap];
-    
+  */
 }
 
+static const CGFloat MAX_SCALE = 1.0;
+-(void)scrollview:(UIScrollView *)scrollView AddScaleImageView:(UIImageView *)scaleImageView
+{
+    scrollView.showsHorizontalScrollIndicator = NO;
+    scrollView.showsVerticalScrollIndicator = NO;
+    
+    float horizontalScale = scrollView.frame.size.height / scaleImageView.frame.size.height;
+    float verticalScale = scrollView.frame.size.width / scaleImageView.frame.size.width;
+    float min = MIN(horizontalScale, verticalScale);
+    
+    float max = MAX(min, MAX_SCALE);//再次比较，万一图片长宽都小于屏幕
+    min = MIN(min, MAX_SCALE);//再次判断，万一图片长宽都小于屏幕
+    
+    scrollView.minimumZoomScale = min;
+    scrollView.maximumZoomScale = max;
+    scrollView.delegate = self;
+    [scrollView addSubview:scaleImageView];
+    
+    if (max == MAX_SCALE) {
+        scaleImageView.transform = CGAffineTransformScale(scaleImageView.transform, min, min);//刚刚出现时缩放成屏幕可以浏览的尺寸
+    }
+    scaleImageView.center = CGPointMake(scrollView.frame.size.width/2.0, scrollView.frame.size.height/2.0);
+}
 
 #pragma  mark UIScrollViewDidScrolldelegate
-
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
 {
-    
-    CGFloat scrollviewW =  scrollView.frame.size.width;
-    CGFloat x = scrollView.contentOffset.x;
-    int page = (x + scrollviewW / 2) /  scrollviewW;
-    
-    pageNum.text=[NSString stringWithFormat:@" %d/ %lu",page+1,(unsigned long)imgUrlArray.count];
-    
+    if (scrollView != imgScroView) {
+        NSInteger i = scrollView.tag;
+        return self.imageViewsArr[i];
+    }
+    return nil;
 }
 
-// 处理缩放手势
-- (void) pinchView:(UIPinchGestureRecognizer *)pinchGestureRecognizer{
-
-    if (pinchGestureRecognizer.state == UIGestureRecognizerStateEnded) {
-        currentScale = pinchGestureRecognizer.scale;
-    }else if(pinchGestureRecognizer.state == UIGestureRecognizerStateBegan && currentScale != 0.0f){
-        pinchGestureRecognizer.scale = currentScale;
+//实现图片在缩放过程中居中
+- (void)scrollViewDidZoom:(UIScrollView *)scrollView
+{
+    if (scrollView != imgScroView) {
+        
+        NSInteger i = scrollView.tag;
+        UIImageView * scaleImageView = self.imageViewsArr[i];
+        CGFloat offsetX = (scrollView.bounds.size.width > scrollView.contentSize.width)?(scrollView.bounds.size.width - scrollView.contentSize.width)/2 : 0.0;
+        CGFloat offsetY = (scrollView.bounds.size.height > scrollView.contentSize.height)?(scrollView.bounds.size.height - scrollView.contentSize.height)/2 : 0.0;
+        
+        scaleImageView.center = CGPointMake(scrollView.contentSize.width/2 + offsetX,scrollView.contentSize.height/2 + offsetY);
+        
+        scrollView.contentSize = CGSizeMake(scrollView.contentSize.width+offsetX, scrollView.contentSize.height+offsetY);//要显示类容的大小
     }
-    if (pinchGestureRecognizer.scale !=NAN && pinchGestureRecognizer.scale != 0.0) {
-        pinchGestureRecognizer.view.transform = CGAffineTransformMakeScale(pinchGestureRecognizer.scale, pinchGestureRecognizer.scale);
-    }
-
 }
 
+-(void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale
+{
+    //解决事件响应问题(在大scrollView滑动时候禁止内嵌scrollView滑动，否则经常会有无法翻页的bug)，ios8之后对响应事件更加规范，这对我们编写代码要求更加高
+    if (scale<=scrollView.minimumZoomScale) {
+        scrollView.scrollEnabled = NO;
+    }else{
+        scrollView.scrollEnabled = YES;
+    }
+}
+
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    if (scrollView == imgScroView) {
+        int pageNumber = scrollView.contentOffset.x/scrollView.frame.size.width;
+        self.pageControl.currentPage = pageNumber;
+    }
+}
 
 -(void)Hidden{
-    
-    [HUD hide:YES];
+    [imgScroView removeFromSuperview];
+    [self.pageControl removeFromSuperview];
 }
 
 
