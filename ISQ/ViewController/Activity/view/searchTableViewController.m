@@ -69,6 +69,7 @@
 -(void)nothing:(UIGestureRecognizer *)sender
 {
     //只是修改一下用户体验而已
+    [self.view endEditing:YES];
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -95,7 +96,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSInteger rows = self.dataSearch.count;
+    NSInteger rows = self.dataSearch.count/2 + self.dataSearch.count%2;
     if (tableView==self.tableView) {
         rows = 0;
     }
@@ -116,90 +117,105 @@
     cell.backgroundColor = [UIColor groupTableViewBackgroundColor];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    NSDictionary * dataIndexDic = self.dataSearch[indexPath.row];
+    //一个cell中放两个数据
+    NSMutableArray * dataArrIneed = [[NSMutableArray alloc] init];
+    NSInteger indexOu = indexPath.row*2;//0、2、4、6、8...
+    NSInteger indexJi = indexOu +1;//1、3、5、7、9...
+    NSDictionary * dataIndexDic1 = self.dataSearch[indexOu];
+    [dataArrIneed addObject:dataIndexDic1];
+    if (indexJi< self.dataSearch.count) {
+        NSDictionary * dataIndexDic2 = self.dataSearch[indexOu+1];
+        [dataArrIneed addObject:dataIndexDic2];
+    }
+    
     // Configure the cell...
     if (tableView==self.searchDisplayController.searchResultsTableView) {
-        UIView * cellView = [[UIView alloc] initWithFrame:CGRectMake(8, 8, width, height)];
-        cellView.layer.borderColor = [UIColor colorWithRed:220.0/255 green:220.0/255 blue:220.0/255 alpha:1].CGColor;
-        cellView.layer.borderWidth = 0.8;
-        cellView.backgroundColor = [UIColor whiteColor];
-        [cell.contentView addSubview:cellView];
-        
-        UILabel * title = [[UILabel alloc] init];
-        title.frame = CGRectMake(3, 2, cellView.frame.size.width-6, 30);
-        title.textColor = [UIColor colorWithRed:80.0/255 green:80.0/255 blue:80.0/255 alpha:1];
-        [cellView addSubview:title];
-        
-        UILabel *address = [[UILabel alloc] init];
-        address.frame = CGRectMake(3,2+title.frame.size.height,cellView.frame.size.width-6, 15);
-        address.textColor = [UIColor colorWithRed:132.0/255 green:132.0/255 blue:132.0/255 alpha:1];
-        address.font = [UIFont systemFontOfSize:12];
-        [cellView addSubview:address];
-        
-        UILabel *voteString = [[UILabel alloc] init];
-        voteString.frame = CGRectMake(3, cellView.frame.size.height-50, 30, 50);
-        voteString.textColor = [UIColor colorWithRed:132.0/255 green:132.0/255 blue:132.0/255 alpha:1];
-        voteString.font = [UIFont systemFontOfSize:12];
-        voteString.text = @"得票:";
-        [cellView addSubview:voteString];
-        
-        UILabel *voteNum = [[UILabel alloc] init];
-        voteNum.frame = CGRectMake(3+voteString.frame.size.width, cellView.frame.size.height-50, 90, 50);
-        voteNum.textColor = [UIColor colorWithRed:116.0/255 green:0.0/255 blue:0.0/255 alpha:1];
-        voteNum.font = [UIFont systemFontOfSize:14];
-        [cellView addSubview:voteNum];
-        
-        CGFloat imageOriginY = address.frame.origin.y + address.frame.size.height + 8;
-        UIImageView* imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, imageOriginY, cellView.frame.size.width, cellView.frame.size.height-imageOriginY-voteNum.frame.size.height)];//120:90
-        [cellView addSubview:imageView];
-        
-        UIButton* shareBtn = [[UIButton alloc] init];
-        shareBtn.frame = CGRectMake(cellView.frame.size.width-70, cellView.frame.size.height-50, 70, 50);
-        [shareBtn setTitleColor:[UIColor colorWithRed:132.0/255 green:132.0/255 blue:132.0/255 alpha:1] forState:UIControlStateNormal];
-        [shareBtn setTitle:@"分享" forState:UIControlStateNormal];
-        UIImage * image = [UIImage imageNamed:@"share"];
-        [shareBtn setImage:image forState:UIControlStateNormal];
-        shareBtn.titleLabel.font = [UIFont systemFontOfSize:12];
-        [cellView addSubview:shareBtn];
-
+        for (int i = 0; i<dataArrIneed.count; i++) {
+            NSDictionary * dataIndexDic = dataArrIneed[i];
+            
+            UIView * cellView = [[UIView alloc] initWithFrame:CGRectMake(8+i*(width+8), 8, width, height)];
+            cellView.layer.borderColor = [UIColor colorWithRed:220.0/255 green:220.0/255 blue:220.0/255 alpha:1].CGColor;
+            cellView.layer.borderWidth = 0.8;
+            cellView.backgroundColor = [UIColor whiteColor];
+            [cell.contentView addSubview:cellView];
+            
+            UILabel * title = [[UILabel alloc] init];
+            title.frame = CGRectMake(3, 2, cellView.frame.size.width-6, 30);
+            title.textColor = [UIColor colorWithRed:80.0/255 green:80.0/255 blue:80.0/255 alpha:1];
+            [cellView addSubview:title];
+            
+            UILabel *address = [[UILabel alloc] init];
+            address.frame = CGRectMake(3,2+title.frame.size.height,cellView.frame.size.width-6, 15);
+            address.textColor = [UIColor colorWithRed:132.0/255 green:132.0/255 blue:132.0/255 alpha:1];
+            address.font = [UIFont systemFontOfSize:12];
+            [cellView addSubview:address];
+            
+            UILabel *voteString = [[UILabel alloc] init];
+            voteString.frame = CGRectMake(3, cellView.frame.size.height-50, 30, 50);
+            voteString.textColor = [UIColor colorWithRed:132.0/255 green:132.0/255 blue:132.0/255 alpha:1];
+            voteString.font = [UIFont systemFontOfSize:12];
+            voteString.text = @"得票:";
+            [cellView addSubview:voteString];
+            
+            UILabel *voteNum = [[UILabel alloc] init];
+            voteNum.frame = CGRectMake(3+voteString.frame.size.width, cellView.frame.size.height-50, 90, 50);
+            voteNum.textColor = [UIColor colorWithRed:116.0/255 green:0.0/255 blue:0.0/255 alpha:1];
+            voteNum.font = [UIFont systemFontOfSize:14];
+            [cellView addSubview:voteNum];
+            
+            CGFloat imageOriginY = address.frame.origin.y + address.frame.size.height + 8;
+            UIImageView* imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, imageOriginY, cellView.frame.size.width, cellView.frame.size.height-imageOriginY-voteNum.frame.size.height)];//120:90
+            [cellView addSubview:imageView];
+            
+            UIButton* shareBtn = [[UIButton alloc] init];
+            shareBtn.frame = CGRectMake(cellView.frame.size.width-70, cellView.frame.size.height-50, 70, 50);
+            [shareBtn setTitleColor:[UIColor colorWithRed:132.0/255 green:132.0/255 blue:132.0/255 alpha:1] forState:UIControlStateNormal];
+            [shareBtn setTitle:@"分享" forState:UIControlStateNormal];
+            UIImage * image = [UIImage imageNamed:@"share"];
+            [shareBtn setImage:image forState:UIControlStateNormal];
+            shareBtn.titleLabel.font = [UIFont systemFontOfSize:12];
+            [cellView addSubview:shareBtn];
+            
 #pragma data
-        title.text = [NSString stringWithFormat:@"%@",dataIndexDic[@"title"]];
-        address.text = [NSString stringWithFormat:@"选送单位:%@",dataIndexDic[@"address"]];
-        voteNum.text = [NSString stringWithFormat:@"%ld",[dataIndexDic[@"voteNum"] integerValue]];
-        
-        cellView.tag = shareBtn.tag = cell.contentView.tag=indexPath.row;
-        [shareBtn addTarget:self action:@selector(onShareVideo:) forControlEvents:UIControlEventTouchUpInside];
-        UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onCellToShow:)];
-        cellView.userInteractionEnabled = YES;
-        [cellView addGestureRecognizer:tap];
-        
-        if ([self.type isEqualToString:@"special"]) {//专场不显示投票数
-            voteString.text = @"浏览数:";
-            voteString.frame = CGRectMake(voteString.frame.origin.x, voteString.frame.origin.y, 40, voteString.frame.size.height);
-            voteNum.frame = CGRectMake(3+voteString.frame.size.width, voteNum.frame.origin.y, cellView.frame.size.width, voteNum.frame.size.height);
-            voteNum.text = [NSString stringWithFormat:@"%ld",[dataIndexDic[@"viewNum"] integerValue]];
-        }
-        
-        NSString * imageUrlStr = dataIndexDic[@"image"];
-        if (imageUrlStr.length != 0) {
+            title.text = [NSString stringWithFormat:@"%@",dataIndexDic[@"title"]];
+            address.text = [NSString stringWithFormat:@"选送单位:%@",dataIndexDic[@"address"]];
+            voteNum.text = [NSString stringWithFormat:@"%ld",[dataIndexDic[@"voteNum"] integerValue]];
             
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            cellView.tag = shareBtn.tag = i==0?indexOu:indexJi;
+            [shareBtn addTarget:self action:@selector(onShareVideo:) forControlEvents:UIControlEventTouchUpInside];
+            UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onCellToShow:)];
+            cellView.userInteractionEnabled = YES;
+            [cellView addGestureRecognizer:tap];
+            
+            if ([self.type isEqualToString:@"special"]) {//专场不显示投票数
+                voteString.text = @"浏览数:";
+                voteString.frame = CGRectMake(voteString.frame.origin.x, voteString.frame.origin.y, 40, voteString.frame.size.height);
+                voteNum.frame = CGRectMake(3+voteString.frame.size.width, voteNum.frame.origin.y, cellView.frame.size.width, voteNum.frame.size.height);
+                voteNum.text = [NSString stringWithFormat:@"%ld",[dataIndexDic[@"viewNum"] integerValue]];
+            }
+            
+            NSString * imageUrlStr = dataIndexDic[@"image"];
+            if (imageUrlStr.length != 0) {
                 
-                [ISQHttpTool getHttp:imageUrlStr contentType:nil params:nil success:^(id image) {
-                    // 耗时的操作
-                    UIImage * image2 = [UIImage imageWithData:image];//120:90
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        // 更新界面
-                        imageView.image = image2;
-                    });
-                } failure:^(NSError *erro) {
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                     
-                }];
+                    [ISQHttpTool getHttp:imageUrlStr contentType:nil params:nil success:^(id image) {
+                        // 耗时的操作
+                        UIImage * image2 = [UIImage imageWithData:image];//120:90
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            // 更新界面
+                            imageView.image = image2;
+                        });
+                    } failure:^(NSError *erro) {
+                        
+                    }];
+                    
+                });
                 
-            });
+            }
             
-        }
 
+        }
     }
     else{
 //        [cell.textLabel setText:@"tableView"];
@@ -210,7 +226,7 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return height+16;
+    return height+8;
 }
 
 -(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar

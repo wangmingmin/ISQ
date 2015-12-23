@@ -67,6 +67,8 @@ typedef NSInteger DWPLayerScreenSizeMode;
 @synthesize tableview;
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    
     [self basicView];
     phoneArray = [[NSMutableArray alloc] init];
     UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 10, 16, 23)];
@@ -150,14 +152,14 @@ typedef NSInteger DWPLayerScreenSizeMode;
     [super viewDidAppear:animated];
     [self.player stop];
     
-    self.buttonPlay = [[UIButton alloc] initWithFrame:CGRectMake(0, self.tableview.frame.origin.y, UISCREENWIDTH, [cellHeight[0] floatValue])];
+    self.buttonPlay = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, UISCREENWIDTH, [cellHeight[0] floatValue])];
     self.buttonPlay.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.2];
     UIButton * buttonP = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 60)];
     buttonP.center = CGPointMake(UISCREENWIDTH/2.0, self.buttonPlay.frame.size.height/2.0-buttonP.frame.size.height/2.0+10);
     [buttonP setImage:[UIImage imageNamed:@"mideoImg.png"] forState:UIControlStateNormal];
     [buttonP addTarget:self action:@selector(onButtonToPlay:) forControlEvents:UIControlEventTouchUpInside];
     [self.buttonPlay addSubview:buttonP];
-    [self.view addSubview:self.buttonPlay];
+    [self.overlayView addSubview:self.buttonPlay];
     
     self.hiddenAll = NO;
     [self hiddenAllView];
