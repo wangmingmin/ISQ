@@ -33,12 +33,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+
+    
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+
 }
 
 
@@ -73,6 +74,7 @@
         if (indexPath.row==0) {
             cell.sendHelplable1.text=@"我的姓名";
             cell.chekLable.text=_chekHelpData[0];
+
             
         }else if(indexPath.row==1){
             cell.sendHelplable1.text=@"联系方式";
@@ -93,6 +95,7 @@
     }
     else if(indexPath.row==5){
         cell=[tableView dequeueReusableCellWithIdentifier:@"sendHelpCell3" forIndexPath:indexPath];
+        cell.sendHelplableDetail_tv.font = [UIFont systemFontOfSize:17];
         cell.sendHelplableDetail_tv.text=_chekHelpData[5];
     }
     

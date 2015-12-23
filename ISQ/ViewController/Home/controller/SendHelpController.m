@@ -24,6 +24,7 @@
     NSArray *listArray;
     NSMutableArray *juweihuiListArray;
     NSMutableArray *contactNameListArray;
+    NSMutableArray *contactPhoneListArray;
 }
 
 @property (nonatomic, assign) NSInteger selectedSortType;
@@ -40,6 +41,7 @@
     listArray = [[NSArray alloc] init];
     juweihuiListArray = [[NSMutableArray alloc] init];
     contactNameListArray = [[NSMutableArray alloc] init];
+    contactPhoneListArray = [[NSMutableArray alloc] init];
     sendHelpDelegate=(AppDelegate*)[[UIApplication sharedApplication]delegate];
     userInfos=[NSUserDefaults standardUserDefaults];
     //键盘隐藏
@@ -64,6 +66,7 @@
         for (NSDictionary *dic in listArray) {
             [juweihuiListArray addObject:dic[@"title"]];
             [contactNameListArray addObject:dic[@"contact"]];
+            [contactPhoneListArray addObject:dic[@"contact_phone"]];
         }
 
         [self.sendHelpTableview reloadData];
@@ -131,6 +134,7 @@
             }
         }else if (indexPath.row == 5){
             cell.sendHelplable1.text=@"受理人";
+            
 
             NSString *str2 = @"百步亭";
             if ([self.communityName hasPrefix:str2]) {
@@ -254,18 +258,17 @@
                          @"content":cell.sendHelplableDetail_tv.text,
                          @"address":[NSString stringWithFormat:@"%@",myAdress],
                          @"name":[NSString stringWithFormat:@"%@",myName],
+                         @"secretaryPhone":contactPhoneListArray[self.selectedSortType],
+                         
                          };
-    NSString *http=[MESSAGEURL stringByAppendingString:@"postmessage"];
     
-    [ISQHttpTool getHttp:http contentType:nil params:arry success:^(id responseObject) {
+        [ISQHttpTool getHttp:MESSAGEURL contentType:nil params:arry success:^(id responseObject) {
         
         NSString *codeNumber =  [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
         
         if ([codeNumber isEqualToString:@"1"]) {
             
             [self showHint:@"信件已发送成功"];
-
-            [self.navigationController popToRootViewControllerAnimated:YES];
             
         }else {
             
@@ -274,14 +277,13 @@
 
     } failure:^(NSError *erro) {
         
-         [self warning2:@"信件发送失败，请检查网络"];
+        [self warning2:@"信件发送失败，请检查网络"];
     }];
 }
 
 
 - (IBAction)sendHelp_bt:(id)sender {
     
-    ISQLog(@"sendHelplableDetail_tv--%@",cell.sendHelplableDetail_tv.text);
     
     if (myName.length<=0) {
         

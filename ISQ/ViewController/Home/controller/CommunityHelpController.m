@@ -102,7 +102,7 @@
 }
 
 
-//获取信箱获取信箱记录
+//获取信箱记录
 -(void)getSecretaryMessageData:(NSInteger)staNum{
     
     
@@ -111,24 +111,18 @@
         messageData=[[NSMutableArray alloc]init];
     }
     
-    NSString *http=[MESSAGEURL stringByAppendingString:@"getmessage"];
     NSDictionary *arry=@{@"start":[NSString stringWithFormat:@"%ld",(long)staNum],@"num":@"18",@"phone":[user_info objectForKey:userAccount]};
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/plain"];
-    
-    [manager GET:http parameters:arry success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSData *thaData = responseObject;
+    [ISQHttpTool getHttp:getMessage contentType:nil params:arry success:^(id responseObject) {
         
+        NSData *thaData = responseObject;
+
         [messageData addObjectsFromArray:[NSJSONSerialization JSONObjectWithData:thaData options:NSJapaneseEUCStringEncoding  error:nil]];
         
-        [self.myMessageTableview reloadData];
+                [self.myMessageTableview reloadData];
+
         
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *erro) {
         
-       
         
     }];
     
@@ -145,12 +139,14 @@
     cell=[tableView dequeueReusableCellWithIdentifier:@"ComMycell" forIndexPath:indexPath];
     
     if (messageData.count>0) {
-        NSString *str = messageData[indexPath.row][@"helpContent"];
-        NSString *substr = [NSString stringWithFormat:@"%@%@",[str substringWithRange:NSMakeRange(0, 3)],@"..."];
-        cell.messageContent.text = substr;
-//        cell.messageContent.text = messageData[indexPath.row][@"helpContent"];
-        cell.messageTime.text=[self timeTurn:[NSString stringWithFormat:@"%@",messageData[indexPath.row][@"helpPosttime"]]];
         
+        NSString *str = messageData[indexPath.row][@"helpContent"];
+        if (str.length >0) {
+            NSString *substr = [NSString stringWithFormat:@"%@%@",[str substringWithRange:NSMakeRange(0, 2)],@"..."];
+            cell.messageContent.text = substr;
+            cell.messageTime.text=[self timeTurn:[NSString stringWithFormat:@"%@",messageData[indexPath.row][@"helpPosttime"]]];
+        }
+    
     }
     
     return cell;
@@ -204,8 +200,7 @@
         
         
         NSIndexPath  *indexthPath=[self.myMessageTableview indexPathForSelectedRow];
-        
-        
+
         [[segue destinationViewController] setChekHelpData:@[messageData[indexthPath.row][@"helpUserName"],messageData[indexthPath.row][@"helpContact"],messageData[indexthPath.row][@"helpAddress"],messageData[indexthPath.row][@"helpToUserName"],messageData[indexthPath.row][@"helpTitle"],messageData[indexthPath.row][@"helpContent"]]];
     }if ([[segue identifier] isEqualToString:@"toTheHelpSegue"]) {
         SendHelpController *sendVC = [segue destinationViewController];
