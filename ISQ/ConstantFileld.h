@@ -38,7 +38,11 @@
 //首页轮播图
 #define getHomePic @"http://121.41.18.126:8080/isqbms/getHomePic.from"
 //书记信箱
-#define MESSAGEURL @"http://web.app.wisq.cn:8080/json/message/"
+#define MESSAGEURL @"http://web.app.wisq.cn:8080/json/message/postmessage"
+
+//获取信箱记录
+#define getMessage  @"http://web.app.wisq.cn:8080/json/message/getmessage"
+
 //定位到的社区信息请求
 #define communityURL @"http://web.app.wisq.cn:8080/json/user/getcommunitygis"
 //广告在没有外链的情况下显示的内容
