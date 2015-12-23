@@ -129,8 +129,6 @@ CGFloat  TheLong;
     TheLong=userLocation.location.coordinate.longitude;
     
     
-//    ISQLog(@"经纬度---%f-----%f",TheLat,TheLong);
-    
     }
 
 /**

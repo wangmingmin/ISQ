@@ -157,7 +157,6 @@ bool theTop=true;
     }
     
     //首页广告图
-//    [self homeAdImgHttp];
     [self.tabelview reloadData];
     
 }

@@ -129,6 +129,15 @@
     [self addTimer];
 }
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    self.seconWebView.delegate = self;
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+
+}
+
+
 -(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
     
      if ([request.mainDocumentURL.relativeString rangeOfString:@"isq_back_native"].location !=NSNotFound){
@@ -136,7 +145,6 @@
          isFristLoad=true;
          self.navigationController.navigationBar.hidden=NO;
          [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
-//       [self.navigationController popToRootViewControllerAnimated:YES];
          [self.navigationController popViewControllerAnimated:YES];
      }
     if([request.mainDocumentURL.relativeString rangeOfString:@"http://map.baidu.com/mobile/webapp/index/streetview/ss_id"].location !=NSNotFound){
@@ -180,6 +188,7 @@
     [self hideHud];
     
 }
+
 
 -(void)ocToJs{
     
