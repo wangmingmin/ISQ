@@ -46,6 +46,7 @@ static NSString * const reuseIdentifier = @"cell";
 @property (nonatomic, strong) SRRefreshView *slimeViewRank;
 @property (nonatomic, strong) SRRefreshView *slimeViewFollow;
 
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *changeCityItemButton;
 @end
 
 @implementation zhanBoViewController
@@ -440,6 +441,14 @@ static NSString * const reuseIdentifier = @"cell";
     }else {
         self.searchItemButton.image = [UIImage imageNamed:@"search"];
         [self.searchItemButton setEnabled:YES];
+    }
+    
+    if (pageNumber == 0) {
+        self.changeCityItemButton.title = @"城市";
+        [self.changeCityItemButton setEnabled:YES];
+    }else{
+        self.changeCityItemButton.title = @"";
+        [self.changeCityItemButton setEnabled:NO];
     }
 }
 /*

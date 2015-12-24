@@ -7,6 +7,7 @@
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
     </dependencies>
     <scenes>
         <!--Main View Controller-->
@@ -1855,6 +1856,44 @@
             </objects>
             <point key="canvasLocation" x="2793.5" y="1795.5"/>
         </scene>
+        <!--城市选择-->
+        <scene sceneID="Jz8-Rc-lHi">
+            <objects>
+                <tableViewController id="X7o-xe-gYJ" customClass="changeCityTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="J3O-cI-DjH">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <searchBar key="tableHeaderView" contentMode="redraw" id="JUE-Le-ADa">
+                            <rect key="frame" x="0.0" y="64" width="375" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <textInputTraits key="textInputTraits"/>
+                        </searchBar>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="io0-Nk-vef">
+                                <rect key="frame" x="0.0" y="136" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="io0-Nk-vef" id="SuJ-M9-YSP">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="X7o-xe-gYJ" id="Qv5-co-yXj"/>
+                            <outlet property="delegate" destination="X7o-xe-gYJ" id="RRN-OZ-xt2"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="城市选择" id="MAi-lW-1Wx"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <outlet property="searchBar" destination="JUE-Le-ADa" id="aM7-0c-ruC"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="PAf-fQ-bbP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="668.5" y="301.5"/>
+        </scene>
         <!--Search Table View Controller-->
         <scene sceneID="X2V-Ry-fnH">
             <objects>
@@ -1904,7 +1943,7 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="700.5" y="803.5"/>
+            <point key="canvasLocation" x="668.5" y="1028.5"/>
         </scene>
         <!--Setting View Controller-->
         <scene sceneID="pfp-BT-k1I">
@@ -6003,16 +6042,25 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="春晚展播" id="eQu-5G-9TK">
-                        <barButtonItem key="rightBarButtonItem" image="search" id="5Bs-tZ-qea">
-                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <connections>
-                                <segue destination="CMu-3y-scQ" kind="push" identifier="searchDisplayView" id="5kc-FS-BdO"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem image="search" id="5Bs-tZ-qea">
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="CMu-3y-scQ" kind="push" identifier="searchDisplayView" id="5kc-FS-BdO"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="城市" id="azP-h7-Afj">
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="X7o-xe-gYJ" kind="push" id="vcw-J0-7Qo"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="400" height="667"/>
                     <connections>
+                        <outlet property="changeCityItemButton" destination="azP-h7-Afj" id="yog-SZ-Qen"/>
                         <outlet property="cityBtn" destination="mBz-yN-gTv" id="o6A-eE-EJt"/>
                         <outlet property="followBtn" destination="P9t-Me-NSM" id="58H-FI-nyw"/>
                         <outlet property="imageView" destination="7cb-nG-613" id="Y5R-fu-zIk"/>
