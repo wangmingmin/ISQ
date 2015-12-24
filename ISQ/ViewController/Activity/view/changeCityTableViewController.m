@@ -7,10 +7,12 @@
 //
 
 #import "changeCityTableViewController.h"
-
+#import "ISQHttpTool.h"
 @interface changeCityTableViewController ()<UISearchBarDelegate,UISearchDisplayDelegate>
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (strong, nonatomic) UISearchDisplayController * searchDisplayController;
+@property (strong, nonatomic) NSArray * tableArrayData;
+@property (strong, nonatomic) NSArray * searchArrayData;
 @end
 
 @implementation changeCityTableViewController
@@ -24,6 +26,9 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
     //    self.tableView.tableHeaderView = self.searchBar;
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    self.tableArrayData = [[NSArray alloc] init];
+    self.searchArrayData = [[NSArray alloc] init];
     
     self.searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
     self.searchBar.delegate = self;
@@ -46,6 +51,7 @@
     UITapGestureRecognizer * tap2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(nothing:)];
     [self.view addGestureRecognizer:tap2];
     
+    [self refresh];
 }
 
 -(void)nothing:(UIGestureRecognizer *)sender
@@ -65,7 +71,10 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 12;
+    if(tableView == self.searchDisplayController.searchResultsTableView){
+        return self.searchArrayData.count;
+    }
+    return self.tableArrayData.count;
 }
 
 
@@ -79,15 +88,21 @@
             [view removeFromSuperview];
         }
     }
-    cell.backgroundColor = [UIColor groupTableViewBackgroundColor];
+    cell.backgroundColor = [UIColor whiteColor];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
+    cell.textLabel.textColor = [UIColor grayColor];
+    cell.textLabel.font = [UIFont systemFontOfSize:13];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+
     // Configure the cell...
     if (tableView==self.searchDisplayController.searchResultsTableView) {
+        NSDictionary * tableDic = self.searchArrayData[indexPath.row];
+        [cell.textLabel setText:tableDic[@"provinceName"]];
 
     }
     else{
-        //        [cell.textLabel setText:@"tableView"];
+        NSDictionary * tableDic = self.tableArrayData[indexPath.row];
+        [cell.textLabel setText:tableDic[@"provinceName"]];
     }
     
     return cell;
@@ -105,18 +120,45 @@
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    [self refresh];
     [searchBar resignFirstResponder];
 }
 
 -(void)refresh
 {
-    
+    NSString * provinceUrl = @"http://192.168.2.111:8080/isqbms/getAllProvince.from";
+    [ISQHttpTool getHttp:provinceUrl contentType:nil params:nil success:^(id res) {
+        NSDictionary * dic = [NSJSONSerialization JSONObjectWithData:res options:NSJapaneseEUCStringEncoding error:nil];
+        self.tableArrayData = dic[@"retData"];
+        [self.tableView reloadData];
+    } failure:^(NSError *erro) {
+        
+    }];
 }
 
+- (void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope {
+    
+    NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] %@",searchText];
+    
+    self.searchArrayData = [self.tableArrayData filteredArrayUsingPredicate:resultPredicate];
+    
+    [self.searchDisplayController.searchResultsTableView reloadData];
+}
+
+//当文本内容发生改变时候，向表视图数据源发出重新加载消息
 -(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
 {
+    [self filterContentForSearchText:searchString scope:[[self.searchDisplayController.searchBar scopeButtonTitles] objectAtIndex:[self.searchDisplayController.searchBar                                                      selectedScopeButtonIndex]]];
+    
     return YES;
+}
+
+// 当Scope Bar选择发送变化时候，向表视图数据源发出重新加载消息
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller  shouldReloadTableForSearchScope:(NSInteger)searchOption {
+    
+    [self filterContentForSearchText:[self.searchDisplayController.searchBar text] scope:[[self.searchDisplayController.searchBar scopeButtonTitles]                                       objectAtIndex:searchOption]];
+    
+    return YES;
+    
 }
 
 /*
