@@ -13,9 +13,15 @@
 @property (strong, nonatomic) UISearchDisplayController * searchDisplayController;
 @property (strong, nonatomic) NSArray * tableArrayData;
 @property (strong, nonatomic) NSArray * searchArrayData;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *searchBarProvince;
 @end
 
 @implementation changeCityTableViewController
+{
+    BOOL isCityList;//是否进入到市区级别的选择
+    int pid;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -27,6 +33,8 @@
     
     //    self.tableView.tableHeaderView = self.searchBar;
     self.edgesForExtendedLayout = UIRectEdgeNone;
+    isCityList = NO;
+    
     self.tableArrayData = [[NSArray alloc] init];
     self.searchArrayData = [[NSArray alloc] init];
     
@@ -44,25 +52,16 @@
         self.view.alpha = 1;
     }];
     
-    UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(nothing:)];
-    [self.searchDisplayController.searchResultsTableView addGestureRecognizer:tap];
-    UITapGestureRecognizer * tap1 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(nothing:)];
-    [self.tableView addGestureRecognizer:tap1];
-    UITapGestureRecognizer * tap2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(nothing:)];
-    [self.view addGestureRecognizer:tap2];
-    
     [self refresh];
-}
-
--(void)nothing:(UIGestureRecognizer *)sender
-{
-    //只是修改一下用户体验而已
-    [self.view endEditing:YES];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+- (IBAction)onChooseProvince:(UIBarButtonItem *)sender {
+    isCityList = NO;
+    [self refresh];
 }
 #pragma mark - Table view data source
 
@@ -88,21 +87,40 @@
             [view removeFromSuperview];
         }
     }
+    
     cell.backgroundColor = [UIColor whiteColor];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.textLabel.textColor = [UIColor grayColor];
     cell.textLabel.font = [UIFont systemFontOfSize:13];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
     // Configure the cell...
-    if (tableView==self.searchDisplayController.searchResultsTableView) {
-        NSDictionary * tableDic = self.searchArrayData[indexPath.row];
-        [cell.textLabel setText:tableDic[@"provinceName"]];
+    if (isCityList) {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.textLabel.textAlignment = NSTextAlignmentCenter;
+        if (tableView==self.searchDisplayController.searchResultsTableView) {
+            NSDictionary * tableDic = self.searchArrayData[indexPath.row];
+            [cell.textLabel setText:tableDic[@"cityName"]];
+            cell.tag = [tableDic[@"cityId"] integerValue];
+        }
+        else{
+            NSDictionary * tableDic = self.tableArrayData[indexPath.row];
+            [cell.textLabel setText:tableDic[@"cityName"]];
+            cell.tag = [tableDic[@"cityId"] integerValue];
+        }
 
-    }
-    else{
-        NSDictionary * tableDic = self.tableArrayData[indexPath.row];
-        [cell.textLabel setText:tableDic[@"provinceName"]];
+    }else {
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.textLabel.textAlignment = NSTextAlignmentLeft;
+        if (tableView==self.searchDisplayController.searchResultsTableView) {
+            NSDictionary * tableDic = self.searchArrayData[indexPath.row];
+            [cell.textLabel setText:tableDic[@"provinceName"]];
+            cell.tag = [tableDic[@"provinceId"] integerValue];
+        }
+        else{
+            NSDictionary * tableDic = self.tableArrayData[indexPath.row];
+            [cell.textLabel setText:tableDic[@"provinceName"]];
+            cell.tag = [tableDic[@"provinceId"] integerValue];
+        }
     }
     
     return cell;
@@ -113,9 +131,35 @@
     return 40;
 }
 
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
+    pid = (int)cell.tag;
+    
+    NSDictionary * choosedDic;
+    if (tableView == self.tableView) {
+        choosedDic = self.tableArrayData[indexPath.row];
+    }else{
+        choosedDic = self.searchArrayData[indexPath.row];
+    }
+    
+    if (isCityList) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }else{
+        isCityList = YES;
+        [self.searchDisplayController setActive:NO animated:YES];
+        [self refresh];
+    }
+}
+
 -(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    if (isCityList) {
+        isCityList = NO;
+        [self refresh];
+    }else {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
@@ -125,20 +169,33 @@
 
 -(void)refresh
 {
-    NSString * provinceUrl = @"http://192.168.2.111:8080/isqbms/getAllProvince.from";
+    NSString * provinceUrl = @"http://121.41.18.126:8080/isqbms/getAllProvince.from";
+    if (isCityList) {
+      provinceUrl = [NSString stringWithFormat:@"http://121.41.18.126:8080/isqbms/getCityByPid.from?pid=%d",pid];
+        self.searchBarProvince.title = @"选择省";
+        self.searchBarProvince.enabled = YES;
+
+    }else{
+        self.searchBarProvince.title = @"";
+        self.searchBarProvince.enabled = NO;
+
+    }
     [ISQHttpTool getHttp:provinceUrl contentType:nil params:nil success:^(id res) {
         NSDictionary * dic = [NSJSONSerialization JSONObjectWithData:res options:NSJapaneseEUCStringEncoding error:nil];
         self.tableArrayData = dic[@"retData"];
         [self.tableView reloadData];
     } failure:^(NSError *erro) {
-        
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"城市列表延迟，稍后请重试" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+        [alert show];
     }];
 }
 
 - (void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope {
     
-    NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] %@",searchText];
-    
+    NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"SELF.provinceName CONTAINS[cd] %@",searchText];
+    if (isCityList) {
+        resultPredicate = [NSPredicate predicateWithFormat:@"SELF.cityName CONTAINS[cd] %@",searchText];
+    }
     self.searchArrayData = [self.tableArrayData filteredArrayUsingPredicate:resultPredicate];
     
     [self.searchDisplayController.searchResultsTableView reloadData];

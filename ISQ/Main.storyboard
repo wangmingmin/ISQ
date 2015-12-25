@@ -1884,10 +1884,18 @@
                             <outlet property="delegate" destination="X7o-xe-gYJ" id="RRN-OZ-xt2"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="城市选择" id="MAi-lW-1Wx"/>
+                    <navigationItem key="navigationItem" title="城市选择" id="MAi-lW-1Wx">
+                        <barButtonItem key="rightBarButtonItem" title="选择省" id="3y5-1A-xQD">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="onChooseProvince:" destination="X7o-xe-gYJ" id="6tI-ff-mXK"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
                         <outlet property="searchBar" destination="JUE-Le-ADa" id="aM7-0c-ruC"/>
+                        <outlet property="searchBarProvince" destination="3y5-1A-xQD" id="a2g-LH-TAo"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PAf-fQ-bbP" userLabel="First Responder" sceneMemberID="firstResponder"/>
