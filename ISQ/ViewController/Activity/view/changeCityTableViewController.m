@@ -20,6 +20,7 @@
 {
     BOOL isCityList;//是否进入到市区级别的选择
     int pid;
+    int cid;
 }
 
 - (void)viewDidLoad {
@@ -66,12 +67,18 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    if (tableView==self.tableView) {//加上当前市
+        return 2;
+    }
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if(tableView == self.searchDisplayController.searchResultsTableView){
         return self.searchArrayData.count;
+    }
+    if (section==0 && tableView==self.tableView){
+        return 1;//当前市
     }
     return self.tableArrayData.count;
 }
@@ -103,6 +110,13 @@
             cell.tag = [tableDic[@"cityId"] integerValue];
         }
         else{
+            if (indexPath.section==0) {//当前市
+                [cell.textLabel setText:@"选择当前所在市区"];
+                cell.textLabel.textAlignment = NSTextAlignmentCenter;
+                cell.accessoryType = UITableViewCellAccessoryNone;
+                cell.tag=0;
+                return cell;
+            }
             NSDictionary * tableDic = self.tableArrayData[indexPath.row];
             [cell.textLabel setText:tableDic[@"cityName"]];
             cell.tag = [tableDic[@"cityId"] integerValue];
@@ -117,6 +131,13 @@
             cell.tag = [tableDic[@"provinceId"] integerValue];
         }
         else{
+            if (indexPath.section==0) {//当前市
+                [cell.textLabel setText:@"选择当前所在市区"];
+                cell.textLabel.textAlignment = NSTextAlignmentCenter;
+                cell.accessoryType = UITableViewCellAccessoryNone;
+                cell.tag=0;
+                return cell;
+            }
             NSDictionary * tableDic = self.tableArrayData[indexPath.row];
             [cell.textLabel setText:tableDic[@"provinceName"]];
             cell.tag = [tableDic[@"provinceId"] integerValue];
@@ -134,7 +155,12 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
-    pid = (int)cell.tag;
+    
+    if (cell.tag==0) {
+        [self.delegate changeCityOkWithProvinceID:0 andCityID:0];
+        [self.navigationController popViewControllerAnimated:YES];
+        return;
+    }
     
     NSDictionary * choosedDic;
     if (tableView == self.tableView) {
@@ -144,8 +170,11 @@
     }
     
     if (isCityList) {
+        cid = (int)cell.tag;
+        [self.delegate changeCityOkWithProvinceID:pid andCityID:cid];
         [self.navigationController popViewControllerAnimated:YES];
     }else{
+        pid = (int)cell.tag;
         isCityList = YES;
         [self.searchDisplayController setActive:NO animated:YES];
         [self refresh];

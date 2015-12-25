@@ -16,10 +16,11 @@
 #import "SeconWebController.h"
 #import "SRRefreshView.h"
 #import "searchTableViewController.h"
+#import "changeCityTableViewController.h"
 static NSString * const reuseIdentifier = @"cell";
 #define backColor [UIColor groupTableViewBackgroundColor]
 
-@interface zhanBoViewController ()<UIScrollViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,VideoDetailController_forSpringDelegate,SRRefreshDelegate,UISearchBarDelegate, UISearchDisplayDelegate>
+@interface zhanBoViewController ()<UIScrollViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,VideoDetailController_forSpringDelegate,SRRefreshDelegate,UISearchBarDelegate, UISearchDisplayDelegate,changeCityTableViewControllerDelegate>
 @property (nonatomic, strong) UIScrollView * allScrollView;//节目列表总视图
 @property (nonatomic, strong) UIView * tabBarView;//春晚简介，最新动态，投票规则
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;//赶紧来报名吧
@@ -65,6 +66,10 @@ static NSString * const reuseIdentifier = @"cell";
     
     BOOL isAddRefresh;//是否row的行数多加10后再刷新，如果是no则依然获取相同数量的数据
     BOOL isPullRefresh;//是否下拉刷新
+    
+    BOOL isCurrentCity;//是否是当前市
+    int change_Pid;//选择后的省id
+    int change_Cid;//选择后的城市id
 }
 
 - (void)viewDidLoad {
@@ -77,6 +82,7 @@ static NSString * const reuseIdentifier = @"cell";
     self.view.backgroundColor = backColor;
     isAddRefresh = YES;
     isPullRefresh = NO;
+    isCurrentCity = YES;
     
     UITapGestureRecognizer * tapImageView = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapImageView:)];
     self.imageView.userInteractionEnabled = YES;
@@ -800,6 +806,12 @@ static NSString * const reuseIdentifier = @"cell";
     paramesCityID[@"rows"] =[NSString stringWithFormat:@"%ld",(long)rowsCount];
     
     NSString * httpUrl = [NSString stringWithFormat:@"%@type=city",getSpringVideoListServer];
+    if ( ! isCurrentCity) {
+        httpUrl = @"http://121.41.18.126:8080/isqbms/getSpringVideoByPidOrCid.from";
+        paramesCityID[@"pid"] = [NSString stringWithFormat:@"%d",change_Pid];
+        paramesCityID[@"cid"] = [NSString stringWithFormat:@"%d",change_Cid];
+    }
+    
     isAddRefresh = YES;
     [ISQHttpTool getHttp:httpUrl contentType:nil params:paramesCityID success:^(id res) {
         NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:res options:NSJapaneseEUCStringEncoding error:nil];
@@ -809,15 +821,17 @@ static NSString * const reuseIdentifier = @"cell";
         }else {
             self.arrayDataCity = dic[@"retData"];
         }
-        showBanner = [[NSString alloc] init];
-        showBanner = dic[@"showBanner"];
         [CityCollectionView reloadData];
-        [ISQHttpTool getHttp:showBanner contentType:nil params:nil success:^(id image) {
-            UIImage * image2 = [UIImage imageWithData:image];
-            self.imageView.image = image2;
-        } failure:^(NSError *erro) {
-            
-        }];
+        if (isCurrentCity) {
+            showBanner = [[NSString alloc] init];
+            showBanner = dic[@"showBanner"];
+            [ISQHttpTool getHttp:showBanner contentType:nil params:nil success:^(id image) {
+                UIImage * image2 = [UIImage imageWithData:image];
+                self.imageView.image = image2;
+            } failure:^(NSError *erro) {
+                
+            }];
+        }
     } failure:^(NSError *erro) {
         
     }];
@@ -900,6 +914,19 @@ static NSString * const reuseIdentifier = @"cell";
     
 }
 
+-(void)changeCityOkWithProvinceID:(int)pid andCityID:(int)cid
+{
+    isAddRefresh = NO;
+    if (pid ==0 && cid==0) {//当前市
+        isCurrentCity = YES;
+    }else {
+        isCurrentCity = NO;
+        change_Pid = pid;
+        change_Cid = cid;
+    }
+    [self refresh];
+}
+
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:@"searchDisplayView"]) {
@@ -916,6 +943,10 @@ static NSString * const reuseIdentifier = @"cell";
             if ([type isEqualToString:@"rank"]) [self refreshRank];
             if ([type isEqualToString:@"follow"]) [self refreshFollow];
         };
+    }
+    if ([segue.identifier isEqualToString:@"changeCitySearch"]) {
+        changeCityTableViewController * changeCity = segue.destinationViewController;
+        changeCity.delegate = self;
     }
 }
 @end

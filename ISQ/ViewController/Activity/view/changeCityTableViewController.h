@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+@protocol changeCityTableViewControllerDelegate <NSObject>
+
+-(void) changeCityOkWithProvinceID:(int)pid andCityID:(int)cid;
+
+@end
 
 @interface changeCityTableViewController : UITableViewController
-
+@property (weak, nonatomic) id<changeCityTableViewControllerDelegate> delegate;
 @end

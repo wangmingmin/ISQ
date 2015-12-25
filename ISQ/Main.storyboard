@@ -6060,7 +6060,7 @@
                             <barButtonItem title="城市" id="azP-h7-Afj">
                                 <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
-                                    <segue destination="X7o-xe-gYJ" kind="push" id="vcw-J0-7Qo"/>
+                                    <segue destination="X7o-xe-gYJ" kind="push" identifier="changeCitySearch" id="vcw-J0-7Qo"/>
                                 </connections>
                             </barButtonItem>
                         </rightBarButtonItems>
