@@ -648,6 +648,7 @@
 		04EF14F51BF8321000F4A079 /* JGActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 04EF14F31BF8321000F4A079 /* JGActionSheet.m */; };
 		04EF14FC1BF9E9DC00F4A079 /* hotCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 04EF14FB1BF9E9DC00F4A079 /* hotCell.m */; };
 		04EF14FF1BFAC33300F4A079 /* hotModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 04EF14FE1BFAC33300F4A079 /* hotModel.m */; };
+		9D0D895A1C2BDED900C57C02 /* changeCityTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0D89591C2BDED900C57C02 /* changeCityTableViewController.m */; };
 		9D330A051C15AA7A002D056B /* CollectionViewLayoutZhanBo.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D330A001C15AA7A002D056B /* CollectionViewLayoutZhanBo.m */; };
 		9D330A061C15AA7A002D056B /* zhanBo_CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D330A021C15AA7A002D056B /* zhanBo_CollectionViewCell.m */; };
 		9D330A071C15AA7A002D056B /* zhanBoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D330A041C15AA7A002D056B /* zhanBoViewController.m */; };
@@ -1758,6 +1759,8 @@
 		04EF14FB1BF9E9DC00F4A079 /* hotCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = hotCell.m; sourceTree = "<group>"; };
 		04EF14FD1BFAC33300F4A079 /* hotModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hotModel.h; sourceTree = "<group>"; };
 		04EF14FE1BFAC33300F4A079 /* hotModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = hotModel.m; sourceTree = "<group>"; };
+		9D0D89581C2BDED900C57C02 /* changeCityTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = changeCityTableViewController.h; sourceTree = "<group>"; };
+		9D0D89591C2BDED900C57C02 /* changeCityTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = changeCityTableViewController.m; sourceTree = "<group>"; };
 		9D3309FF1C15AA7A002D056B /* CollectionViewLayoutZhanBo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewLayoutZhanBo.h; sourceTree = "<group>"; };
 		9D330A001C15AA7A002D056B /* CollectionViewLayoutZhanBo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewLayoutZhanBo.m; sourceTree = "<group>"; };
 		9D330A011C15AA7A002D056B /* zhanBo_CollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zhanBo_CollectionViewCell.h; sourceTree = "<group>"; };
@@ -4153,6 +4156,8 @@
 				9D330A041C15AA7A002D056B /* zhanBoViewController.m */,
 				9D7FC5521C1FA44100E07136 /* searchTableViewController.h */,
 				9D7FC5531C1FA44100E07136 /* searchTableViewController.m */,
+				9D0D89581C2BDED900C57C02 /* changeCityTableViewController.h */,
+				9D0D89591C2BDED900C57C02 /* changeCityTableViewController.m */,
 			);
 			name = springVideoShow;
 			path = view;
@@ -4650,6 +4655,7 @@
 				045E44281B2A789C00ADACF3 /* ChatroomDetailViewController.m in Sources */,
 				0493A5801BE6F1010018D792 /* ImageCell.m in Sources */,
 				04B1651C1BAC30A600EA9068 /* ActionSheetLocalePicker.m in Sources */,
+				9D0D895A1C2BDED900C57C02 /* changeCityTableViewController.m in Sources */,
 				04A351661B0EC2B300CC746A /* GetVcard.m in Sources */,
 				043B9C481B1C3D86002610EE /* GroupBansViewController.m in Sources */,
 				04D9ABDD1AB02E3C00C79FBA /* CustomBarItem.m in Sources */,
