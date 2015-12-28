@@ -76,7 +76,7 @@
 {
     [super viewDidAppear:animated];
     
-    [self.searchBar becomeFirstResponder];
+//    [self.searchBar becomeFirstResponder];
 }
 
 - (void)didReceiveMemoryWarning {

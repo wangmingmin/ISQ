@@ -932,7 +932,12 @@ static NSString * const reuseIdentifier = @"cell";
     if ([segue.identifier isEqualToString:@"searchDisplayView"]) {
         int pageNumber = self.movingView.center.x/(screenWidth/4);
         searchTableViewController * search = segue.destinationViewController;
-        if (pageNumber==0) search.type = @"city";
+        if (pageNumber==0) {
+            search.type = @"city";
+            search.isCurrentCity = isCurrentCity;
+            search.pid = change_Pid;
+            search.cid = change_Cid;
+        }
         if (pageNumber==1) search.type = @"special";
         if (pageNumber==2) search.type = @"rank";
         if (pageNumber==3) search.type = @"follow";
