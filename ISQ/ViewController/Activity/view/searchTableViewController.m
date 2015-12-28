@@ -51,7 +51,7 @@
     }];
 
     NSString * stringType = @"";
-    if ([self.type isEqualToString:@"city"]) stringType = @"当前市节目搜索";
+    if ([self.type isEqualToString:@"city"]) stringType = @"城市节目搜索";
     if ([self.type isEqualToString:@"special"]) stringType = @"专场节目搜索";
     if ([self.type isEqualToString:@"rank"]) stringType = @"排行榜节目搜索";
     if ([self.type isEqualToString:@"follow"]) stringType = @"我关注节目搜索";
@@ -260,6 +260,12 @@
     
     parames[@"title"] =self.searchBar.text;//标题(加标题字段为搜索接口)
     
+    if ( ! self.isCurrentCity) {
+        httpStr = @"http://121.41.18.126:8080/isqbms/getSpringVideoByPidOrCid.from";
+        parames[@"pid"] = [NSString stringWithFormat:@"%d",self.pid];
+        parames[@"cid"] = [NSString stringWithFormat:@"%d",self.cid];
+    }
+
     [ISQHttpTool getHttp:httpStr contentType:nil params:parames success:^(id res) {
         NSDictionary * dic = [NSJSONSerialization JSONObjectWithData:res options:NSJapaneseEUCStringEncoding error:nil];
         NSLog(@"search item dic = %@",dic);
