@@ -807,9 +807,15 @@ static NSString * const reuseIdentifier = @"cell";
     
     NSString * httpUrl = [NSString stringWithFormat:@"%@type=city",getSpringVideoListServer];
     if ( ! isCurrentCity) {
+        [self.cityBtn setTitle:@"城市展" forState:UIControlStateNormal];
+        [self.cityBtn setTitle:@"城市展" forState:UIControlStateSelected];
+
         httpUrl = @"http://121.41.18.126:8080/isqbms/getSpringVideoByPidOrCid.from";
         paramesCityID[@"pid"] = [NSString stringWithFormat:@"%d",change_Pid];
         paramesCityID[@"cid"] = [NSString stringWithFormat:@"%d",change_Cid];
+    }else {
+        [self.cityBtn setTitle:@"当前市" forState:UIControlStateNormal];
+        [self.cityBtn setTitle:@"当前市" forState:UIControlStateSelected];
     }
     
     isAddRefresh = YES;

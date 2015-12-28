@@ -51,7 +51,12 @@
     }];
 
     NSString * stringType = @"";
-    if ([self.type isEqualToString:@"city"]) stringType = @"城市节目搜索";
+    if ([self.type isEqualToString:@"city"])  {
+        stringType = @"当前市节目搜索";
+        if (!self.isCurrentCity) {
+            stringType = @"所选城市节目搜索";
+        }
+    }
     if ([self.type isEqualToString:@"special"]) stringType = @"专场节目搜索";
     if ([self.type isEqualToString:@"rank"]) stringType = @"排行榜节目搜索";
     if ([self.type isEqualToString:@"follow"]) stringType = @"我关注节目搜索";

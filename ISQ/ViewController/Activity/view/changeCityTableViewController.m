@@ -178,6 +178,7 @@
         isCityList = YES;
         [self.searchDisplayController setActive:NO animated:YES];
         [self refresh];
+        self.tableView.contentOffset = CGPointMake(self.tableView.contentOffset.x, 0);
     }
 }
 
