@@ -30,6 +30,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.title = @"书记信箱";
     locationDelegate=(AppDelegate*)[[UIApplication sharedApplication] delegate];
     UIImage *image = [UIImage imageNamed:@"topBar_blue.png"];
     [self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
