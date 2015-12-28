@@ -235,6 +235,20 @@
  */
 #define noFollowVideoServer @"http://121.41.18.126:8080/isqbms/noFollowSpringVideo.from?"
 
+/**
+ *获取所有省列表
+ */
+#define getAllProvince @"http://121.41.18.126:8080/isqbms/getAllProvince.from"
+/**
+ *获取所有城市列表（所选省）
+ */
+#define getCityByPid @"http://121.41.18.126:8080/isqbms/getCityByPid.from?"
+/**
+ *获取展播视屏（所选城市）
+ */
+#define getSpringVideoByPidOrCid @"http://121.41.18.126:8080/isqbms/getSpringVideoByPidOrCid.from"
+
+
 #define user_info [NSUserDefaults standardUserDefaults]
 
 #endif

@@ -810,7 +810,7 @@ static NSString * const reuseIdentifier = @"cell";
         [self.cityBtn setTitle:@"城市展" forState:UIControlStateNormal];
         [self.cityBtn setTitle:@"城市展" forState:UIControlStateSelected];
 
-        httpUrl = @"http://121.41.18.126:8080/isqbms/getSpringVideoByPidOrCid.from";
+        httpUrl = getSpringVideoByPidOrCid;
         paramesCityID[@"pid"] = [NSString stringWithFormat:@"%d",change_Pid];
         paramesCityID[@"cid"] = [NSString stringWithFormat:@"%d",change_Cid];
     }else {

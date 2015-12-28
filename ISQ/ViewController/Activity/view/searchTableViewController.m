@@ -266,7 +266,7 @@
     parames[@"title"] =self.searchBar.text;//标题(加标题字段为搜索接口)
     
     if ( ! self.isCurrentCity) {
-        httpStr = @"http://121.41.18.126:8080/isqbms/getSpringVideoByPidOrCid.from";
+        httpStr = getSpringVideoByPidOrCid;
         parames[@"pid"] = [NSString stringWithFormat:@"%d",self.pid];
         parames[@"cid"] = [NSString stringWithFormat:@"%d",self.cid];
     }

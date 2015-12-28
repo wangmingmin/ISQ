@@ -199,9 +199,9 @@
 
 -(void)refresh
 {
-    NSString * provinceUrl = @"http://121.41.18.126:8080/isqbms/getAllProvince.from";
+    NSString * provinceUrl = getAllProvince;
     if (isCityList) {
-      provinceUrl = [NSString stringWithFormat:@"http://121.41.18.126:8080/isqbms/getCityByPid.from?pid=%d",pid];
+      provinceUrl = [NSString stringWithFormat:@"%@pid=%d",getCityByPid,pid];
         self.searchBarProvince.title = @"选择省";
         self.searchBarProvince.enabled = YES;
 
