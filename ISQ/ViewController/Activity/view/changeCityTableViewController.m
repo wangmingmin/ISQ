@@ -111,7 +111,7 @@
         }
         else{
             if (indexPath.section==0) {//当前市
-                [cell.textLabel setText:@"选择当前所在市区"];
+                [cell.textLabel setText:@"点击切换至当前所在市区"];
                 cell.textLabel.textAlignment = NSTextAlignmentCenter;
                 cell.accessoryType = UITableViewCellAccessoryNone;
                 cell.tag=0;
@@ -132,7 +132,7 @@
         }
         else{
             if (indexPath.section==0) {//当前市
-                [cell.textLabel setText:@"选择当前所在市区"];
+                [cell.textLabel setText:@"点击切换至当前所在市区"];
                 cell.textLabel.textAlignment = NSTextAlignmentCenter;
                 cell.accessoryType = UITableViewCellAccessoryNone;
                 cell.tag=0;
