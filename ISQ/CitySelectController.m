@@ -112,20 +112,12 @@
     ishotCity=[[NSMutableArray alloc]init];
     
     NSString *http=[requestTheCodeURL stringByAppendingString:@"getcity"];
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/plain"];
-    
-    [manager GET:http parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [ISQHttpTool getHttp:http contentType:nil params:nil success:^(id responseObject) {
         
-        returnString=  [NSJSONSerialization JSONObjectWithData:responseObject options:NSJapaneseEUCStringEncoding  error:nil];
-        
-        
+        returnString = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJapaneseEUCStringEncoding  error:nil];
+                
         for (int i=0;i<returnString.count;i++) {
-            NSDictionary *dic = [returnString objectAtIndex:i];
             NSString *strFirLetter = [NSString stringWithFormat:@"%c",pinyinFirstLetter([returnString[i][@"cityName"] characterAtIndex:0])];
-            
             
             if ([[index allKeys]containsObject:strFirLetter]) {
                 //判断index字典中，是否有这个key如果有，取出值进行追加操作
@@ -160,17 +152,14 @@
         [self.cityTableview headerEndRefreshing];
         [self.cityTableview reloadData];
         
+
         
-        
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *erro) {
         
         UIAlertView *alerView=[[UIAlertView alloc]initWithTitle:@"提示" message:@"服务器异常，请稍后再试。" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
         [alerView show];
         
-        
     }];
-    
     
 }
 

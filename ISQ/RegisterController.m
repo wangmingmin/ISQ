@@ -302,12 +302,7 @@ bool RegisterwarInt=true;
     
     NSString *http=[requestTheCodeURL stringByAppendingString:@"registsteptwo"];
     NSDictionary *arry=@{@"phone":self.phoneNumber_tv.text,@"nickname":self.nikname_tv.text,@"vcode":self.message_code_tv.text,@"pwd":self.passWord_tv.text};
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/plain"];
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-    [manager GET:http parameters:arry success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [ISQHttpTool getHttp:http contentType:nil params:arry success:^(id responseObject) {
         
         NSData *data = responseObject;
         codeNumber =  [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
@@ -347,17 +342,15 @@ bool RegisterwarInt=true;
             
         }
         
+
         
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+    } failure:^(NSError *erro) {
         
         [self hideHud];
         [self AleView:@"服务器未响应，请稍后再试！"];
         
-        
     }];
-    
- 
+   
 }
 - (IBAction)registerBack_bt:(id)sender {
 
@@ -383,11 +376,7 @@ bool RegisterwarInt=true;
     
     NSString *http=[requestTheCodeURL stringByAppendingString:@"registstepone"];
     NSDictionary *arry=@{@"phone":self.phoneNumber_tv.text};
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/plain"];
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-    [manager GET:http parameters:arry success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [ISQHttpTool getHttp:http contentType:nil params:arry success:^(id responseObject) {
         
         NSData *data = responseObject;
         codeNumber =  [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
@@ -400,7 +389,7 @@ bool RegisterwarInt=true;
             
         }
         else if([codeNumber isEqualToString:@"1"]){
-           
+            
             [self hideHud];
             self.phoneView.hidden=YES;
             self.messageView.hidden=NO;
@@ -410,23 +399,20 @@ bool RegisterwarInt=true;
             
         }else {
             [self hideHud];
-             [self AleView:@"获取验证码失败！"];
+            [self AleView:@"获取验证码失败！"];
             
         }
         
+
         
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+    } failure:^(NSError *erro) {
         
         [self hideHud];
         [self AleView:@"服务器未响应，请稍后再试！"];
-        
-        
-    }];
-    
 
-    
-   }
+    }];
+
+}
 
 
 -(void)AleView:(NSString *)str{

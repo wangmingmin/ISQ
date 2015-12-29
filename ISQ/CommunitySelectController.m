@@ -124,28 +124,19 @@
     
     [index removeAllObjects];
     returnString=nil;
-    
-    
     NSString *http=[requestTheCodeURL stringByAppendingString:@"getcommunity"];
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *arry;
     if([saveCityName objectForKey:userCityID]){
         
         arry=@{@"cityid":[saveCityName objectForKey:userCityID]};
     }else {
         
-        
         arry=@{@"cityid":@"267"};
     }
-    
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/plain"];
-    
-    [manager GET:http parameters:arry success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [ISQHttpTool getHttp:http contentType:nil params:arry success:^(id responseObject) {
         
         returnString=  [NSJSONSerialization JSONObjectWithData:responseObject options:NSJapaneseEUCStringEncoding  error:nil];
-       
+        
         
         for (int i=0;i<returnString.count;i++) {
             
@@ -164,7 +155,6 @@
                 [index setObject:tempArray forKey:strFirLetter];
             }
             
-            
         }
         
         arraylist=nil;
@@ -179,10 +169,7 @@
         [self.communityTableview reloadData];
         [self.communityTableview headerEndRefreshing];
         
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-        
+    } failure:^(NSError *erro) {
         UIAlertView *aler=[[UIAlertView alloc]initWithTitle:@"提示" message:@"您好，当前网络状态不佳，请稍后再试！" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
         [aler show];
         
@@ -190,8 +177,9 @@
         [aler removeFromSuperview];
         
     }];
-}
 
+}
+   
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

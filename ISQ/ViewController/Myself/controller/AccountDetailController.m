@@ -142,13 +142,7 @@
     [self showHudInView:self.view hint:@"正在验证..."];
     NSString *http=[requestTheCodeURL stringByAppendingString:@"login"];
     NSDictionary *arry=@{@"phone":[user_info objectForKey:userAccount],@"pwd":alerPass.text};
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/plain"];
-    
-    [manager GET:http parameters:arry success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
+    [ISQHttpTool getHttp:http contentType:nil params:arry success:^(id responseObject) {
         
         NSData *thaData = responseObject;
         returnString=  [NSJSONSerialization JSONObjectWithData:thaData options:NSJapaneseEUCStringEncoding  error:nil];
@@ -167,28 +161,16 @@
             [self hideHud];
         }
         
+
         
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+    } failure:^(NSError *erro) {
         
         [self hideHud];
         alerLable2.hidden=NO;
         alerLable2.text=@"网络异常，请稍后再试...";
-
+        
     }];
-    
-    
-    
 }
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 - (IBAction)accountNext_bt:(id)sender {
     
@@ -219,7 +201,6 @@
     
     NSString *http=[requestTheCodeURL stringByAppendingString:@"changeproperty"];
     NSDictionary *arry=@{@"phone":[user_info objectForKey:userAccount],@"pnum":@"3",@"pv":self.email_tv.text};
-    
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
