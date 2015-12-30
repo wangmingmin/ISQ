@@ -117,7 +117,7 @@ bool islogin=false;
 #endif
     
     //for log
-    [UMessage setLogEnabled:YES];
+//    [UMessage setLogEnabled:YES];
 
 }
 
