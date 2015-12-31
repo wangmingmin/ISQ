@@ -27,7 +27,6 @@
         
     }
     
-//    NSLog(@" --%@",[theEndStr substringFromIndex:1]);
     
     theEndStr=[NSString stringWithFormat:@"%@?%@",url,[theEndStr substringFromIndex:1]];
     //进行URL转码
