@@ -212,12 +212,12 @@
     BCPayReq *payReq = [[BCPayReq alloc] init];
     payReq.channel = [channelFromData isEqualToString:@"ali_pay"]?PayChannelAliApp:PayChannelWxApp;//"ali_pay"和"wx_pay"
     payReq.title = data[@"title"];
-    NSString * totalFeeStr = [data[@"totalFee"] stringValue];
-    if (totalFeeStr.floatValue <1) {
+    float totalFeeFloat = [data[@"totalFee"] floatValue]*100;
+    if (totalFeeFloat <1) {
         [self showAlertView:@"请输入正确的金额，至少一分钱哦"];
         return;
     }
-    payReq.totalFee = totalFeeStr;
+    payReq.totalFee = [NSString stringWithFormat:@"%f",totalFeeFloat];
     payReq.billNo = billno;
     payReq.scheme = [channelFromData isEqualToString:@"ali_pay"]?@"payZhiFuBao":@"weixin";//微信暂时没有做好
     payReq.billTimeOut = 300;
