@@ -11,8 +11,9 @@
 #import "BDMLocationController.h"
 #import "AppDelegate.h"
 #import <JavaScriptCore/JavaScriptCore.h>
+#import "BeeCloud.h"
 
-@interface SeconWebController ()<UIWebViewDelegate>{
+@interface SeconWebController ()<UIWebViewDelegate,BeeCloudDelegate>{
     
     UIView *errorView;
     BDMLocationController *bdmapVC;
@@ -53,6 +54,8 @@
     [errorView addGestureRecognizer:tapGestureRecognizer];
     //30秒获取一次经纬度
     self.timerLocation= [NSTimer scheduledTimerWithTimeInterval:30.0f target:self selector:@selector(ocToJs) userInfo:nil repeats:YES];
+    
+
 }
 
 
@@ -134,6 +137,7 @@
     [super viewDidAppear:animated];
     self.seconWebView.delegate = self;
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+    [BeeCloud setBeeCloudDelegate:self];
 
 }
 
@@ -183,11 +187,110 @@
    //JS调用分享
     TestJSObject *testJO=[TestJSObject new];
     context[@"UseNative"]=testJO;
+    testJO.passBill = ^(NSDictionary * billDic) {
+        if (billDic != nil) {
+            NSLog(@"bill Dic = %@",billDic);
+            [self doPayWithBill:billDic];//支付物业费
+        }
+    };
     
     [self removeTimer];
     [self hideHud];
     
 }
+
+- (void)doPayWithBill:(NSDictionary *)billDic{
+    NSDictionary * data = billDic[@"data"];
+    NSString * channelFromData = data[@"channel"];
+    
+    NSString *billno = data[@"billNo"];
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"value",@"key", nil];
+    
+    BCPayReq *payReq = [[BCPayReq alloc] init];
+    payReq.channel = [channelFromData isEqualToString:@"ali_pay"]?PayChannelAliApp:PayChannelWxApp;//"ali_pay"和"wx_pay"
+    payReq.title = data[@"title"];
+    NSString * totalFeeStr = [data[@"totalFee"] stringValue];
+    if (totalFeeStr.floatValue <1) {
+        [self showAlertView:@"请输入正确的金额，至少一分钱哦"];
+        return;
+    }
+    payReq.totalFee = totalFeeStr;
+    payReq.billNo = billno;
+    payReq.scheme = [channelFromData isEqualToString:@"ali_pay"]?@"payZhiFuBao":@"weixin";//微信暂时没有做好
+    payReq.billTimeOut = 300;
+//    payReq.viewController = self;//银联支付需要
+    payReq.optional = dict;
+    [BeeCloud sendBCReq:payReq];
+}
+
+#pragma beecloud响应
+-(void)onBeeCloudResp:(BCBaseResp *)resp
+{
+    switch (resp.type) {
+        case BCObjsTypePayResp:
+        {
+            //支付响应事件类型，包含微信、支付宝、银联、百度
+            BCPayResp *tempResp = (BCPayResp *)resp;
+            if (tempResp.resultCode == 0) {
+                BCPayReq *payReq = (BCPayReq *)resp.request;
+                if (payReq.channel == PayChannelBaiduApp) {
+                } else {
+                    [self showAlertView:resp.resultMsg];
+                }
+            } else {
+                [self showAlertView:[NSString stringWithFormat:@"%@ : %@",tempResp.resultMsg, tempResp.errDetail]];
+            }
+        }
+            break;
+            
+            //暂时没有查询功能，开放时参考桌面案例beecloudTest
+//        case BCObjsTypeQueryResp:
+//        {
+//            //查询订单或者退款记录响应事件类型
+//            BCQueryResp *tempResp = (BCQueryResp *)resp;
+//            if (resp.resultCode == 0) {
+//                if (tempResp.count == 0) {
+//                    [self showAlertView:@"未找到相关订单信息"];
+//                } else {
+//                    self.payList = tempResp.results;
+//                    [self performSegueWithIdentifier:@"queryResult" sender:self];
+//                }
+//            } else {
+//                [self showAlertView:[NSString stringWithFormat:@"%@ : %@",tempResp.resultMsg, tempResp.errDetail]];
+//            }
+//        }
+//            break;
+        default:
+        {
+            if (resp.resultCode == 0) {
+                [self showAlertView:resp.resultMsg];
+            } else {
+                [self showAlertView:[NSString stringWithFormat:@"%@ : %@",resp.resultMsg, resp.errDetail]];
+            }
+        }
+            break;
+    }
+    
+}
+
+- (void)showAlertView:(NSString *)msg {
+    NSString *title = @"";
+    NSString *message = msg;
+    NSString *cancelButtonTitle = @"确定";
+    //    NSString *otherButtonTitle = NSLocalizedString(@"OK", nil);
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    
+    // Create the actions.
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:cancelButtonTitle style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+    }];
+    [alertController addAction:cancelAction];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
+
+
 
 
 -(void)ocToJs{

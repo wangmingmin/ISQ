@@ -15,6 +15,7 @@
 #import "MBProgressHUD.h"
 #import "Reachability.h"
 #import "UMessage.h"
+#import "BeeCloud.h"
 
 #define UMSYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
 #define _IPHONE80_ 80000
@@ -68,9 +69,21 @@ bool islogin=false;
     
     //检查版本更新
 //    [self onCheckVersion];
+    
+    //支付
+    [BeeCloud initWithAppID:@"5652c5fb-096e-4660-8fa8-a9a511e9b296" andAppSecret:@"a3c0fefd-45e6-44aa-822c-117005773586"];
+
     return YES;
     
     
+}
+
+-(BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options
+{
+    if (![BeeCloud handleOpenUrl:url]) {
+        //handle其他类型的url
+    }
+    return YES;
 }
 
 -(void)pushUM:(NSDictionary *)launchOptions

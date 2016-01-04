@@ -62,6 +62,16 @@
 				<string>wb801566282</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>zhifubao</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>payZhiFuBao</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1.6.1</string>
@@ -86,6 +96,12 @@
 		<string>wtloginmqq2</string>
 		<string>mqzone</string>
 		<string>mqqwpa</string>
+		<string>weixin</string>
+		<string>safepay</string>
+		<string>cydia</string>
+		<string>alipayauth</string>
+		<string>alipay</string>
+		<string>wechat</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>

@@ -47,11 +47,13 @@
             
             NSDictionary *dic = [[NSDictionary alloc] init];
             dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJapaneseEUCStringEncoding error:nil];
-            NSLog(@"dic--%@",dic);
+            self.passBill(dic);
             
         } failure:^(NSError *erro) {
             
             NSLog(@"error--%@",erro);
+            self.passBill(nil);
+
         }];
     }
     

@@ -12,13 +12,12 @@
 //创建一个实现了JSExport协议的协议
 @protocol TestJSObjectProtocol <JSExport>
 
-
 -(void)passShareParams:(NSString *)str;
 - (void)passBillParams:(NSString *)str;
 
 @end
-
+typedef void (^TestJSObjectPass) (NSDictionary * billDic);
 //协议
 @interface TestJSObject : NSObject<TestJSObjectProtocol>
-
+@property (copy, nonatomic) TestJSObjectPass passBill;
 @end
