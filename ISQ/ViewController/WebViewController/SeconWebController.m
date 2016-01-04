@@ -202,7 +202,10 @@
 - (void)doPayWithBill:(NSDictionary *)billDic{
     NSDictionary * data = billDic[@"data"];
     NSString * channelFromData = data[@"channel"];
-    
+    if ([channelFromData isEqualToString:@"wx_pay"]) {//暂时没有开放微信
+        [self showAlertView:@"微信支付暂时未开放，敬请期待"];
+        return;
+    }
     NSString *billno = data[@"billNo"];
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"value",@"key", nil];
     
