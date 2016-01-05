@@ -330,8 +330,8 @@ bool islogin=false;
                        tencentOAuthCls:[TencentOAuth class]];
     
     //添加微信应用
-    [ShareSDK connectWeChatWithAppId:@"wxf86b16b696dc85ff"   //微信APPID
-                           appSecret:@"4b61c191d806422d52fbe0aea6e61248"  //微信APPSecret
+    [ShareSDK connectWeChatWithAppId:@"wx625b0199b2d176bd"   //微信APPID
+                           appSecret:@"b5efd07930e874660f7c3fcd4c726282"  //微信APPSecret
                            wechatCls:[WXApi class]];
     
     //连接短信分享
