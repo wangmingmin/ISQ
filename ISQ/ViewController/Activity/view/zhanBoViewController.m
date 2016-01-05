@@ -800,6 +800,11 @@ static NSString * const reuseIdentifier = @"cell";
     NSMutableDictionary *paramesCityID=[NSMutableDictionary dictionary];
     
     id cityID = [user_info objectForKey:userCityID];
+    if (cityID == nil) {
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"未找到社区" message:@"没有您所在社区的信息，请返回首页选择您所在的社区" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+        [alert show];
+        return;
+    }
     paramesCityID[@"cityId"]=cityID;
     
     NSInteger rowsCount = (self.arrayDataCity.count/10)*(isAddRefresh?10:0);
@@ -863,6 +868,18 @@ static NSString * const reuseIdentifier = @"cell";
         }
         [SpecialCollectionView reloadData];
         
+        id cityID = [user_info objectForKey:userCityID];
+        if (isCurrentCity && cityID== nil) {//在首次注册的用户使用时
+            showBanner = [[NSString alloc] init];
+            showBanner = dic[@"showBanner"];
+            [ISQHttpTool getHttp:showBanner contentType:nil params:nil success:^(id image) {
+                UIImage * image2 = [UIImage imageWithData:image];
+                self.imageView.image = image2;
+            } failure:^(NSError *erro) {
+                
+            }];
+        }
+
     } failure:^(NSError *erro) {
         
     }];
