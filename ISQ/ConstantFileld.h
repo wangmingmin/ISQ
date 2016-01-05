@@ -250,5 +250,7 @@
 
 
 #define user_info [NSUserDefaults standardUserDefaults]
+#define weixinAppID @"wx625b0199b2d176bd"
+#define weixinAppSecret @"b5efd07930e874660f7c3fcd4c726282"
 
 #endif

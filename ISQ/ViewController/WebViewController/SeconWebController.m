@@ -202,10 +202,6 @@
 - (void)doPayWithBill:(NSDictionary *)billDic{
     NSDictionary * data = billDic[@"data"];
     NSString * channelFromData = data[@"channel"];
-    if ([channelFromData isEqualToString:@"wx_pay"]) {//暂时没有开放微信
-        [self showAlertView:@"微信支付暂时未开放，敬请期待"];
-        return;
-    }
     NSString *billno = data[@"billNo"];
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"value",@"key", nil];
     
@@ -219,7 +215,7 @@
     }
     payReq.totalFee = [NSString stringWithFormat:@"%.0f",totalFeeFloat];
     payReq.billNo = billno;
-    payReq.scheme = [channelFromData isEqualToString:@"ali_pay"]?@"payZhiFuBao":@"weixin";//微信暂时没有做好
+    payReq.scheme = [channelFromData isEqualToString:@"ali_pay"]?@"payZhiFuBao":weixinAppID;
     payReq.billTimeOut = 300;
 //    payReq.viewController = self;//银联支付需要
     payReq.optional = dict;

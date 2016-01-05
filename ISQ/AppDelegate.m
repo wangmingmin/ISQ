@@ -72,6 +72,7 @@ bool islogin=false;
     
     //支付
     [BeeCloud initWithAppID:@"5652c5fb-096e-4660-8fa8-a9a511e9b296" andAppSecret:@"a3c0fefd-45e6-44aa-822c-117005773586"];
+    [BeeCloud initWeChatPay:weixinAppID];
 
     return YES;
     
@@ -330,8 +331,8 @@ bool islogin=false;
                        tencentOAuthCls:[TencentOAuth class]];
     
     //添加微信应用
-    [ShareSDK connectWeChatWithAppId:@"wx625b0199b2d176bd"   //微信APPID
-                           appSecret:@"b5efd07930e874660f7c3fcd4c726282"  //微信APPSecret
+    [ShareSDK connectWeChatWithAppId:weixinAppID   //微信APPID
+                           appSecret:weixinAppSecret  //微信APPSecret
                            wechatCls:[WXApi class]];
     
     //连接短信分享
