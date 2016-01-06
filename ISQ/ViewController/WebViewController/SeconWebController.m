@@ -202,13 +202,13 @@
 - (void)doPayWithBill:(NSDictionary *)billDic{
     NSDictionary * data = billDic[@"data"];
     NSString * channelFromData = data[@"channel"];
-    NSString *billno = data[@"billNo"];
+    NSString *billno = data[@"order_no"];
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"value",@"key", nil];
     
     BCPayReq *payReq = [[BCPayReq alloc] init];
     payReq.channel = [channelFromData isEqualToString:@"ali_pay"]?PayChannelAliApp:PayChannelWxApp;//"ali_pay"和"wx_pay"
     payReq.title = data[@"title"];
-    CGFloat totalFeeFloat = [data[@"totalFee"] floatValue]*100;
+    CGFloat totalFeeFloat = [data[@"total_fee"] floatValue]*100;
     if (totalFeeFloat <1) {
         [self showAlertView:@"请输入正确的金额，至少一分钱哦"];
         return;

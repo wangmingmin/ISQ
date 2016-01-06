@@ -36,13 +36,15 @@
         //获取时间戳
         NSString *timestamp = [NSString stringWithFormat:@"timestamp=%@",[HMAC_SHA1 getTime]];
         NSMutableArray *array = [NSMutableArray array];
+        NSUserDefaults *userInfo = [NSUserDefaults standardUserDefaults];
+        NSString *uid = [userInfo objectForKey:MyUserID];
         [array addObject:timestamp];
         [array addObject:nonce];
         [array addObject:[NSString stringWithFormat:@"name=%@",dic[@"name"]]];
         [array addObject:[NSString stringWithFormat:@"action=%@",dic[@"action"]]];
         //加密
         NSString *signature = [HMAC_SHA1 hmac_sha1:@"Q2sE#FeNK8%6awIO" parames:array url:@"http://webapp.wisq.cn/api"];
-        NSString *url = [NSString stringWithFormat:@"%@?%@&%@&name=%@&action=%@&signature=%@&year=%@&id=%@",@"http://webapp.wisq.cn/api",timestamp,nonce,dic[@"name"],dic[@"action"],signature,@"1",@"2"];
+        NSString *url = [NSString stringWithFormat:@"%@?%@&%@&name=%@&action=%@&signature=%@&year=%@&id=%@&uid=%@",@"http://webapp.wisq.cn/api",timestamp,nonce,dic[@"name"],dic[@"action"],signature,@"1",@"2",uid];
         [ISQHttpTool getHttp:url contentType:nil params:nil success:^(id responseObject) {
             
             NSDictionary *dic = [[NSDictionary alloc] init];
