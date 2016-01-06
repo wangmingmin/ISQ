@@ -497,7 +497,7 @@
         [ISQHttpTool getHttp:imgArry2[i] contentType:nil params:nil success:^(id imagedata) {
             UIImage * image = [UIImage imageWithData:imagedata];
             UIImageView * imageViewDownload = [[UIImageView alloc] initWithImage:image];
-            [self.imageViewsArr replaceObjectAtIndex:i withObject:imageViewDownload];
+            [self.imageViewsArr replaceObjectAtIndex:i withObject:imageViewDownload];//插入的顺序要和显示的一致
             
             UIScrollView * scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(UISCREENWIDTH*i+5, 20, UISCREENWIDTH-10, imgScroView.frame.size.height-40)];
             scrollView.tag = i;
