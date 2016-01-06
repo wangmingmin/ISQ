@@ -479,6 +479,10 @@
     NSArray *imgArry2=[imageurls2 componentsSeparatedByString:@","];
     
     self.imageViewsArr = [[NSMutableArray alloc] init];
+    for (int i = 0; i<imgArry2.count; i++) {
+        UIImageView * imageNill = [[UIImageView alloc] init];
+        [self.imageViewsArr addObject:imageNill];
+    }
     imgScroView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, UISCREENWIDTH, UISCREENHEIGHT)];
     imgScroView.delegate = self;
     imgScroView.backgroundColor = [UIColor blackColor];
@@ -493,7 +497,7 @@
         [ISQHttpTool getHttp:imgArry2[i] contentType:nil params:nil success:^(id imagedata) {
             UIImage * image = [UIImage imageWithData:imagedata];
             UIImageView * imageViewDownload = [[UIImageView alloc] initWithImage:image];
-            [self.imageViewsArr addObject:imageViewDownload];
+            [self.imageViewsArr replaceObjectAtIndex:i withObject:imageViewDownload];//插入的顺序要和显示的一致
             
             UIScrollView * scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(UISCREENWIDTH*i+5, 20, UISCREENWIDTH-10, imgScroView.frame.size.height-40)];
             scrollView.tag = i;
@@ -627,7 +631,7 @@ static const CGFloat MAX_SCALE = 1.0;
         CGFloat offsetX = (scrollView.bounds.size.width > scrollView.contentSize.width)?(scrollView.bounds.size.width - scrollView.contentSize.width)/2 : 0.0;
         CGFloat offsetY = (scrollView.bounds.size.height > scrollView.contentSize.height)?(scrollView.bounds.size.height - scrollView.contentSize.height)/2 : 0.0;
         
-        scaleImageView.center = CGPointMake(scrollView.contentSize.width/2 + offsetX,scrollView.contentSize.height/2 + offsetY);
+        scaleImageView.center = CGPointMake(scrollView.contentSize.width/2 + offsetX,scrollView.contentSize.height/2 + offsetY);//先定下中心
         
         scrollView.contentSize = CGSizeMake(scrollView.contentSize.width+offsetX, scrollView.contentSize.height+offsetY);//要显示类容的大小
     }

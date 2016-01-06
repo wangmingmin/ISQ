@@ -829,7 +829,15 @@ static NSString * const reuseIdentifier = @"cell";
         //        NSLog(@"showVoide city===== %@",dic);
         if (rowsCount == self.arrayDataCity.count) {
             [self.arrayDataCity addObjectsFromArray:dic[@"retData"]];
-        }else {
+        }
+        else if (rowsCount<self.arrayDataCity.count && rowsCount != 0&&self.arrayDataCity.count%rowsCount!=0){//当数据已经全部获取且数量不为整十数时后：比如：一共有12条数据时
+            NSInteger last = self.arrayDataCity.count%rowsCount;
+            for (int i = 0; i<last; i++) {
+                [self.arrayDataCity removeLastObject];
+            }
+            [self.arrayDataCity addObjectsFromArray:dic[@"retData"]];
+        }
+        else {
             self.arrayDataCity = dic[@"retData"];
         }
         [CityCollectionView reloadData];
@@ -863,7 +871,15 @@ static NSString * const reuseIdentifier = @"cell";
         //        NSLog(@"showVoide special===== %@",dic);
         if (rowsCount == self.arrayDataSpecial.count) {
             [self.arrayDataSpecial addObjectsFromArray:dic[@"retData"]];
-        }else {
+        }
+        else if (rowsCount<self.arrayDataSpecial.count && rowsCount != 0&&self.arrayDataSpecial.count%rowsCount!=0){//当数据已经全部获取且数量不为整十数时后：比如：一共有12条数据时
+            NSInteger last = self.arrayDataSpecial.count%rowsCount;
+            for (int i = 0; i<last; i++) {
+                [self.arrayDataSpecial removeLastObject];
+            }
+            [self.arrayDataSpecial addObjectsFromArray:dic[@"retData"]];
+        }
+        else {
             self.arrayDataSpecial = dic[@"retData"];
         }
         [SpecialCollectionView reloadData];
@@ -899,7 +915,15 @@ static NSString * const reuseIdentifier = @"cell";
         //        NSLog(@"showVoide rank===== %@",dic);
         if (rowsCount == self.arrayDataRank.count) {
             [self.arrayDataRank addObjectsFromArray:dic[@"retData"]];
-        }else {
+        }
+        else if (rowsCount<self.arrayDataRank.count && rowsCount != 0&&self.arrayDataRank.count%rowsCount!=0){//当数据已经全部获取且数量不为整十数时后：比如：一共有12条数据时
+            NSInteger last = self.arrayDataRank.count%rowsCount;
+            for (int i = 0; i<last; i++) {
+                [self.arrayDataRank removeLastObject];
+            }
+            [self.arrayDataRank addObjectsFromArray:dic[@"retData"]];
+        }
+        else {
             self.arrayDataRank = dic[@"retData"];
         }
         [RankCollectionView reloadData];
@@ -926,7 +950,15 @@ static NSString * const reuseIdentifier = @"cell";
         //        NSLog(@"showVoide follow===== %@",dic);
         if (rowsCount == self.arrayDataFollow.count) {
             [self.arrayDataFollow addObjectsFromArray:dic[@"retData"]];
-        }else {
+        }
+        else if (rowsCount<self.arrayDataFollow.count && rowsCount != 0&&self.arrayDataFollow.count%rowsCount!=0){//当数据已经全部获取且数量不为整十数时后：比如：一共有12条数据时
+            NSInteger last = self.arrayDataFollow.count%rowsCount;
+            for (int i = 0; i<last; i++) {
+                [self.arrayDataFollow removeLastObject];
+            }
+            [self.arrayDataFollow addObjectsFromArray:dic[@"retData"]];
+        }
+        else {
             self.arrayDataFollow = dic[@"retData"];
         }
         [FollowCollectionView reloadData];
