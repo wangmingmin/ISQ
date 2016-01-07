@@ -22,6 +22,7 @@
     
     TestJSObject *testJO;
     NSTimer *payTimer;
+    NSString * totalFeeFromISQ;
 }
 @property (strong, nonatomic)NSTimer *timer;
 
@@ -236,7 +237,7 @@
         [self showAlertView:@"请输入正确的金额，至少一分钱哦"];
         return;
     }
-    payReq.totalFee = [NSString stringWithFormat:@"%.0f",totalFeeFloat];
+    payReq.totalFee = totalFeeFromISQ = [NSString stringWithFormat:@"%.0f",totalFeeFloat];
     payReq.billNo = billno;
     payReq.scheme = [channelFromData isEqualToString:@"ali_pay"]?@"payZhiFuBao":weixinAppID;
     payReq.billTimeOut = 300;
@@ -244,6 +245,16 @@
     payReq.optional = dict;
     [BeeCloud sendBCReq:payReq];
 }
+//#pragma mark - 订单查询
+//
+//- (void)doQuery:(PayChannel)channel {
+//    BCQueryReq *req = [[BCQueryReq alloc] init];
+//    req.channel = channel;
+//    req.billNo = billnono;
+//    req.skip = 0;
+//    req.limit = 1;
+//    [BeeCloud sendBCReq:req];
+//}
 
 #pragma beecloud响应
 -(void)onBeeCloudResp:(BCBaseResp *)resp
@@ -257,6 +268,11 @@
                 BCPayReq *payReq = (BCPayReq *)resp.request;
                 if (payReq.channel == PayChannelBaiduApp) {
                 } else {
+                    NSString * totalFeeFromBC = payReq.totalFee;
+                    if (totalFeeFromISQ.integerValue != totalFeeFromBC.integerValue) {
+                        [self ExceptionPay];
+                        return;
+                    }
                     [self checkPay:(BCPayResp *)resp];//支付宝成功后公司后台再验证才算成功
 //                    [self showAlertView:resp.resultMsg];
                 }
@@ -267,23 +283,13 @@
         }
             break;
             
-            //暂时没有查询功能，开放时参考桌面案例beecloudTest
-//        case BCObjsTypeQueryResp:
-//        {
-//            //查询订单或者退款记录响应事件类型
-//            BCQueryResp *tempResp = (BCQueryResp *)resp;
-//            if (resp.resultCode == 0) {
-//                if (tempResp.count == 0) {
-//                    [self showAlertView:@"未找到相关订单信息"];
-//                } else {
-//                    self.payList = tempResp.results;
-//                    [self performSegueWithIdentifier:@"queryResult" sender:self];
-//                }
-//            } else {
-//                [self showAlertView:[NSString stringWithFormat:@"%@ : %@",tempResp.resultMsg, tempResp.errDetail]];
-//            }
-//        }
-//            break;
+        case BCObjsTypeQueryResp:
+        {
+            //查询订单或者退款记录响应事件类型
+            BCQueryResp *tempResp = (BCQueryResp *)resp;
+            
+        }
+            break;
         default:
         {
             if (resp.resultCode == 0) {
@@ -348,7 +354,9 @@
     
     [self.payAlertView dismissWithClickedButtonIndex:[self.payAlertView cancelButtonIndex] animated:YES];
     self.payAlertView = nil;
-//    [self showAlertView:resultMsg];
+    if (resultMsg != nil) {
+//        [self showAlertView:resultMsg];
+    }
     
     timesssss =0;
 }
@@ -372,7 +380,7 @@
 #pragma 取消支付操作
 -(void) cancelPay
 {
-    [self finishCheckPay:@"支付取消"];
+    [self finishCheckPay:nil];
     JSContext *context=[self getJSContextFromWeb];
     NSString *OCToJs=[NSString stringWithFormat:@"get_native_pay_result('%@')",@"CANCEL"];
     [context evaluateScript:OCToJs];
