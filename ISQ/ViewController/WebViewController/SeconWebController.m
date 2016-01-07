@@ -13,15 +13,19 @@
 #import <JavaScriptCore/JavaScriptCore.h>
 #import "BeeCloud.h"
 
-@interface SeconWebController ()<UIWebViewDelegate,BeeCloudDelegate>{
+@interface SeconWebController ()<UIWebViewDelegate,BeeCloudDelegate,UIAlertViewDelegate>{
     
     UIView *errorView;
     BDMLocationController *bdmapVC;
     BOOL isFristLoad;
+    int timesssss;
 }
 @property (strong, nonatomic)NSTimer *timer;
 
 @property (strong, nonatomic)NSTimer *timerLocation;
+
+@property (strong, nonatomic)NSTimer *payTimer;
+@property (strong, nonatomic)UIAlertView *payAlertView;
 
 @end
 
@@ -45,7 +49,7 @@
     //加载错误时出现的页面
     [self loadErrorView];
     
-    
+    timesssss=0;
     //监听触摸
     UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toRefresh:)];
     //设置成NO表示当前控件响应后会传播到其他控件上，默认为YES。
@@ -150,6 +154,9 @@
          self.navigationController.navigationBar.hidden=NO;
          [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
          [self.navigationController popViewControllerAnimated:YES];
+         
+         [self.payAlertView removeFromSuperview];
+         [self.payTimer invalidate];
      }
     if([request.mainDocumentURL.relativeString rangeOfString:@"http://map.baidu.com/mobile/webapp/index/streetview/ss_id"].location !=NSNotFound){
         
@@ -234,10 +241,12 @@
                 BCPayReq *payReq = (BCPayReq *)resp.request;
                 if (payReq.channel == PayChannelBaiduApp) {
                 } else {
-                    [self showAlertView:resp.resultMsg];
+                    [self checkPay:(BCPayResp *)resp];//支付宝成功后公司后台再验证才算成功
+//                    [self showAlertView:resp.resultMsg];
                 }
             } else {
                 [self showAlertView:[NSString stringWithFormat:@"%@ : %@",tempResp.resultMsg, tempResp.errDetail]];
+
             }
         }
             break;
@@ -270,6 +279,58 @@
             break;
     }
     
+}
+
+-(void)checkPay:(BCPayResp *)resp
+{
+    [self addPayAlertView];
+
+    [self.payTimer invalidate];
+    self.payTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(checkPayIsSucceed:) userInfo:resp repeats:YES];
+}
+
+-(void)addPayAlertView
+{
+    [self.payAlertView dismissWithClickedButtonIndex:[self.payAlertView cancelButtonIndex] animated:YES];
+
+    self.payAlertView = [[UIAlertView alloc] initWithTitle:@"提示5" message:@"支付验证中，请稍等..." delegate:nil cancelButtonTitle:nil otherButtonTitles: nil];
+    self.payAlertView.delegate = self;
+    [self.payAlertView show];
+}
+
+-(void)willPresentAlertView:(UIAlertView *)alertView
+{
+    alertView.frame = CGRectMake(alertView.frame.origin.x, alertView.frame.origin.y, 275, alertView.frame.size.height);
+    UIView * view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, alertView.bounds.size.width, 40)];
+    
+    UIActivityIndicatorView* activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    activityIndicatorView.center = CGPointMake(view.frame.size.width / 2.0f, activityIndicatorView.center.y);
+    [view addSubview:activityIndicatorView];
+    [alertView setValue:view forKey:@"accessoryView"];
+    [activityIndicatorView startAnimating];
+}
+
+-(void)checkPayIsSucceed:(NSTimer *)sender
+{
+    timesssss ++;
+    BCPayResp * resp = sender.userInfo;
+    [self.payAlertView setTitle:[NSString stringWithFormat:@"提示%d",5-timesssss]];
+    if (timesssss==5) {
+        [self finishCheckPay:resp.resultMsg];
+    }
+}
+
+-(void)finishCheckPay:(NSString *)resultMsg
+{
+    
+    [self.payTimer invalidate];
+    
+    [self.payAlertView dismissWithClickedButtonIndex:[self.payAlertView cancelButtonIndex] animated:YES];
+    
+    [self showAlertView:resultMsg];
+    
+    timesssss =0;
+
 }
 
 - (void)showAlertView:(NSString *)msg {
