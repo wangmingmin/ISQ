@@ -19,12 +19,14 @@
     BDMLocationController *bdmapVC;
     BOOL isFristLoad;
     int timesssss;
+    
+    TestJSObject *testJO;
+    NSTimer *payTimer;
 }
 @property (strong, nonatomic)NSTimer *timer;
 
 @property (strong, nonatomic)NSTimer *timerLocation;
 
-@property (strong, nonatomic)NSTimer *payTimer;
 @property (strong, nonatomic)UIAlertView *payAlertView;
 
 @end
@@ -156,7 +158,8 @@
          [self.navigationController popViewControllerAnimated:YES];
          
          [self.payAlertView removeFromSuperview];
-         [self.payTimer invalidate];
+         [payTimer invalidate];
+         payTimer = nil;
      }
     if([request.mainDocumentURL.relativeString rangeOfString:@"http://map.baidu.com/mobile/webapp/index/streetview/ss_id"].location !=NSNotFound){
         
@@ -192,12 +195,25 @@
     
     JSContext *context=[webView valueForKeyPath:@"documentView.webView.mainFrame.javaScriptContext"];
    //JS调用分享
-    TestJSObject *testJO=[TestJSObject new];
+    testJO=[TestJSObject new];
     context[@"UseNative"]=testJO;
+    __weak typeof(self) weakSelf = self;
     testJO.passBill = ^(NSDictionary * billDic) {
         if (billDic != nil) {
             NSLog(@"bill Dic = %@",billDic);
-            [self doPayWithBill:billDic];//支付物业费
+            [weakSelf doPayWithBill:billDic];//支付物业费
+        }
+    };
+    
+    testJO.passPayRes = ^(NSDictionary * payDic) {//检查是否成功
+        if (payDic != nil) {
+            if ([payDic[@"status"] isEqualToString:@"success"]) {
+                [weakSelf SuccessPay];
+            }
+            if ([payDic[@"status"] isEqualToString:@"fail"]) {
+                [weakSelf FailPay];
+            }
+
         }
     };
     
@@ -285,8 +301,9 @@
 {
     [self addPayAlertView];
 
-    [self.payTimer invalidate];
-    self.payTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(checkPayIsSucceed:) userInfo:resp repeats:YES];
+    [payTimer invalidate];
+    payTimer = nil;
+    payTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(checkPayIsSucceed:) userInfo:resp repeats:YES];
 }
 
 -(void)addPayAlertView
@@ -313,24 +330,27 @@
 -(void)checkPayIsSucceed:(NSTimer *)sender
 {
     timesssss ++;
+    [testJO passPayResFiveTimes];
     BCPayResp * resp = sender.userInfo;
     [self.payAlertView setTitle:[NSString stringWithFormat:@"提示%d",5-timesssss]];
+    NSLog(@"timersssss = %d",timesssss);
     if (timesssss==5) {
         [self finishCheckPay:resp.resultMsg];
+        [self TimeOutPay];
     }
 }
 
 -(void)finishCheckPay:(NSString *)resultMsg
 {
-    
-    [self.payTimer invalidate];
+    [payTimer invalidate];
+    payTimer = [[NSTimer alloc] init];
+    payTimer = nil;
     
     [self.payAlertView dismissWithClickedButtonIndex:[self.payAlertView cancelButtonIndex] animated:YES];
-    
-    [self showAlertView:resultMsg];
+    self.payAlertView = nil;
+//    [self showAlertView:resultMsg];
     
     timesssss =0;
-
 }
 
 - (void)showAlertView:(NSString *)msg {
@@ -349,9 +369,58 @@
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
+#pragma 取消支付操作
+-(void) cancelPay
+{
+    [self finishCheckPay:@"支付取消"];
+    JSContext *context=[self getJSContextFromWeb];
+    NSString *OCToJs=[NSString stringWithFormat:@"get_native_pay_result('%@')",@"CANCEL"];
+    [context evaluateScript:OCToJs];
+}
 
+#pragma 支付失败
+-(void) FailPay
+{
+    [self finishCheckPay:@"支付失败，稍后请重试"];
+    JSContext *context=[self getJSContextFromWeb];
+    NSString *OCToJs=[NSString stringWithFormat:@"get_native_pay_result('%@')",@"FAIL"];
+    [context evaluateScript:OCToJs];
+}
 
+#pragma 支付超时
+-(void) TimeOutPay
+{
+    [self finishCheckPay:@"支付超时"];
+    JSContext *context=[self getJSContextFromWeb];
+    NSString *OCToJs=[NSString stringWithFormat:@"get_native_pay_result('%@')",@"TIMEOUT"];
+    [context evaluateScript:OCToJs];
+}
 
+#pragma 支付金额不一致
+-(void) ExceptionPay
+{
+    [self finishCheckPay:@"支付操作有误，请联系客服"];
+    JSContext *context=[self getJSContextFromWeb];
+    NSString *OCToJs=[NSString stringWithFormat:@"get_native_pay_result('%@')",@"EXCEPTION"];
+    [context evaluateScript:OCToJs];
+}
+
+#pragma 支付成功
+-(void) SuccessPay
+{
+    [self finishCheckPay:@"支付成功"];
+    JSContext *context=[self getJSContextFromWeb];
+    NSString *OCToJs=[NSString stringWithFormat:@"get_native_pay_result('%@')",@"SUCCESS"];
+    [context evaluateScript:OCToJs];
+}
+
+-(JSContext *)getJSContextFromWeb
+{
+    AppDelegate *locationCityDelegate;
+    locationCityDelegate = (AppDelegate*)[[UIApplication sharedApplication]delegate];
+    JSContext *context=[self.seconWebView valueForKeyPath:@"documentView.webView.mainFrame.javaScriptContext"];
+    return context;
+}
 
 -(void)ocToJs{
     

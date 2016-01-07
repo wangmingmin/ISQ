@@ -20,4 +20,6 @@ typedef void (^TestJSObjectPass) (NSDictionary * billDic);
 //协议
 @interface TestJSObject : NSObject<TestJSObjectProtocol>
 @property (copy, nonatomic) TestJSObjectPass passBill;
+@property (copy, nonatomic) TestJSObjectPass passPayRes;
+-(void)passPayResFiveTimes;
 @end
