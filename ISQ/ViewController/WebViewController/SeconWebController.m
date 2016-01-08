@@ -23,6 +23,7 @@
     TestJSObject *testJO;
     NSTimer *payTimer;
     NSString * totalFeeFromISQ;
+    BOOL isCancelPayFromOtherApp;
 }
 @property (strong, nonatomic)NSTimer *timer;
 
@@ -62,7 +63,7 @@
     //30秒获取一次经纬度
     self.timerLocation= [NSTimer scheduledTimerWithTimeInterval:30.0f target:self selector:@selector(ocToJs) userInfo:nil repeats:YES];
     
-
+    isCancelPayFromOtherApp = NO;
 }
 
 
@@ -146,8 +147,18 @@
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
     [BeeCloud setBeeCloudDelegate:self];
 
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(SeconWebControllerDidBecomeActive)
+                                                 name:UIApplicationDidBecomeActiveNotification
+                                               object:nil];
+
 }
 
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
+}
 
 -(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
     
@@ -244,6 +255,7 @@
 //    payReq.viewController = self;//银联支付需要
     payReq.optional = dict;
     [BeeCloud sendBCReq:payReq];
+    isCancelPayFromOtherApp = YES;
 }
 //#pragma mark - 订单查询
 //
@@ -303,6 +315,14 @@
     
 }
 
+-(void) SeconWebControllerDidBecomeActive
+{
+    if (isCancelPayFromOtherApp) {//没有支付，返回爱社区app时
+        isCancelPayFromOtherApp = NO;
+        [self cancelPay];
+    }
+}
+#pragma 开始检查支付是否成功
 -(void)checkPay:(BCPayResp *)resp
 {
     [self addPayAlertView];
