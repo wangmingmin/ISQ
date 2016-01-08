@@ -51,7 +51,7 @@
         [array addObject:[NSString stringWithFormat:@"action=%@",dic[@"action"]]];
         //加密
         NSString *signature = [HMAC_SHA1 hmac_sha1:@"Q2sE#FeNK8%6awIO" parames:array url:@"http://webapp.wisq.cn/api"];
-        NSString *url = [NSString stringWithFormat:@"%@?%@&%@&name=%@&action=%@&signature=%@&year=%@&id=%@&uid=%@",@"http://webapp.wisq.cn/api",timestamp,nonce,dic[@"name"],dic[@"action"],signature,@"1",@"2",uid];
+        NSString *url = [NSString stringWithFormat:@"%@?%@&%@&name=%@&action=%@&signature=%@&year=%@&id=%@&uid=%@",@"http://webapp.wisq.cn/api",timestamp,nonce,dic[@"name"],dic[@"action"],signature,dic[@"year"],dic[@"id"],uid];
         [ISQHttpTool getHttp:url contentType:nil params:nil success:^(id responseObject) {
             
             NSDictionary *dic = [[NSDictionary alloc] init];
@@ -87,7 +87,7 @@
     [array2 addObject:[NSString stringWithFormat:@"action=%@",@"pay_confirm"]];
     //加密
     NSString *signature2 = [HMAC_SHA1 hmac_sha1:@"Q2sE#FeNK8%6awIO" parames:array2 url:@"http://webapp.wisq.cn/api"];
-    NSString *url2 = [NSString stringWithFormat:@"%@?%@&%@&name=%@&action=%@&signature=%@&order_no=%@",@"http://webapp.wisq.cn/api",timestamp,nonce,@"property",@"pay_confirm",signature2,dic2[@"order_no"]];
+    NSString *url2 = [NSString stringWithFormat:@"%@?%@&%@&name=%@&action=%@&signature=%@&order_no=%@",@"http://webapp.wisq.cn/api",timestamp,nonce,@"property",@"pay_confirm",signature2,dic2[@"data"][@"order_no"]];
     [ISQHttpTool getHttp:url2 contentType:nil params:nil success:^(id responseObject) {
         
         NSDictionary *dic = [[NSDictionary alloc] init];

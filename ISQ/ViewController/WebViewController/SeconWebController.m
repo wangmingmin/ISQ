@@ -229,11 +229,14 @@
     
     testJO.passPayRes = ^(NSDictionary * payDic) {//检查是否成功
         if (payDic != nil) {
-            if ([payDic[@"status"] isEqualToString:@"success"]) {
+            if ([payDic[@"data"] isEqualToString:@"SUCCESS"]) {
                 [weakSelf SuccessPay];
             }
-            if ([payDic[@"status"] isEqualToString:@"fail"]) {
+            else if ([payDic[@"data"] isEqualToString:@"FAIL"]) {
                 [weakSelf FailPay];
+            }
+            else if ([payDic[@"data"] isEqualToString:@"WAITING"]){
+                
             }
 
         }
@@ -395,7 +398,7 @@
     [self.payAlertView dismissWithClickedButtonIndex:[self.payAlertView cancelButtonIndex] animated:YES];
     self.payAlertView = nil;
     if (resultMsg != nil) {
-//        [self showAlertView:resultMsg];
+        [self showAlertView:resultMsg];
     }
     
     timesssss =0;
@@ -438,7 +441,7 @@
 #pragma 支付超时
 -(void) TimeOutPay
 {
-    [self finishCheckPay:@"支付超时"];
+    [self finishCheckPay:@"支付超时，如有异议请联系管理员"];
     JSContext *context=[self getJSContextFromWeb];
     NSString *OCToJs=[NSString stringWithFormat:@"get_native_pay_result('%@')",@"TIMEOUT"];
     [context evaluateScript:OCToJs];
@@ -447,7 +450,7 @@
 #pragma 支付金额不一致
 -(void) ExceptionPay
 {
-    [self finishCheckPay:@"支付操作有误，请联系客服"];
+    [self finishCheckPay:@"支付异常，如有异议请联系管理员"];
     JSContext *context=[self getJSContextFromWeb];
     NSString *OCToJs=[NSString stringWithFormat:@"get_native_pay_result('%@')",@"EXCEPTION"];
     [context evaluateScript:OCToJs];
