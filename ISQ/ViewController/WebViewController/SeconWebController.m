@@ -151,6 +151,10 @@
                                              selector:@selector(SeconWebControllerDidBecomeActive)
                                                  name:UIApplicationDidBecomeActiveNotification
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(SeconWebControllerDidEnterBackground)
+                                                 name:UIApplicationDidEnterBackgroundNotification
+                                               object:nil];
 
 }
 
@@ -158,6 +162,7 @@
 {
     [super viewDidDisappear:animated];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
 -(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
@@ -213,6 +218,10 @@
     testJO.passBill = ^(NSDictionary * billDic) {
         if (billDic != nil) {
             NSLog(@"bill Dic = %@",billDic);
+            [weakSelf addPayAlertViewWith:nil andMessage:@"支付请求中..."];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [weakSelf finishCheckPay:nil];
+            });
             [weakSelf doPayWithBill:billDic];//支付物业费
         }
     };
@@ -289,6 +298,11 @@
 //                    [self showAlertView:resp.resultMsg];
                 }
             } else {
+                [self finishCheckPay:nil];
+                if (tempResp.resultCode < 0) {
+                    [self cancelPay];
+                    return;
+                }
                 [self showAlertView:[NSString stringWithFormat:@"%@ : %@",tempResp.resultMsg, tempResp.errDetail]];
 
             }
@@ -322,21 +336,26 @@
         [self cancelPay];
     }
 }
+
+-(void) SeconWebControllerDidEnterBackground
+{
+    [self finishCheckPay:nil];
+}
 #pragma 开始检查支付是否成功
 -(void)checkPay:(BCPayResp *)resp
 {
-    [self addPayAlertView];
+    [self addPayAlertViewWith:@"提示5" andMessage:@"支付验证中，请稍等..."];
 
     [payTimer invalidate];
     payTimer = nil;
     payTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(checkPayIsSucceed:) userInfo:resp repeats:YES];
 }
 
--(void)addPayAlertView
+-(void)addPayAlertViewWith:(NSString *)title andMessage:(NSString *)message
 {
     [self.payAlertView dismissWithClickedButtonIndex:[self.payAlertView cancelButtonIndex] animated:YES];
 
-    self.payAlertView = [[UIAlertView alloc] initWithTitle:@"提示5" message:@"支付验证中，请稍等..." delegate:nil cancelButtonTitle:nil otherButtonTitles: nil];
+    self.payAlertView = [[UIAlertView alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:nil otherButtonTitles: nil];
     self.payAlertView.delegate = self;
     [self.payAlertView show];
 }
