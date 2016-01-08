@@ -305,6 +305,9 @@
                 [self finishCheckPay:nil];
                 if (tempResp.resultCode < 0) {
                     [self cancelPay];
+                    if (tempResp.resultCode ==-1) {//未找到微信客户端
+                        [self showAlertView:[NSString stringWithFormat:@"%@",tempResp.resultMsg]];
+                    }
                     return;
                 }
                 [self showAlertView:[NSString stringWithFormat:@"%@ : %@",tempResp.resultMsg, tempResp.errDetail]];
