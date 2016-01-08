@@ -219,6 +219,7 @@
         if (billDic != nil) {
             NSLog(@"bill Dic = %@",billDic);
             [weakSelf addPayAlertViewWith:nil andMessage:@"支付请求中..."];
+//            BOOL isHadAlipay = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"alipay"]];
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 [weakSelf finishCheckPay:nil];
             });
