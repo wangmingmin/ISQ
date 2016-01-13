@@ -137,6 +137,7 @@ typedef NSInteger DWPLayerScreenSizeMode;
         
         
     }else if (buttonIndex == 1){
+        [self loadPlayUrls];
         [self.buttonPlay removeFromSuperview];
         self.hiddenAll = YES;
         [self showBasicViews];
@@ -202,6 +203,7 @@ typedef NSInteger DWPLayerScreenSizeMode;
 -(void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+    [self.player cancelRequestPlayInfo];
     [self.player stop];
     [self.delegate VideoDetailController_forSpringRefreshViewNum];
 }
@@ -227,6 +229,7 @@ typedef NSInteger DWPLayerScreenSizeMode;
     AppDelegate *delget=(AppDelegate*)[[UIApplication sharedApplication]delegate];
     
     if ([delget.isWIFI isEqualToString:@"WIFI"]){
+        [self loadPlayUrls];
         [self.buttonPlay removeFromSuperview];
         self.hiddenAll = YES;
         [self showBasicViews];
@@ -377,8 +380,6 @@ typedef NSInteger DWPLayerScreenSizeMode;
     
     [self.videoBackgroundView addSubview:self.player.view];
     logdebug(@"self.player.view.frame: %@", NSStringFromCGRect(self.player.view.frame));
-    
-    [self loadPlayUrls];
 }
 
 
@@ -446,7 +447,7 @@ typedef NSInteger DWPLayerScreenSizeMode;
 -(void)playerView{
     
     _player = [[DWMoviePlayerController alloc] initWithUserId:DWACCOUNT_USERID key:DWACCOUNT_APIKEY];
-    self.player.shouldAutoplay = NO;
+    self.player.shouldAutoplay = YES;
     _currentQuality = @"";
     [self addObserverForMPMoviePlayController];
     [self addTimer];

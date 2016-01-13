@@ -461,10 +461,10 @@ bool islogin=false;
         [appllication openURL:[NSURL URLWithString:trackViewUrl]];
     }
     if (alertView.tag == -1) {//物业报修时tag等于－1,跳转到首页
-        UIStoryboard *mainStory=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        UITabBarController *mainVC=[mainStory instantiateViewControllerWithIdentifier:@"MainViewStory"];
-        self.window.rootViewController = mainVC;
-        [mainVC setSelectedIndex:0];
+//        UIStoryboard *mainStory=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//        UITabBarController *mainVC=[mainStory instantiateViewControllerWithIdentifier:@"MainViewStory"];
+//        self.window.rootViewController = mainVC;
+//        [mainVC setSelectedIndex:0];
     }
 }
 
