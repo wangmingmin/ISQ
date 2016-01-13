@@ -28,7 +28,7 @@
 #import "OrderDetailModel.h"
 #import "OrderDetailimageCell.h"
 
-@interface HomeViewController()<IChatManagerDelegate>{
+@interface HomeViewController()<IChatManagerDelegate,SRRefreshDelegate>{
     
     AppDelegate *HomeDelegate;
     NSArray *hornData;
@@ -45,6 +45,8 @@
 }
 
 @property (nonatomic,strong) NSArray *announcements;
+//@property (nonatomic,strong) SRRefreshView *homeSlimeView;    //首页刷新
+
 @end
 
 @implementation HomeViewController
@@ -82,6 +84,9 @@ bool theTop=true;
    
     UIImage *image = [UIImage imageNamed:@"topBar_blue.png"];
     [self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
+    
+    //刷新
+//    [self.tabelview addSubview:self.homeSlimeView];
 }
 
 
@@ -122,7 +127,6 @@ bool theTop=true;
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
-
     [self loadNewThingDetailData];
 }
 
@@ -160,6 +164,54 @@ bool theTop=true;
     [self.tabelview reloadData];
     
 }
+
+
+//刷新
+
+//- (SRRefreshView *)homeSlimeView{
+//    
+//    if (!_homeSlimeView) {
+//        _homeSlimeView = [[SRRefreshView alloc] init];
+//        _homeSlimeView.delegate = self;
+//        _homeSlimeView.upInset = 64;
+//        _homeSlimeView.slimeMissWhenGoingBack = YES;
+//        _homeSlimeView.slime.bodyColor = [UIColor grayColor];
+//        _homeSlimeView.slime.skinColor = [UIColor grayColor];
+//        _homeSlimeView.slime.lineWith = 1;
+//        _homeSlimeView.slime.shadowBlur = 4;
+//        _homeSlimeView.slime.shadowColor = [UIColor grayColor];
+//        _homeSlimeView.backgroundColor = [UIColor whiteColor];
+//    }
+//    
+//    return _homeSlimeView;
+//}
+
+#pragma mark - scrollView delegate
+
+//- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+//
+//    [_homeSlimeView scrollViewDidScroll];
+//}
+//
+//
+//- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+//
+//    [_homeSlimeView scrollViewDidEndDraging];
+//}
+
+
+#pragma mark - slimeRefresh delegate
+
+//- (void)slimeRefreshStartRefresh:(SRRefreshView *)refreshView{
+//
+//    if (_homeSlimeView == refreshView) {
+//        
+//        [self loadAnnouncementData];
+//        [self loadNewThingDetailData];
+//        
+//        [_homeSlimeView endRefresh];
+//    }
+//}
 
 
 #pragma mark - private

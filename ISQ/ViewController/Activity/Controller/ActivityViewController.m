@@ -175,7 +175,7 @@
     
     return _hotSlimeView;
 }
-
+ 
 #pragma mark - scrollView delegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -301,13 +301,6 @@
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
 }
 
-//-(void)viewDidAppear:(BOOL)animated{
-//    
-//    [self loadNearListData:0];
-//    
-//}
-
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
@@ -352,26 +345,6 @@
 }
 
 #pragma mark - clicks
-
-//- (void)searchItemAction:(UIButton *)sender{
-//    [self setLeftBarButtonWithImage:[UIImage imageNamed:@"cancel"] action:@selector(leftCancelButtonPress:)];
-//    [bgview addSubview:self.searchBar];
-//    self.searchBar.text = nil;
-//    self.topbgView.hidden = YES;
-//    self.segmentController.hidden = YES;
-//    buttonView.hidden = YES;
-//    [self.searchBar becomeFirstResponder];
-//}
-//
-//- (void)leftCancelButtonPress:(UIButton *)sender{
-//    self.searchBar.text = nil;
-//    [self.searchBar resignFirstResponder];
-//    [self.searchBar removeFromSuperview];
-//    self.topbgView.hidden = NO;
-//    buttonView.hidden = NO;
-//    self.segmentController.hidden = NO;
-//    [self setLeftBarButtonWithImage:[UIImage imageNamed:@"search"] action:@selector(searchItemAction:)];
-//}
 
 - (void)startAction:(UIButton *)button{
     UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];

@@ -74,68 +74,68 @@
 
 
 //获取版本数据
--(void)getVersionData{
-    NSString *URL = APP_URL;
-    
-    [self showHudInView:self.view hint:@"正在检查..."];
-    
-    [ ISQHttpTool post:URL contentType:nil params:nil success:^(id responseObj) {
-        
-        [self hideHud];
-        
-        NSDictionary *infoDic = [[NSBundle mainBundle] infoDictionary];
-        NSString *currentVersion = [infoDic objectForKey:@"CFBundleVersion"];
-        NSArray *infoArray = [[NSJSONSerialization JSONObjectWithData:responseObj options:NSJapaneseEUCStringEncoding error:nil] objectForKey:@"results"];
-        NSDictionary *releaseInfo = [infoArray objectAtIndex:0];
-        NSString *latestVersion = [releaseInfo objectForKey:@"version"];
-        trackViewUrl = [releaseInfo objectForKey:@"trackViewUrl"];
-        if (![latestVersion isEqualToString:currentVersion]) {
-            
-            alert1 = [[UIAlertView alloc] initWithTitle:@"升级提示"
-                                                message:@"“爱社区”已推出了新版，各种意想不到的使用体验哦，请立即升级！"
-                                               delegate:self
-                                      cancelButtonTitle:@"以后再说"
-                                      otherButtonTitles:@"立即升级",nil];
-            alert1.tag = 900;
-            
-            [alert1 show];
-            
-        }else{
-            
-            alert2 = [[UIAlertView alloc] initWithTitle:@"您当前版本已经是最新版本" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-            
-            alert2.tag = 901;
-            
-            [alert2 show];
-        }
-
-        
-        
-        
-    } failure:^(NSError *error) {
-        
-      
-        [self hideHud ];
-        
-        [self showHint:@"请稍后再试..."];
-        
-    }];
-    
-}
+//-(void)getVersionData{
+//    NSString *URL = APP_URL;
+//    
+//    [self showHudInView:self.view hint:@"正在检查..."];
+//    
+//    [ ISQHttpTool post:URL contentType:nil params:nil success:^(id responseObj) {
+//        
+//        [self hideHud];
+//        
+//        NSDictionary *infoDic = [[NSBundle mainBundle] infoDictionary];
+//        NSString *currentVersion = [infoDic objectForKey:@"CFBundleVersion"];
+//        NSArray *infoArray = [[NSJSONSerialization JSONObjectWithData:responseObj options:NSJapaneseEUCStringEncoding error:nil] objectForKey:@"results"];
+//        NSDictionary *releaseInfo = [infoArray objectAtIndex:0];
+//        NSString *latestVersion = [releaseInfo objectForKey:@"version"];
+//        trackViewUrl = [releaseInfo objectForKey:@"trackViewUrl"];
+//        if (![latestVersion isEqualToString:currentVersion]) {
+//            
+//            alert1 = [[UIAlertView alloc] initWithTitle:@"升级提示"
+//                                                message:@"“爱社区”已推出了新版，各种意想不到的使用体验哦，请立即升级！"
+//                                               delegate:self
+//                                      cancelButtonTitle:@"以后再说"
+//                                      otherButtonTitles:@"立即升级",nil];
+//            alert1.tag = 900;
+//            
+//            [alert1 show];
+//            
+//        }else{
+//            
+//            alert2 = [[UIAlertView alloc] initWithTitle:@"您当前版本已经是最新版本" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+//            
+//            alert2.tag = 901;
+//            
+//            [alert2 show];
+//        }
+//
+//        
+//        
+//        
+//    } failure:^(NSError *error) {
+//        
+//      
+//        [self hideHud ];
+//        
+//        [self showHint:@"请稍后再试..."];
+//        
+//    }];
+//    
+//}
 
 
 #pragma mark - tableView delegate
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return 7;
+    return 6;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     if (indexPath.row == 3) {
         return 8;
-    }else if (indexPath.row == 6){
+    }else if (indexPath.row == 5){
         return 60;
     }
     
@@ -153,22 +153,23 @@
         cell=[tableView dequeueReusableCellWithIdentifier:@"SettingCell2" forIndexPath:indexPath];
     }else if (indexPath.row == 3){
         cell=[tableView dequeueReusableCellWithIdentifier:@"SettingCell3" forIndexPath:indexPath];
-    }else if (indexPath.row == 4 || indexPath.row == 5){
+    }else if (indexPath.row == 4){
         cell=[tableView dequeueReusableCellWithIdentifier:@"SettingCell4" forIndexPath:indexPath];
-        if (indexPath.row == 4) {
-            cell.labelText.text = @"当前版本";
-            cell.detailLabel.text = [NSString stringWithFormat:@"%@%@",@"V ",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
-        }else if (indexPath.row == 5){
-            cell.labelText.text = @"清除缓存";
-            float size = sum/(1024*1024.0);
-            cell.detailLabel.text = [NSString stringWithFormat:@"%.1fM",size];
-        }
-    }else if (indexPath.row == 6){
+//        if (indexPath.row == 4) {
+//            cell.labelText.text = @"当前版本";
+//            cell.detailLabel.text = [NSString stringWithFormat:@"%@%@",@"V ",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
+//        }else
+//        if (indexPath.row == 4){
+        cell.labelText.text = @"清除缓存";
+        float size = sum/(1024*1024.0);
+        cell.detailLabel.text = [NSString stringWithFormat:@"%.1fM",size];
+//        }
+    }else if (indexPath.row == 5){
         cell = [tableView dequeueReusableCellWithIdentifier:@"SettingCell5" forIndexPath:indexPath];
     }
     cell.layer.borderWidth=0.5f;
     cell.layer.borderColor=[[UIColor lightGrayColor]colorWithAlphaComponent:0.3].CGColor;
-    if (indexPath.row == 6) {
+    if (indexPath.row == 5) {
         cell.layer.borderColor = [UIColor clearColor].CGColor;
     }
     
@@ -178,10 +179,7 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    if (indexPath.row == 4) {
-        [self getVersionData];
-        
-    }else if (indexPath.row == 5){
+    if (indexPath.row == 4){
         
         alert3 = [[UIAlertView alloc] initWithTitle:@"是否确定清除当前缓存"
                                                             message:nil
@@ -193,7 +191,7 @@
         [alert3 show];
 
         
-    }else if (indexPath.row == 6){
+    }else if (indexPath.row == 5){
         
         alert4 = [[UIAlertView alloc] initWithTitle:@"是否退出登录?"
                                         message:nil
