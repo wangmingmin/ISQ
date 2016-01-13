@@ -73,7 +73,7 @@ bool islogin=false;
     //支付
     [BeeCloud initWithAppID:@"5652c5fb-096e-4660-8fa8-a9a511e9b296" andAppSecret:@"a3c0fefd-45e6-44aa-822c-117005773586"];
     [BeeCloud initWeChatPay:weixinAppID];
-
+    
     return YES;
     
     
@@ -138,23 +138,28 @@ bool islogin=false;
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
     //关闭友盟自带的弹出框
-    //  [UMessage setAutoAlert:NO];
-    
-    [UMessage didReceiveRemoteNotification:userInfo];
+//      [UMessage setAutoAlert:NO];
+//    [UMessage didReceiveRemoteNotification:userInfo];
     
     //    self.userInfo = userInfo;
-    //    //定制自定的的弹出框
-    //    if([UIApplication sharedApplication].applicationState == UIApplicationStateActive)
-    //    {
-    //        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"标题"
-    //                                                            message:@"Test On ApplicationStateActive"
-    //                                                           delegate:self
-    //                                                  cancelButtonTitle:@"确定"
-    //                                                  otherButtonTitles:nil];
-    //        
-    //        [alertView show];
-    //        
-    //    }
+        //定制自定的的弹出框
+        if([UIApplication sharedApplication].applicationState == UIApplicationStateActive)
+        {
+            NSDictionary * aps = userInfo[@"aps"];
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"爱社区提醒您"
+                                                                message:aps[@"alert"]
+                                                               delegate:self
+                                                      cancelButtonTitle:@"确定"
+                                                      otherButtonTitles:nil];
+            NSArray * arrayKeys = [userInfo allKeys];
+            if ([arrayKeys containsObject:@"property"]) {//物业
+                if ([userInfo[@"property"] isEqualToString:@"repair"]) {
+                    alertView.tag = -1;//物业报修时tag等于-1
+                }
+            }
+            [alertView show];
+            
+        }
 }
 
 -(void)netStatic{
@@ -454,6 +459,12 @@ bool islogin=false;
     if (buttonIndex == 1) {
         UIApplication *appllication = [UIApplication sharedApplication];
         [appllication openURL:[NSURL URLWithString:trackViewUrl]];
+    }
+    if (alertView.tag == -1) {//物业报修时tag等于－1,跳转到首页
+        UIStoryboard *mainStory=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        UITabBarController *mainVC=[mainStory instantiateViewControllerWithIdentifier:@"MainViewStory"];
+        self.window.rootViewController = mainVC;
+        [mainVC setSelectedIndex:0];
     }
 }
 
