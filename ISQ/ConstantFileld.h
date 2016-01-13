@@ -220,7 +220,7 @@
 /**
  *春晚展播
  */
-#define getSpringVideoListServer @"http://121.41.18.126:8080/isqbms/getSpringVideoList.from?"
+#define getSpringVideoListServer @"http://121.41.18.126:8080/isqbms/getSpringVideoList1.from?"
 /**
  *春晚详情
  */

@@ -28,6 +28,9 @@
     EMPushNotificationDisplayStyle _pushDisplayStyle;
     NSDictionary *dic;
     NSString *trackViewUrl;
+    
+    UIWebView *callPhoneWebVw;
+    NSString *repairTelephone;
 }
 @property (nonatomic, strong) Reachability *conn;
 @end
@@ -143,8 +146,8 @@ bool islogin=false;
     
     //    self.userInfo = userInfo;
         //定制自定的的弹出框
-        if([UIApplication sharedApplication].applicationState == UIApplicationStateActive)
-        {
+//        if([UIApplication sharedApplication].applicationState == UIApplicationStateActive)
+//        {
             NSDictionary * aps = userInfo[@"aps"];
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"爱社区提醒您"
                                                                 message:aps[@"alert"]
@@ -154,12 +157,20 @@ bool islogin=false;
             NSArray * arrayKeys = [userInfo allKeys];
             if ([arrayKeys containsObject:@"property"]) {//物业
                 if ([userInfo[@"property"] isEqualToString:@"repair"]) {
+                    alertView = [[UIAlertView alloc] initWithTitle:@"您的报修已经派单了！"
+                                                           message:aps[@"alert"]
+                                                          delegate:self
+                                                 cancelButtonTitle:@"确定"
+                                                 otherButtonTitles:@"拨打电话", nil];
+                    if ([arrayKeys containsObject:@"tel"]) {
+                        repairTelephone = userInfo[@"tel"];
+                    }
                     alertView.tag = -1;//物业报修时tag等于-1
                 }
             }
             [alertView show];
             
-        }
+//        }
 }
 
 -(void)netStatic{
@@ -188,7 +199,7 @@ bool islogin=false;
     
     
     // 3.判断网络状态
-//    if ([wifi currentReachabilityStatus] != NotReachable) { // 有wifi
+//    if ([wifi currentReachabilityStatus] != NotReachable) { // 有wifig
     
         
 //    } else
@@ -465,8 +476,25 @@ bool islogin=false;
 //        UITabBarController *mainVC=[mainStory instantiateViewControllerWithIdentifier:@"MainViewStory"];
 //        self.window.rootViewController = mainVC;
 //        [mainVC setSelectedIndex:0];
+        if (buttonIndex==1) {//拨打电话
+            [self onCallProperty];
+        }
     }
 }
 
+-(void) onCallProperty
+{
+    if (repairTelephone != nil && repairTelephone.length != 0) {
+        NSString* cmd = [NSString stringWithFormat:@"tel://%@", repairTelephone, nil];
+        if(callPhoneWebVw == nil){
+            callPhoneWebVw = [[UIWebView alloc] init];
+        }
+        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:cmd]];
+        [callPhoneWebVw loadRequest:request];
+    }else {
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"" message:@"暂无联系电话" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+        [alert show];
+    }
+}
 
 @end
