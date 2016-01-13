@@ -68,10 +68,7 @@ bool islogin=false;
     [self checkNetworkState];
     
     //从app store 获取版本数据
-//    [self getVersionData];
-    
-    //检查版本更新
-//    [self onCheckVersion];
+    [self checkNewEdition];
     
     //支付
     [BeeCloud initWithAppID:@"5652c5fb-096e-4660-8fa8-a9a511e9b296" andAppSecret:@"a3c0fefd-45e6-44aa-822c-117005773586"];
@@ -429,45 +426,59 @@ bool islogin=false;
 }
 
 //获取版本数据
--(void)getVersionData{
-    NSString *URL = APP_URL;
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-    [request setURL:[NSURL URLWithString:URL]];
-    [request setHTTPMethod:@"POST"];
-    NSHTTPURLResponse *urlResponse = nil;
-    NSError *error = nil;
-    NSData *recervedData = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&error];
-    NSString *resultString = [[NSString alloc] initWithBytes:[recervedData bytes] length:[recervedData length] encoding:NSUTF8StringEncoding];
-    NSData *data = [resultString dataUsingEncoding:NSUTF8StringEncoding];
-    NSDictionary *dicData = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-    dic = dicData;
-}
 
-//检查当前版本号并提示更新
-- (void)onCheckVersion{
+-(void) checkNewEdition
+{
+    NSDictionary *infoDictionary =[[NSBundle mainBundle]infoDictionary];
+    NSString * nowVersion = [infoDictionary objectForKey:@"CFBundleVersion"];
+    NSURL * url = [NSURL URLWithString:APP_URL];
+    NSURLRequest * request = [NSURLRequest requestWithURL:url];
+    NSData * response = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
 
-    NSString *currentVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
-    NSArray *infoArray = [dic objectForKey:@"results"];
-    NSDictionary *releaseInfo = [infoArray objectAtIndex:0];
-    NSString *latestVersion = [releaseInfo objectForKey:@"version"];
-    trackViewUrl = [releaseInfo objectForKey:@"trackViewUrl"];
-    if (![latestVersion isEqualToString:currentVersion]) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"发现新版本"
-                                message:nil
-                               delegate:self
-                      cancelButtonTitle:@"以后再说"
-                      otherButtonTitles:@"立即更新",nil];
-        
-        [alert show];
+    NSError * error;
+    NSDictionary * appInfoDic = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:&error];
+    NSDictionary * resultsDic = appInfoDic[@"results"][0];
+    NSString * latestVersion = resultsDic[@"version"];
+
+    if(error)
+    {
+        NSLog(@"error %@",[error description]);
+        return;
     }
+
+    NSMutableArray * latestV = [[NSMutableArray alloc]initWithArray:[latestVersion componentsSeparatedByString:@"."]];
+    if (latestV.count<3) {
+        for (int i = 0; i<3-latestV.count; i++) {
+            [latestV addObject:@"0"];
+        }
+    }
+    NSMutableArray * nowV = [[NSMutableArray alloc]initWithArray:[nowVersion componentsSeparatedByString:@"."]];
+    if (nowV.count<3) {
+        for (int i = 0; i<3-nowV.count; i++) {
+            [nowV addObject:@"0"];
+        }
+    }
+
+    latestVersion = [NSString stringWithFormat:@"%@%@%@",latestV[0],latestV[1],latestV[2]];
+    nowVersion = [NSString stringWithFormat:@"%@%@%@",nowV[0],nowV[1],nowV[2]];
+    trackViewUrl = resultsDic[@"trackViewUrl"];
+    if (nowVersion.intValue<latestVersion.intValue) {
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"版本更新" message:@"您当前使用的版本需要更新，\n请前往 App Store 下载最新版本" delegate:self cancelButtonTitle:@"确定" otherButtonTitles: nil];
+        [alert show];
+
+//#warning 点击确定后再跳转
+//        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:resultsDic[@"trackViewUrl"]]];
+    }
+
 }
+
 
 
 #pragma mark - UIAlertViewDelegate
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     
-    if (buttonIndex == 1) {
+    if (buttonIndex == 0) {
         UIApplication *appllication = [UIApplication sharedApplication];
         [appllication openURL:[NSURL URLWithString:trackViewUrl]];
     }
