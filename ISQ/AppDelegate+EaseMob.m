@@ -20,7 +20,7 @@
         NSDictionary*userInfo = [launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"];
         if(userInfo)
         {
-            [self didReiveceRemoteNotificatison:userInfo];
+            [self application:application didReceiveRemoteNotification:userInfo];
         }
     }
     
@@ -424,9 +424,7 @@
 -(void)didReiveceRemoteNotificatison:(NSDictionary *)userInfo{
     NSUserDefaults *user_setting=[NSUserDefaults standardUserDefaults];
     
-    
-    
-    
+        
     if ([[user_setting objectForKey:detail_switch] isEqualToString:@"YES"]) {
         
         NSError *parseError = nil;
