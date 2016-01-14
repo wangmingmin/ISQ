@@ -1093,7 +1093,7 @@ typedef NSInteger DWPLayerScreenSizeMode;
     NSData *token = [data base64Encoding];
     NSString *name = @"video_vote";
     
-    NSString *http = [NSString stringWithFormat:@"%@?name=%@&token=%@&activeID=%@h",USER_HOT_VOTE,name,token,self.httpData[@"activeID"]];
+    NSString *http = [NSString stringWithFormat:@"%@?name=%@&token=%@&activeID=%@",USER_HOT_VOTE,name,token,self.httpData[@"activeID"]];
 
     [ISQHttpTool post:http contentType:nil params:nil success:^(id responseObj) {
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"成功" message:@"投票已成功,感谢您的投票" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
