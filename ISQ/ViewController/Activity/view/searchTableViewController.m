@@ -265,7 +265,7 @@
     
     parames[@"title"] =self.searchBar.text;//标题(加标题字段为搜索接口)
     
-    if ( ! self.isCurrentCity) {
+    if ( ! self.isCurrentCity && ![self.type isEqualToString:@"special"]) {
         httpStr = getSpringVideoByPidOrCid;
         parames[@"pid"] = [NSString stringWithFormat:@"%d",self.pid];
         parames[@"cid"] = [NSString stringWithFormat:@"%d",self.cid];
