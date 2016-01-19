@@ -464,7 +464,7 @@ bool theTop=true;
         }
 
     //新鲜事
-    }else if ([[segue identifier] isEqualToString:@"communityNewThing"]){
+    }else if ([[           segue identifier] isEqualToString:@"communityNewThing"]){
         NSString *communityID = [saveCityName objectForKey:userCommunityID];
         NSString *url = [NSString stringWithFormat:@"%@%@",communityNewThing,communityID];
         SeconWebController *webVC = [segue destinationViewController];
