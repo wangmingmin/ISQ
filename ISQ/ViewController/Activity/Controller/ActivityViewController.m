@@ -233,6 +233,20 @@
         });
     }];
     
+
+    [self.hotTableView addFooterWithCallback:^{
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            
+            [self loadHotListData];
+            
+            //刷新结束
+            [vc.hotTableView footerEndRefreshing];
+            
+        });
+    }];
+
+    
 }
 
 

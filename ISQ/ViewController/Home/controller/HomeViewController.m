@@ -85,8 +85,10 @@ bool theTop=true;
     UIImage *image = [UIImage imageNamed:@"topBar_blue.png"];
     [self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
     
+    self.edgesForExtendedLayout = UIRectEdgeNone;
     //刷新
     [self.tabelview addSubview:self.homeSlimeView];
+    [self addFooter];
 }
 
 
@@ -173,7 +175,7 @@ bool theTop=true;
     if (!_homeSlimeView) {
         _homeSlimeView = [[SRRefreshView alloc] init];
         _homeSlimeView.delegate = self;
-        _homeSlimeView.upInset = 64;
+        _homeSlimeView.upInset = 0;
         _homeSlimeView.slimeMissWhenGoingBack = YES;
         _homeSlimeView.slime.bodyColor = [UIColor grayColor];
         _homeSlimeView.slime.skinColor = [UIColor grayColor];
@@ -211,6 +213,25 @@ bool theTop=true;
         
         [_homeSlimeView endRefresh];
     }
+}
+
+#pragma mark - 上拉加载更多
+
+- (void)addFooter{
+
+   __unsafe_unretained typeof(self) vc = self;
+    [self.tabelview addFooterWithCallback:^{
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            
+            [self loadNewThingDetailData];
+            [self loadAnnouncementData];
+            
+            //刷新结束
+            [vc.tabelview footerEndRefreshing];
+            
+        });
+    }];
 }
 
 
