@@ -45,7 +45,7 @@
 }
 
 @property (nonatomic,strong) NSArray *announcements;
-//@property (nonatomic,strong) SRRefreshView *homeSlimeView;    //首页刷新
+@property (nonatomic,strong) SRRefreshView *homeSlimeView;    //首页刷新
 
 @end
 
@@ -86,7 +86,7 @@ bool theTop=true;
     [self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
     
     //刷新
-//    [self.tabelview addSubview:self.homeSlimeView];
+    [self.tabelview addSubview:self.homeSlimeView];
 }
 
 
@@ -168,50 +168,50 @@ bool theTop=true;
 
 //刷新
 
-//- (SRRefreshView *)homeSlimeView{
-//    
-//    if (!_homeSlimeView) {
-//        _homeSlimeView = [[SRRefreshView alloc] init];
-//        _homeSlimeView.delegate = self;
-//        _homeSlimeView.upInset = 64;
-//        _homeSlimeView.slimeMissWhenGoingBack = YES;
-//        _homeSlimeView.slime.bodyColor = [UIColor grayColor];
-//        _homeSlimeView.slime.skinColor = [UIColor grayColor];
-//        _homeSlimeView.slime.lineWith = 1;
-//        _homeSlimeView.slime.shadowBlur = 4;
-//        _homeSlimeView.slime.shadowColor = [UIColor grayColor];
-//        _homeSlimeView.backgroundColor = [UIColor whiteColor];
-//    }
-//    
-//    return _homeSlimeView;
-//}
+- (SRRefreshView *)homeSlimeView{
+    
+    if (!_homeSlimeView) {
+        _homeSlimeView = [[SRRefreshView alloc] init];
+        _homeSlimeView.delegate = self;
+        _homeSlimeView.upInset = 64;
+        _homeSlimeView.slimeMissWhenGoingBack = YES;
+        _homeSlimeView.slime.bodyColor = [UIColor grayColor];
+        _homeSlimeView.slime.skinColor = [UIColor grayColor];
+        _homeSlimeView.slime.lineWith = 1;
+        _homeSlimeView.slime.shadowBlur = 4;
+        _homeSlimeView.slime.shadowColor = [UIColor grayColor];
+        _homeSlimeView.backgroundColor = [UIColor whiteColor];
+    }
+    
+    return _homeSlimeView;
+}
 
 #pragma mark - scrollView delegate
 
-//- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-//
-//    [_homeSlimeView scrollViewDidScroll];
-//}
-//
-//
-//- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
-//
-//    [_homeSlimeView scrollViewDidEndDraging];
-//}
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+
+    [_homeSlimeView scrollViewDidScroll];
+}
+
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+
+    [_homeSlimeView scrollViewDidEndDraging];
+}
 
 
 #pragma mark - slimeRefresh delegate
 
-//- (void)slimeRefreshStartRefresh:(SRRefreshView *)refreshView{
-//
-//    if (_homeSlimeView == refreshView) {
-//        
-//        [self loadAnnouncementData];
-//        [self loadNewThingDetailData];
-//        
-//        [_homeSlimeView endRefresh];
-//    }
-//}
+- (void)slimeRefreshStartRefresh:(SRRefreshView *)refreshView{
+
+    if (_homeSlimeView == refreshView) {
+        
+        [self loadAnnouncementData];
+        [self loadNewThingDetailData];
+        
+        [_homeSlimeView endRefresh];
+    }
+}
 
 
 #pragma mark - private
