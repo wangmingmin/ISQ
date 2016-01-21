@@ -225,7 +225,6 @@ bool theTop=true;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             
             [self loadNewThingDetailData];
-            [self loadAnnouncementData];
             
             //刷新结束
             [vc.tabelview footerEndRefreshing];
