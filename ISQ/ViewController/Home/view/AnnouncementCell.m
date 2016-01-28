@@ -11,7 +11,7 @@
 #import "UIButton+AFNetworking.h"
 #import "SeconWebController.h"
 #import "zhanBoViewController.h"
-#import "VideoDetailController_forSpring.h"
+#import "ISQHttpTool.h"
 
 @implementation AnnouncementCell
 - (void)setAnnouncements:(NSArray *)announcements{
@@ -58,14 +58,15 @@
         [[self viewController].navigationController pushViewController:zhanBoView animated:YES];
         
     }else if([[dic objectForKey:@"titleUrl"] isEqualToString:@"SpringPositiveVideo"]){
-        
-//        NSString *url = [NSString stringWithFormat:@"%@",@"http://121.41.18.126:8080/isqbms/getPositiveSpringVideo.from"];
-//        SeconWebController *webVC = [storyboard instantiateViewControllerWithIdentifier:@"SeconWebController"];
-//        webVC.theUrl = url;
-//        [webVC setHidesBottomBarWhenPushed:YES];
-        VideoDetailController_forSpring *videoDetailVC = [[VideoDetailController_forSpring alloc] init];
-        [[self viewController].navigationController pushViewController:videoDetailVC animated:YES];
-        
+        NSString * httpUrl = getPositiveSpringVideo;
+        [ISQHttpTool getHttp:httpUrl contentType:nil params:nil success:^(id res) {
+            NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:res options:NSJapaneseEUCStringEncoding error:nil];
+            [self.delegate showSpringPositiveVideoWithDic:dic];
+        } failure:^(NSError *erro) {
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"" message:@"访问有误，稍后请重试哦" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+            [alert show];
+        }];
+
     }else{
         
         SeconWebController *webVC = [storyboard instantiateViewControllerWithIdentifier:@"SeconWebController"];

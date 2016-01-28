@@ -26,6 +26,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *voteButton;
 @property (weak, nonatomic) IBOutlet UIButton *shareButton;
 @property (assign, nonatomic) BOOL isSpecial;
+@property (assign, nonatomic) BOOL isPositiveSpringVideo;//是否是春晚正片，是的话隐藏底部投票等按钮
 @property (weak, nonatomic) id <VideoDetailController_forSpringDelegate>delegate;
 - (IBAction)collectAction:(id)sender;
 - (IBAction)voteAction:(id)sender;

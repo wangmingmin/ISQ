@@ -126,6 +126,9 @@ typedef NSInteger DWPLayerScreenSizeMode;
         self.shareBtnLeftConstraint.constant = 10;
     }
 
+    if (self.isPositiveSpringVideo) {//春晚正片
+        self.tabbarview.hidden = YES;
+    }
 }
 
 
@@ -206,6 +209,7 @@ typedef NSInteger DWPLayerScreenSizeMode;
     [self.player cancelRequestPlayInfo];
     [self.player stop];
     [self.delegate VideoDetailController_forSpringRefreshViewNum];
+    self.tabbarview.hidden = NO;
 }
 
 -(void)initTableView_videoDetails
@@ -1058,7 +1062,7 @@ typedef NSInteger DWPLayerScreenSizeMode;
 
 -(void)checkIfIsFollow
 {
-    BOOL isCollect = [self.httpData[@"isCollect"] boolValue];
+    BOOL isCollect = [self.httpData[@"isCollect"] isKindOfClass:[NSNull class]]?NO:[self.httpData[@"isCollect"] boolValue];
     if(!isCollect){//没有关注
         [self.collectButton setTitle:@"关注" forState:UIControlStateNormal];
         [self.collectButton setImage:[UIImage imageNamed:@"clickz"] forState:UIControlStateNormal];

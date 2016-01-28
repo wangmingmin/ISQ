@@ -247,6 +247,10 @@
  *获取展播视屏（所选城市）
  */
 #define getSpringVideoByPidOrCid @"http://121.41.18.126:8080/isqbms/getSpringVideoByPidOrCid.from"
+/**
+ *获取全国网络春晚正片
+ */
+#define getPositiveSpringVideo @"http://121.41.18.126:8080/isqbms/getPositiveSpringVideo.from"
 
 
 #define user_info [NSUserDefaults standardUserDefaults]

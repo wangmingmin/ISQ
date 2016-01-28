@@ -27,8 +27,8 @@
 #import "HMAC-SHA1.h"
 #import "OrderDetailModel.h"
 #import "OrderDetailimageCell.h"
-
-@interface HomeViewController()<IChatManagerDelegate,SRRefreshDelegate>{
+#import "VideoDetailController_forSpring.h"
+@interface HomeViewController()<IChatManagerDelegate,SRRefreshDelegate,AnnouncementCellDelegate>{
     
     AppDelegate *HomeDelegate;
     NSArray *hornData;
@@ -46,6 +46,7 @@
 
 @property (nonatomic,strong) NSArray *announcements;
 @property (nonatomic,strong) SRRefreshView *homeSlimeView;    //首页刷新
+@property (strong, nonatomic) VideoDetailController_forSpring *videoDetail;
 
 @end
 
@@ -362,7 +363,7 @@ bool theTop=true;
     if (indexPath.row == 0) {
         AnnouncementCell *announcementCell = [tableView dequeueReusableCellWithIdentifier:@"AnnouncementCell"];
         announcementCell.announcements = self.announcements;
-        
+        announcementCell.delegate = self;
         return announcementCell;
     }else if (indexPath.row == 1 || indexPath.row == 3){
         UITableViewCell * intervalCell = [tableView dequeueReusableCellWithIdentifier:@"intervalCell"];
@@ -426,6 +427,37 @@ bool theTop=true;
     
 }
 
+#pragma mark - AnnouncementCellDelegate播放春晚正片
+-(void)showSpringPositiveVideoWithDic:(NSDictionary *)dic
+{
+    NSLog(@"getPositiveSpringVideo-dic = %@",dic);
+    if (dic ==nil || ![[dic allKeys] containsObject:@"retData"]) {
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"" message:@"网络春晚还没有开始播放，请保持关注，不要错过哦" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+        [alert show];
+        return;
+    }
+    NSDictionary * dataNeed = dic[@"retData"];
+    if (dataNeed.count == 0 || dataNeed == nil) {
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"" message:@"网络春晚还没有开始播放，请保持关注，不要错过哦" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+        [alert show];
+        return;
+    }
+
+    UIViewController * palyView = [[UIViewController alloc] init];
+    palyView.view.frame = self.view.frame;
+    palyView.edgesForExtendedLayout = UIRectEdgeNone;
+    palyView.view.backgroundColor = [UIColor whiteColor];
+    self.videoDetail=[self.storyboard instantiateViewControllerWithIdentifier:@"VideoDetail_forSpring"];
+    palyView.title= self.videoDetail.title=dataNeed[@"title"];
+    self.videoDetail.httpData=dataNeed;
+    self.videoDetail.isPositiveSpringVideo = YES;
+//    self.videoDetail.delegate = self;
+//    self.videoDetail.isSpecial = YES;
+    [self.navigationController pushViewController:palyView animated:YES];
+    [palyView addChildViewController:self.videoDetail];
+    [palyView.view addSubview:self.videoDetail.view];
+    
+}
 
 #pragma mark - Segues
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
