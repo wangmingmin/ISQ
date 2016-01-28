@@ -11,6 +11,7 @@
 #import "UIButton+AFNetworking.h"
 #import "SeconWebController.h"
 #import "zhanBoViewController.h"
+#import "VideoDetailController_forSpring.h"
 
 @implementation AnnouncementCell
 - (void)setAnnouncements:(NSArray *)announcements{
@@ -46,22 +47,27 @@
 
 - (void)announcementClicked:(UIButton *)button {
     
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
 //    NSUserDefaults *userInfo = [NSUserDefaults standardUserDefaults];
 //    NSString *userID = [userInfo objectForKey:MyUserID];
     NSDictionary *dic = [self.announcements objectAtIndex:button.tag];
      AnnouncementModel *announcement = [[AnnouncementModel alloc] initWithDataDic:dic];
     if ([[dic objectForKey:@"titleUrl"] isEqualToString:@"springVideoShow"]) {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-        SeconWebController *webVC = [storyboard instantiateViewControllerWithIdentifier:@"SeconWebController"];
-//        NSString *url = [NSString stringWithFormat:@"%@%@",@"http://webapp.wisq.cn/Spring/index/uid/",userID];
-//        webVC.theUrl = url;
+
         zhanBoViewController * zhanBoView = [storyboard instantiateViewControllerWithIdentifier:@"zhanBoViewController"];
-        [webVC setHidesBottomBarWhenPushed:YES];
         [[self viewController].navigationController pushViewController:zhanBoView animated:YES];
+        
+    }else if([[dic objectForKey:@"titleUrl"] isEqualToString:@"SpringPositiveVideo"]){
+        
+//        NSString *url = [NSString stringWithFormat:@"%@",@"http://121.41.18.126:8080/isqbms/getPositiveSpringVideo.from"];
+//        SeconWebController *webVC = [storyboard instantiateViewControllerWithIdentifier:@"SeconWebController"];
+//        webVC.theUrl = url;
+//        [webVC setHidesBottomBarWhenPushed:YES];
+        VideoDetailController_forSpring *videoDetailVC = [[VideoDetailController_forSpring alloc] init];
+        [[self viewController].navigationController pushViewController:videoDetailVC animated:YES];
         
     }else{
         
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
         SeconWebController *webVC = [storyboard instantiateViewControllerWithIdentifier:@"SeconWebController"];
         webVC.theUrl = announcement.titleUrl;
         [webVC setHidesBottomBarWhenPushed:YES];
