@@ -51,6 +51,8 @@
     }];
 
     NSString * stringType = @"";
+    
+    if ([self.type isEqualToString:@"positive"]) stringType = @"网络春晚正片搜索";
     if ([self.type isEqualToString:@"city"])  {
         stringType = @"当前市节目搜索";
         if (!self.isCurrentCity) {
@@ -251,6 +253,7 @@
     
     NSMutableDictionary *parames=[NSMutableDictionary dictionary];
     
+    parames[@"type"]=self.type;
     if ([self.type isEqualToString:@"city"]) {
         id cityID = [user_info objectForKey:userCityID];
         parames[@"cityId"]=cityID;

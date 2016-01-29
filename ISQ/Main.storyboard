@@ -5957,8 +5957,8 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TOI-hg-tG9">
                                 <rect key="frame" x="0.0" y="64" width="400" height="50"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mBz-yN-gTv">
-                                        <rect key="frame" x="0.0" y="0.0" width="100" height="47"/>
+                                    <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mBz-yN-gTv">
+                                        <rect key="frame" x="80" y="0.0" width="80" height="47"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <state key="normal" title="当前市">
                                             <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -5970,8 +5970,8 @@
                                             <action selector="onCurrentCity:" destination="KYN-jg-WHg" eventType="touchUpInside" id="xOS-iq-v9A"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XPi-Ji-Aa0">
-                                        <rect key="frame" x="100" y="0.0" width="100" height="47"/>
+                                    <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XPi-Ji-Aa0">
+                                        <rect key="frame" x="160" y="0.0" width="80" height="47"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <state key="normal" title="看专场">
                                             <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -5983,8 +5983,8 @@
                                             <action selector="onSpecial:" destination="KYN-jg-WHg" eventType="touchUpInside" id="A0g-Sh-hWL"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ddf-ux-EjG">
-                                        <rect key="frame" x="200" y="0.0" width="100" height="47"/>
+                                    <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ddf-ux-EjG">
+                                        <rect key="frame" x="240" y="0.0" width="80" height="47"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <state key="normal" title="排行榜">
                                             <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -5996,8 +5996,8 @@
                                             <action selector="onRank:" destination="KYN-jg-WHg" eventType="touchUpInside" id="KFY-ho-QXg"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P9t-Me-NSM">
-                                        <rect key="frame" x="300" y="0.0" width="100" height="47"/>
+                                    <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P9t-Me-NSM">
+                                        <rect key="frame" x="320" y="0.0" width="80" height="47"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <state key="normal" title="我关注">
                                             <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -6009,28 +6009,99 @@
                                             <action selector="onFollow:" destination="KYN-jg-WHg" eventType="touchUpInside" id="A75-c3-R01"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l6p-Lj-enN">
+                                        <rect key="frame" x="0.0" y="0.0" width="80" height="47"/>
+                                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <state key="normal" title="看正片">
+                                            <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <state key="selected" title="看正片">
+                                            <color key="titleColor" red="0.20000000000000001" green="0.65490196079999996" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="onCurrentCity:" destination="KYN-jg-WHg" eventType="touchUpInside" id="NP1-S2-jRL"/>
+                                            <action selector="onPositive:" destination="KYN-jg-WHg" eventType="touchUpInside" id="5GN-mc-0WO"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="P9t-Me-NSM" secondAttribute="bottom" constant="3" id="1Xb-RM-l1f"/>
+                                    <constraint firstItem="P9t-Me-NSM" firstAttribute="top" secondItem="TOI-hg-tG9" secondAttribute="top" id="41t-YA-5Ze"/>
                                     <constraint firstItem="Ddf-ux-EjG" firstAttribute="top" secondItem="TOI-hg-tG9" secondAttribute="top" id="4xR-yZ-bTT"/>
                                     <constraint firstItem="P9t-Me-NSM" firstAttribute="width" secondItem="mBz-yN-gTv" secondAttribute="width" id="7F1-dH-Ip1"/>
+                                    <constraint firstItem="mBz-yN-gTv" firstAttribute="width" secondItem="l6p-Lj-enN" secondAttribute="width" id="87N-3g-dti"/>
+                                    <constraint firstItem="Ddf-ux-EjG" firstAttribute="width" secondItem="P9t-Me-NSM" secondAttribute="width" id="8EQ-N7-Spn"/>
+                                    <constraint firstItem="Ddf-ux-EjG" firstAttribute="leading" secondItem="XPi-Ji-Aa0" secondAttribute="trailing" id="9mU-9p-1d6"/>
                                     <constraint firstItem="mBz-yN-gTv" firstAttribute="top" secondItem="TOI-hg-tG9" secondAttribute="top" id="BEg-RJ-rM4"/>
+                                    <constraint firstAttribute="bottom" secondItem="P9t-Me-NSM" secondAttribute="bottom" constant="3" id="CNK-Wh-Sf8"/>
+                                    <constraint firstAttribute="bottom" secondItem="Ddf-ux-EjG" secondAttribute="bottom" constant="3" id="GX1-Cb-v7w"/>
                                     <constraint firstItem="P9t-Me-NSM" firstAttribute="leading" secondItem="Ddf-ux-EjG" secondAttribute="trailing" id="HDb-0D-396"/>
+                                    <constraint firstItem="mBz-yN-gTv" firstAttribute="leading" secondItem="l6p-Lj-enN" secondAttribute="trailing" id="HkB-xY-EpU"/>
                                     <constraint firstItem="P9t-Me-NSM" firstAttribute="top" secondItem="TOI-hg-tG9" secondAttribute="top" id="Ib9-mG-1v6"/>
+                                    <constraint firstItem="Ddf-ux-EjG" firstAttribute="leading" secondItem="XPi-Ji-Aa0" secondAttribute="trailing" id="O3F-23-rN2"/>
+                                    <constraint firstAttribute="bottom" secondItem="mBz-yN-gTv" secondAttribute="bottom" constant="3" id="PLc-Ke-t40"/>
+                                    <constraint firstItem="l6p-Lj-enN" firstAttribute="top" secondItem="TOI-hg-tG9" secondAttribute="top" id="Pei-RC-jrs"/>
+                                    <constraint firstItem="P9t-Me-NSM" firstAttribute="leading" secondItem="Ddf-ux-EjG" secondAttribute="trailing" id="Pic-fM-GFD"/>
+                                    <constraint firstAttribute="trailing" secondItem="P9t-Me-NSM" secondAttribute="trailing" id="Rv9-9i-0xJ"/>
                                     <constraint firstItem="Ddf-ux-EjG" firstAttribute="leading" secondItem="XPi-Ji-Aa0" secondAttribute="trailing" id="Tw4-6q-ENW"/>
                                     <constraint firstItem="XPi-Ji-Aa0" firstAttribute="leading" secondItem="mBz-yN-gTv" secondAttribute="trailing" id="Wa6-Ne-tBN"/>
+                                    <constraint firstItem="XPi-Ji-Aa0" firstAttribute="height" secondItem="l6p-Lj-enN" secondAttribute="height" id="XoF-de-mig"/>
+                                    <constraint firstItem="mBz-yN-gTv" firstAttribute="leading" secondItem="l6p-Lj-enN" secondAttribute="trailing" id="Y1y-GO-wGx"/>
+                                    <constraint firstItem="XPi-Ji-Aa0" firstAttribute="leading" secondItem="mBz-yN-gTv" secondAttribute="trailing" id="ZWm-tY-JaB"/>
                                     <constraint firstItem="Ddf-ux-EjG" firstAttribute="width" secondItem="mBz-yN-gTv" secondAttribute="width" id="Zre-E3-6Ei"/>
+                                    <constraint firstItem="XPi-Ji-Aa0" firstAttribute="width" secondItem="l6p-Lj-enN" secondAttribute="width" id="aAE-db-fpF"/>
                                     <constraint firstItem="XPi-Ji-Aa0" firstAttribute="top" secondItem="TOI-hg-tG9" secondAttribute="top" id="aGG-XP-ELn"/>
+                                    <constraint firstItem="mBz-yN-gTv" firstAttribute="height" secondItem="l6p-Lj-enN" secondAttribute="height" id="bod-3e-FVM"/>
+                                    <constraint firstAttribute="bottom" secondItem="XPi-Ji-Aa0" secondAttribute="bottom" constant="3" id="byY-BY-b6g"/>
                                     <constraint firstAttribute="bottom" secondItem="P9t-Me-NSM" secondAttribute="bottom" constant="3" id="cnM-0n-UmE"/>
+                                    <constraint firstAttribute="bottom" secondItem="l6p-Lj-enN" secondAttribute="bottom" constant="3" id="dbz-Qw-ndP"/>
+                                    <constraint firstItem="Ddf-ux-EjG" firstAttribute="width" secondItem="l6p-Lj-enN" secondAttribute="width" id="djj-xm-9UX"/>
                                     <constraint firstAttribute="bottom" secondItem="mBz-yN-gTv" secondAttribute="bottom" constant="3" id="eIk-3u-pjz"/>
                                     <constraint firstItem="Ddf-ux-EjG" firstAttribute="leading" secondItem="XPi-Ji-Aa0" secondAttribute="trailing" id="eMj-1s-8ro"/>
+                                    <constraint firstItem="mBz-yN-gTv" firstAttribute="width" secondItem="l6p-Lj-enN" secondAttribute="width" id="gyC-YA-Qjz"/>
+                                    <constraint firstItem="P9t-Me-NSM" firstAttribute="leading" secondItem="TOI-hg-tG9" secondAttribute="leading" constant="320" id="hEy-RQ-RNW"/>
                                     <constraint firstAttribute="bottom" secondItem="XPi-Ji-Aa0" secondAttribute="bottom" constant="3" id="hHB-zK-Iwv"/>
+                                    <constraint firstItem="XPi-Ji-Aa0" firstAttribute="width" secondItem="mBz-yN-gTv" secondAttribute="width" id="i46-h3-gNs"/>
+                                    <constraint firstItem="P9t-Me-NSM" firstAttribute="width" secondItem="l6p-Lj-enN" secondAttribute="width" id="jLR-0E-ayT"/>
                                     <constraint firstAttribute="trailing" secondItem="P9t-Me-NSM" secondAttribute="trailing" id="ksE-Ac-ojk"/>
                                     <constraint firstItem="XPi-Ji-Aa0" firstAttribute="width" secondItem="mBz-yN-gTv" secondAttribute="width" id="lKH-wL-w6m"/>
                                     <constraint firstItem="mBz-yN-gTv" firstAttribute="leading" secondItem="TOI-hg-tG9" secondAttribute="leading" id="mU6-Ah-2AH"/>
+                                    <constraint firstItem="Ddf-ux-EjG" firstAttribute="height" secondItem="l6p-Lj-enN" secondAttribute="height" id="opJ-e7-buS"/>
                                     <constraint firstAttribute="height" constant="50" id="pA4-aQ-tS7"/>
+                                    <constraint firstItem="mBz-yN-gTv" firstAttribute="top" secondItem="TOI-hg-tG9" secondAttribute="top" id="prJ-Ls-snw"/>
+                                    <constraint firstItem="l6p-Lj-enN" firstAttribute="leading" secondItem="TOI-hg-tG9" secondAttribute="leading" id="qHD-DO-aT3"/>
+                                    <constraint firstItem="XPi-Ji-Aa0" firstAttribute="width" secondItem="mBz-yN-gTv" secondAttribute="width" id="quq-08-HoM"/>
+                                    <constraint firstItem="XPi-Ji-Aa0" firstAttribute="leading" secondItem="mBz-yN-gTv" secondAttribute="trailing" id="rdC-du-CnO"/>
+                                    <constraint firstItem="P9t-Me-NSM" firstAttribute="leading" secondItem="Ddf-ux-EjG" secondAttribute="trailing" id="rt5-PI-IG7"/>
                                     <constraint firstAttribute="bottom" secondItem="Ddf-ux-EjG" secondAttribute="bottom" constant="3" id="sb5-b6-meG"/>
+                                    <constraint firstItem="Ddf-ux-EjG" firstAttribute="top" secondItem="TOI-hg-tG9" secondAttribute="top" id="wBw-rg-dGR"/>
+                                    <constraint firstItem="P9t-Me-NSM" firstAttribute="height" secondItem="l6p-Lj-enN" secondAttribute="height" id="wj6-Ql-Ef7"/>
+                                    <constraint firstItem="XPi-Ji-Aa0" firstAttribute="top" secondItem="TOI-hg-tG9" secondAttribute="top" id="wnw-9X-8cn"/>
+                                    <constraint firstItem="Ddf-ux-EjG" firstAttribute="width" secondItem="XPi-Ji-Aa0" secondAttribute="width" id="yw0-4X-679"/>
                                 </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="BEg-RJ-rM4"/>
+                                        <exclude reference="eIk-3u-pjz"/>
+                                        <exclude reference="mU6-Ah-2AH"/>
+                                        <exclude reference="Wa6-Ne-tBN"/>
+                                        <exclude reference="aGG-XP-ELn"/>
+                                        <exclude reference="hHB-zK-Iwv"/>
+                                        <exclude reference="lKH-wL-w6m"/>
+                                        <exclude reference="4xR-yZ-bTT"/>
+                                        <exclude reference="Tw4-6q-ENW"/>
+                                        <exclude reference="Zre-E3-6Ei"/>
+                                        <exclude reference="eMj-1s-8ro"/>
+                                        <exclude reference="sb5-b6-meG"/>
+                                        <exclude reference="7F1-dH-Ip1"/>
+                                        <exclude reference="HDb-0D-396"/>
+                                        <exclude reference="Ib9-mG-1v6"/>
+                                        <exclude reference="cnM-0n-UmE"/>
+                                        <exclude reference="hEy-RQ-RNW"/>
+                                        <exclude reference="ksE-Ac-ojk"/>
+                                    </mask>
+                                </variation>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7cb-nG-613">
                                 <rect key="frame" x="0.0" y="122" width="400" height="44"/>
@@ -6072,6 +6143,7 @@
                         <outlet property="cityBtn" destination="mBz-yN-gTv" id="o6A-eE-EJt"/>
                         <outlet property="followBtn" destination="P9t-Me-NSM" id="58H-FI-nyw"/>
                         <outlet property="imageView" destination="7cb-nG-613" id="Y5R-fu-zIk"/>
+                        <outlet property="positiveBtn" destination="l6p-Lj-enN" id="ZkW-4D-kSh"/>
                         <outlet property="rankBtn" destination="Ddf-ux-EjG" id="Fda-yR-VSC"/>
                         <outlet property="searchItemButton" destination="5Bs-tZ-qea" id="xCl-Mp-LYA"/>
                         <outlet property="specialBtn" destination="XPi-Ji-Aa0" id="kjw-8F-cMo"/>

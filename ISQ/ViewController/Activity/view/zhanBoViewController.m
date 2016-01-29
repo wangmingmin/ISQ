@@ -31,6 +31,7 @@ static NSString * const reuseIdentifier = @"cell";
 @property (nonatomic, strong) UIButton * voteBtn;//投票规则
 @property (nonatomic, strong) UIView * movingView;
 
+@property (nonatomic, strong) NSMutableArray * arrayDataPositive;
 @property (nonatomic, strong) NSMutableArray * arrayDataCity;
 @property (nonatomic, strong) NSMutableArray * arrayDataSpecial;
 @property (nonatomic, strong) NSMutableArray * arrayDataRank;
@@ -40,8 +41,10 @@ static NSString * const reuseIdentifier = @"cell";
 @property (weak, nonatomic) IBOutlet UIButton *specialBtn;
 @property (weak, nonatomic) IBOutlet UIButton *rankBtn;
 @property (weak, nonatomic) IBOutlet UIButton *followBtn;
+@property (weak, nonatomic) IBOutlet UIButton *positiveBtn;
 
 @property (strong, nonatomic) VideoDetailController_forSpring *videoDetail;
+@property (nonatomic, strong) SRRefreshView *slimeViewPositive;
 @property (nonatomic, strong) SRRefreshView *slimeViewCity;
 @property (nonatomic, strong) SRRefreshView *slimeViewSpecial;
 @property (nonatomic, strong) SRRefreshView *slimeViewRank;
@@ -57,6 +60,7 @@ static NSString * const reuseIdentifier = @"cell";
     CGFloat tabBarHeight;
     CGFloat tabBarWidth;
     
+    UICollectionView * PositiveCollectionView;//当前市
     UICollectionView * CityCollectionView;//当前市
     UICollectionView * SpecialCollectionView;//看专场
     UICollectionView * RankCollectionView;//排行榜
@@ -100,13 +104,14 @@ static NSString * const reuseIdentifier = @"cell";
 #pragma mark 上拉加载更多
 - (void)addFooter
 {
-    __block UICollectionView * vc = CityCollectionView;
-    __block UICollectionView * vc2 = SpecialCollectionView;
-    __block UICollectionView * vc3 = RankCollectionView;
-    __block UICollectionView * vc4 = FollowCollectionView;
+    __block UICollectionView * vc = PositiveCollectionView;
+    __block UICollectionView * vc2 = CityCollectionView;
+    __block UICollectionView * vc3 = SpecialCollectionView;
+    __block UICollectionView * vc4 = RankCollectionView;
+    __block UICollectionView * vc5 = FollowCollectionView;
 
     // 添加上拉刷新尾部控件
-    [CityCollectionView addFooterWithCallback:^{
+    [PositiveCollectionView addFooterWithCallback:^{
         // 进入刷新状态就会回调这个Block
         
         //模拟延迟加载数据，因此2秒后才调用）
@@ -116,7 +121,7 @@ static NSString * const reuseIdentifier = @"cell";
         });
     }];
     // 添加上拉刷新尾部控件
-    [SpecialCollectionView addFooterWithCallback:^{
+    [CityCollectionView addFooterWithCallback:^{
         // 进入刷新状态就会回调这个Block
         
         //模拟延迟加载数据，因此2秒后才调用）
@@ -126,7 +131,7 @@ static NSString * const reuseIdentifier = @"cell";
         });
     }];
     // 添加上拉刷新尾部控件
-    [RankCollectionView addFooterWithCallback:^{
+    [SpecialCollectionView addFooterWithCallback:^{
         // 进入刷新状态就会回调这个Block
         
         //模拟延迟加载数据，因此2秒后才调用）
@@ -136,7 +141,7 @@ static NSString * const reuseIdentifier = @"cell";
         });
     }];
     // 添加上拉刷新尾部控件
-    [FollowCollectionView addFooterWithCallback:^{
+    [RankCollectionView addFooterWithCallback:^{
         // 进入刷新状态就会回调这个Block
         
         //模拟延迟加载数据，因此2秒后才调用）
@@ -145,10 +150,37 @@ static NSString * const reuseIdentifier = @"cell";
             [vc4 footerEndRefreshing];
         });
     }];
+    // 添加上拉刷新尾部控件
+    [FollowCollectionView addFooterWithCallback:^{
+        // 进入刷新状态就会回调这个Block
+        
+        //模拟延迟加载数据，因此2秒后才调用）
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            //结束刷新
+            [vc5 footerEndRefreshing];
+        });
+    }];
 
 }
 
 #pragma mark - 刷新
+- (SRRefreshView *)slimeViewPositive
+{
+    if (!_slimeViewPositive) {
+        _slimeViewPositive = [[SRRefreshView alloc] init];
+        _slimeViewPositive.delegate = self;
+        _slimeViewPositive.upInset = 0;
+        _slimeViewPositive.slimeMissWhenGoingBack = YES;
+        _slimeViewPositive.slime.bodyColor = [UIColor grayColor];
+        _slimeViewPositive.slime.skinColor = [UIColor grayColor];
+        _slimeViewPositive.slime.lineWith = 1;
+        _slimeViewPositive.slime.shadowBlur = 4;
+        _slimeViewPositive.slime.shadowColor = [UIColor grayColor];
+        _slimeViewPositive.backgroundColor = self.view.backgroundColor;
+        
+    }
+    return _slimeViewPositive;
+}
 
 - (SRRefreshView *)slimeViewCity
 {
@@ -234,7 +266,7 @@ static NSString * const reuseIdentifier = @"cell";
     [super viewWillAppear:animated];
     [self checkWhichOneIsOnSelect:0];
     if (self.movingView != nil) {
-        int pageNumber = self.movingView.center.x/(screenWidth/4);
+        int pageNumber = self.movingView.center.x/(screenWidth/5);
         [self checkWhichOneIsOnSelect:pageNumber];
     }
 
@@ -289,7 +321,7 @@ static NSString * const reuseIdentifier = @"cell";
     
     CGFloat scrollViewOriginY = self.imageView.frame.origin.y+ self.imageView.frame.size.height;
     self.allScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, scrollViewOriginY, screenWidth, screenHeight-scrollViewOriginY-tabBarHeight)];
-    self.allScrollView.contentSize = CGSizeMake(screenWidth*4, self.allScrollView.contentSize.height);
+    self.allScrollView.contentSize = CGSizeMake(screenWidth*5, self.allScrollView.contentSize.height);
     self.allScrollView.pagingEnabled = YES;
     self.allScrollView.backgroundColor = backColor;
     self.allScrollView.delegate = self;
@@ -298,6 +330,7 @@ static NSString * const reuseIdentifier = @"cell";
     self.allScrollView.showsHorizontalScrollIndicator = NO;
     [self.view addSubview:self.allScrollView];
 
+    [self initPositiveCollectionView];
     [self initCityCollectionView];
     [self initSpecialCollectionView];
     [self initRankCollectionView];
@@ -312,13 +345,16 @@ static NSString * const reuseIdentifier = @"cell";
     CGFloat topButtonViewHeight = self.topButtonsView.frame.size.height;
 
     CGFloat movingViewOriginY = topButtonViewHeight-3;
-    self.movingView = [[UIView alloc] initWithFrame:CGRectMake(2, movingViewOriginY, screenWidth/4.0-4, 3)];
+    self.movingView = [[UIView alloc] initWithFrame:CGRectMake(2, movingViewOriginY, screenWidth/5.0-5, 3)];
     self.movingView.backgroundColor = [UIColor colorWithRed:51.0/255 green:167.0/255 blue:245.0/255 alpha:1];
     [self.topButtonsView addSubview:self.movingView];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    if (scrollView==PositiveCollectionView) {
+        [_slimeViewPositive scrollViewDidScroll];
+    }
     if (scrollView==CityCollectionView) {
         [_slimeViewCity scrollViewDidScroll];
     }
@@ -341,7 +377,7 @@ static NSString * const reuseIdentifier = @"cell";
         int currentPage = offX/scrollView.frame.size.width;
         [self checkWhichOneIsOnSelect:currentPage];
         [UIView animateWithDuration:0.2 animations:^{
-            self.movingView.center = CGPointMake(2+screenWidth/8.0+currentPage*screenWidth/4.0, self.movingView.center.y);
+            self.movingView.center = CGPointMake(2+screenWidth/10.0+currentPage*screenWidth/5.0, self.movingView.center.y);
         }];
     }
 }
@@ -349,7 +385,12 @@ static NSString * const reuseIdentifier = @"cell";
 -(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
     CGFloat offY = scrollView.contentOffset.y;
-    
+    if (scrollView == PositiveCollectionView) {
+        if (offY > PositiveCollectionView.contentSize.height-PositiveCollectionView.frame.size.height+50) {
+            [self refreshPositive];
+        }
+        [_slimeViewPositive scrollViewDidEndDraging];
+    }
     if (scrollView == CityCollectionView) {
         if (offY > CityCollectionView.contentSize.height-CityCollectionView.frame.size.height+50) {
             [self refreshCity];
@@ -387,10 +428,11 @@ static NSString * const reuseIdentifier = @"cell";
 {
     CGFloat offX = self.allScrollView.contentOffset.x;
     int currentPage = offX/self.allScrollView.frame.size.width;
-    if (currentPage == 0) [self.slimeViewCity endRefresh];
-    if (currentPage == 1) [self.slimeViewSpecial endRefresh];
-    if (currentPage == 2) [self.slimeViewRank endRefresh];
-    if (currentPage == 3) [self.slimeViewFollow endRefresh];
+    if (currentPage == 0) [self.slimeViewPositive endRefresh];
+    if (currentPage == 1) [self.slimeViewCity endRefresh];
+    if (currentPage == 2) [self.slimeViewSpecial endRefresh];
+    if (currentPage == 3) [self.slimeViewRank endRefresh];
+    if (currentPage == 4) [self.slimeViewFollow endRefresh];
 }
 
 -(void)slimeRefreshEndRefresh:(SRRefreshView *)refreshView
@@ -400,11 +442,15 @@ static NSString * const reuseIdentifier = @"cell";
         isAddRefresh = NO;
         CGFloat offX = self.allScrollView.contentOffset.x;
         int currentPage = offX/self.allScrollView.frame.size.width;
-        if (currentPage == 0) [self refreshCity];
-        if (currentPage == 1) [self refreshSpecial];
-        if (currentPage == 2) [self refreshRank];
-        if (currentPage == 3) [self refreshFollow];
+        if (currentPage == 0) [self refreshPositive];
+        if (currentPage == 1) [self refreshCity];
+        if (currentPage == 2) [self refreshSpecial];
+        if (currentPage == 3) [self refreshRank];
+        if (currentPage == 4) [self refreshFollow];
     }
+}
+- (IBAction)onPositive:(UIButton *)sender {
+    [self movingByButton:sender.tag];
 }
 
 - (IBAction)onCurrentCity:(UIButton *)sender {
@@ -427,7 +473,7 @@ static NSString * const reuseIdentifier = @"cell";
 {
     [self checkWhichOneIsOnSelect:pageNumber];
     [UIView animateWithDuration:0.2 animations:^{
-        self.movingView.center = CGPointMake(2+screenWidth/8.0+pageNumber*screenWidth/4.0, self.movingView.center.y);
+        self.movingView.center = CGPointMake(2+screenWidth/10.0+pageNumber*screenWidth/5.0, self.movingView.center.y);
         self.allScrollView.contentOffset = CGPointMake(pageNumber*screenWidth, self.allScrollView.contentOffset.y);
     }];
 
@@ -435,13 +481,14 @@ static NSString * const reuseIdentifier = @"cell";
 
 -(void)checkWhichOneIsOnSelect:(NSInteger)pageNumber
 {
-    self.cityBtn.selected = pageNumber==0?YES:NO;
-    self.specialBtn.selected = pageNumber==1?YES:NO;
-    self.rankBtn.selected = pageNumber==2?YES:NO;
-    self.followBtn.selected = pageNumber==3?YES:NO;
+    self.positiveBtn.selected = pageNumber==0?YES:NO;
+    self.cityBtn.selected = pageNumber==1?YES:NO;
+    self.specialBtn.selected = pageNumber==2?YES:NO;
+    self.rankBtn.selected = pageNumber==3?YES:NO;
+    self.followBtn.selected = pageNumber==4?YES:NO;
     
 #warning 暂时隐藏
-    if (pageNumber ==2 || pageNumber ==3) {//排行榜和关注暂时不能搜索
+    if (pageNumber ==3 || pageNumber ==4) {//排行榜和关注暂时不能搜索
         self.searchItemButton.image = nil;
         [self.searchItemButton setEnabled:NO];
     }else {
@@ -449,7 +496,7 @@ static NSString * const reuseIdentifier = @"cell";
         [self.searchItemButton setEnabled:YES];
     }
     
-    if (pageNumber == 0) {
+    if (pageNumber == 1) {
         self.changeCityItemButton.title = @"城市";
         [self.changeCityItemButton setEnabled:YES];
     }else{
@@ -468,11 +515,26 @@ static NSString * const reuseIdentifier = @"cell";
 */
 
 #pragma 展播列表视图
+-(void)initPositiveCollectionView
+{
+    CollectionViewLayoutZhanBo *flowLayout =[[CollectionViewLayoutZhanBo alloc]init];
+    //    flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
+    PositiveCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, self.allScrollView.frame.size.width, self.allScrollView.frame.size.height) collectionViewLayout:flowLayout];
+    
+    PositiveCollectionView.dataSource = self;
+    PositiveCollectionView.delegate = self;
+    PositiveCollectionView.showsVerticalScrollIndicator = NO;
+    [self.allScrollView addSubview:PositiveCollectionView];
+    
+    PositiveCollectionView.backgroundColor = backColor;
+    [PositiveCollectionView addSubview:self.slimeViewPositive];
+}
+
 -(void)initCityCollectionView
 {
     CollectionViewLayoutZhanBo *flowLayout =[[CollectionViewLayoutZhanBo alloc]init];
 //    flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
-    CityCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, self.allScrollView.frame.size.width, self.allScrollView.frame.size.height) collectionViewLayout:flowLayout];
+    CityCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(screenWidth, 0, self.allScrollView.frame.size.width, self.allScrollView.frame.size.height) collectionViewLayout:flowLayout];
 
     CityCollectionView.dataSource = self;
     CityCollectionView.delegate = self;
@@ -487,7 +549,7 @@ static NSString * const reuseIdentifier = @"cell";
 {
     CollectionViewLayoutZhanBo *flowLayout =[[CollectionViewLayoutZhanBo alloc]init];
     //    flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
-    SpecialCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(screenWidth, 0, self.allScrollView.frame.size.width, self.allScrollView.frame.size.height) collectionViewLayout:flowLayout];
+    SpecialCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(screenWidth*2, 0, self.allScrollView.frame.size.width, self.allScrollView.frame.size.height) collectionViewLayout:flowLayout];
     
     SpecialCollectionView.dataSource = self;
     SpecialCollectionView.delegate = self;
@@ -502,7 +564,7 @@ static NSString * const reuseIdentifier = @"cell";
 {
     CollectionViewLayoutZhanBo *flowLayout =[[CollectionViewLayoutZhanBo alloc]init];
     //    flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
-    RankCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(screenWidth*2, 0, self.allScrollView.frame.size.width, self.allScrollView.frame.size.height) collectionViewLayout:flowLayout];
+    RankCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(screenWidth*3, 0, self.allScrollView.frame.size.width, self.allScrollView.frame.size.height) collectionViewLayout:flowLayout];
     
     RankCollectionView.dataSource = self;
     RankCollectionView.delegate = self;
@@ -517,7 +579,7 @@ static NSString * const reuseIdentifier = @"cell";
 {
     CollectionViewLayoutZhanBo *flowLayout =[[CollectionViewLayoutZhanBo alloc]init];
     //    flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
-    FollowCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(screenWidth*3, 0, self.allScrollView.frame.size.width, self.allScrollView.frame.size.height) collectionViewLayout:flowLayout];
+    FollowCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(screenWidth*4, 0, self.allScrollView.frame.size.width, self.allScrollView.frame.size.height) collectionViewLayout:flowLayout];
     
     FollowCollectionView.dataSource = self;
     FollowCollectionView.delegate = self;
@@ -536,6 +598,9 @@ static NSString * const reuseIdentifier = @"cell";
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     NSInteger count = 0;
+    if (collectionView == PositiveCollectionView) {
+        count = self.arrayDataPositive.count;
+    }
     if (collectionView == CityCollectionView) {
         count = self.arrayDataCity.count;
     }
@@ -554,7 +619,9 @@ static NSString * const reuseIdentifier = @"cell";
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     NSArray *data = [[NSArray alloc] init];
-    
+    if (collectionView == PositiveCollectionView) {
+        data = self.arrayDataPositive;
+    }
     if (collectionView == CityCollectionView) {
         data = self.arrayDataCity;
     }
@@ -588,7 +655,11 @@ static NSString * const reuseIdentifier = @"cell";
         cell.voteNum.frame = CGRectMake(3+cell.voteString.frame.size.width, cell.voteNum.frame.origin.y, cell.frame.size.width, cell.voteNum.frame.size.height);
         cell.voteNum.text = [NSString stringWithFormat:@"%ld",[dataIndexDic[@"viewNum"] integerValue]];
     }
-    
+    if (collectionView == PositiveCollectionView) {//正片只显示分享
+        cell.voteString.text = @"";
+        cell.voteNum.text = @"";
+    }
+
     NSString * imageUrlStr = dataIndexDic[@"image"];
     if (imageUrlStr.length != 0) {
         
@@ -620,7 +691,9 @@ static NSString * const reuseIdentifier = @"cell";
     NSLog(@"NSInteger activeID = %ld",(long)activeID);
     
     NSArray *data = [[NSArray alloc] init];
-    
+    if (collectionView == PositiveCollectionView) {
+        data = self.arrayDataPositive;
+    }
     if (collectionView == CityCollectionView) {
         data = self.arrayDataCity;
     }
@@ -649,7 +722,7 @@ static NSString * const reuseIdentifier = @"cell";
         palyView.title= self.videoDetail.title=dataNeed[@"title"];
         self.videoDetail.httpData=dataNeed;
         self.videoDetail.delegate = self;
-        if (collectionView == SpecialCollectionView) {
+        if (collectionView == SpecialCollectionView || collectionView == PositiveCollectionView) {//春晚正片的显示与专场一样
             self.videoDetail.isSpecial = YES;
         }else {
             self.videoDetail.isSpecial = NO;
@@ -685,10 +758,11 @@ static NSString * const reuseIdentifier = @"cell";
     CGFloat offX = self.allScrollView.contentOffset.x;
     int currentPage = offX/self.allScrollView.frame.size.width;
     isAddRefresh = NO;
-    if (currentPage == 0) [self refreshCity];
-    if (currentPage == 1) [self refreshSpecial];
-    if (currentPage == 2) [self refreshRank];
-    if (currentPage == 3) [self refreshFollow];
+    if (currentPage == 0) [self refreshPositive];
+    if (currentPage == 1) [self refreshCity];
+    if (currentPage == 2) [self refreshSpecial];
+    if (currentPage == 3) [self refreshRank];
+    if (currentPage == 4) [self refreshFollow];
 }
 
 -(void)VideoDetailController_forSpringIsFinshedFollow//关注刷新
@@ -709,18 +783,20 @@ static NSString * const reuseIdentifier = @"cell";
 -(void)onShareVideo:(UIButton *)button
 {
     NSArray *data = [[NSArray alloc] init];
-    int pageNumber = self.movingView.center.x/(screenWidth/4);
-
+    int pageNumber = self.movingView.center.x/(screenWidth/5);
     if (pageNumber==0) {
-        data = self.arrayDataCity;
+        data = self.arrayDataPositive;
     }
     if (pageNumber==1) {
-        data = self.arrayDataSpecial;
+        data = self.arrayDataCity;
     }
     if (pageNumber==2) {
-        data = self.arrayDataRank;
+        data = self.arrayDataSpecial;
     }
     if (pageNumber==3) {
+        data = self.arrayDataRank;
+    }
+    if (pageNumber==4) {
         data = self.arrayDataFollow;
     }
     
@@ -776,7 +852,8 @@ static NSString * const reuseIdentifier = @"cell";
     if (self.videoDetail != nil) {
         self.videoDetail.httpData=@{};
     }
-    if (self.arrayDataCity == nil && self.arrayDataFollow==nil && self.arrayDataRank==nil && self.arrayDataSpecial==nil) {
+    if (self.arrayDataCity == nil && self.arrayDataFollow==nil && self.arrayDataRank==nil && self.arrayDataSpecial==nil && self.arrayDataPositive==nil) {
+        self.arrayDataPositive = [[NSMutableArray alloc] init];
         self.arrayDataCity = [[NSMutableArray alloc] init];
         self.arrayDataSpecial = [[NSMutableArray alloc] init];
         self.arrayDataRank = [[NSMutableArray alloc] init];
@@ -789,10 +866,67 @@ static NSString * const reuseIdentifier = @"cell";
 
 -(void)refresh
 {
+    [self refreshPositive];
     [self refreshCity];
     [self refreshSpecial];
     [self refreshRank];
     [self refreshFollow];
+}
+
+-(void)refreshPositive//春晚正片
+{
+    NSMutableDictionary *paramesRows=[NSMutableDictionary dictionary];
+    
+    NSInteger rowsCount = (self.arrayDataPositive.count/10)*(isAddRefresh?10:0);
+    paramesRows[@"rows"] =[NSString stringWithFormat:@"%ld",(long)rowsCount];
+    paramesRows[@"type"] =@"positive";
+
+    NSString * httpUrl = [NSString stringWithFormat:@"%@type=positive",getSpringVideoListServer];
+    isAddRefresh = YES;
+    [ISQHttpTool getHttp:httpUrl contentType:nil params:paramesRows success:^(id res) {
+        NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:res options:NSJapaneseEUCStringEncoding error:nil];
+                NSLog(@"showVoide positive===== %@",dic);
+        if ([dic[@"retMsg"] integerValue]==1004) {
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"" message:@"正片未到播放时间，您可以尝试其它栏目，请保持关注哦" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+            [alert show];
+            return ;
+        }
+        if ([dic[@"retMsg"] integerValue]==1003) {//type为空
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"" message:@"正片暂时无法播放，您可以尝试其它栏目，请保持关注哦" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+            [alert show];
+            return ;
+        }
+        if (rowsCount == self.arrayDataPositive.count) {
+            [self.arrayDataPositive addObjectsFromArray:dic[@"retData"]];
+        }
+        else if (rowsCount<self.arrayDataPositive.count && rowsCount != 0&&self.arrayDataPositive.count%rowsCount!=0){//当数据已经全部获取且数量不为整十数时后：比如：一共有12条数据时
+            NSInteger last = self.arrayDataPositive.count%rowsCount;
+            for (int i = 0; i<last; i++) {
+                [self.arrayDataPositive removeLastObject];
+            }
+            [self.arrayDataPositive addObjectsFromArray:dic[@"retData"]];
+        }
+        else {
+            self.arrayDataPositive = dic[@"retData"];
+        }
+        [PositiveCollectionView reloadData];
+        
+        id cityID = [user_info objectForKey:userCityID];
+        if (isCurrentCity && cityID== nil) {//在首次注册的用户使用时
+            showBanner = [[NSString alloc] init];
+            showBanner = dic[@"showBanner"];
+            [ISQHttpTool getHttp:showBanner contentType:nil params:nil success:^(id image) {
+                UIImage * image2 = [UIImage imageWithData:image];
+                self.imageView.image = image2;
+            } failure:^(NSError *erro) {
+                
+            }];
+        }
+        
+    } failure:^(NSError *erro) {
+        
+    }];
+    
 }
 
 -(void)refreshCity
@@ -979,25 +1113,27 @@ static NSString * const reuseIdentifier = @"cell";
         change_Pid = pid;
         change_Cid = cid;
     }
-    [self refresh];
+    [self refreshCity];
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:@"searchDisplayView"]) {
-        int pageNumber = self.movingView.center.x/(screenWidth/4);
+        int pageNumber = self.movingView.center.x/(screenWidth/5);
         searchTableViewController * search = segue.destinationViewController;
-        if (pageNumber==0) {
+        if (pageNumber==0) search.type = @"positive";
+        if (pageNumber==1) {
             search.type = @"city";
             search.isCurrentCity = isCurrentCity;
             search.pid = change_Pid;
             search.cid = change_Cid;
         }
-        if (pageNumber==1) search.type = @"special";
-        if (pageNumber==2) search.type = @"rank";
-        if (pageNumber==3) search.type = @"follow";
+        if (pageNumber==2) search.type = @"special";
+        if (pageNumber==3) search.type = @"rank";
+        if (pageNumber==4) search.type = @"follow";
         
         search.searched = ^(NSString * type){
+            if ([type isEqualToString:@"positive"]) [self refreshPositive];
             if ([type isEqualToString:@"city"]) [self refreshCity];
             if ([type isEqualToString:@"special"]) [self refreshSpecial];
             if ([type isEqualToString:@"rank"]) [self refreshRank];
