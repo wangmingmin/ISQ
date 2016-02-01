@@ -20,7 +20,7 @@
 static NSString * const reuseIdentifier = @"cell";
 #define backColor [UIColor groupTableViewBackgroundColor]
 
-@interface zhanBoViewController ()<UIScrollViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,VideoDetailController_forSpringDelegate,SRRefreshDelegate,UISearchBarDelegate, UISearchDisplayDelegate,changeCityTableViewControllerDelegate>
+@interface zhanBoViewController ()<UIScrollViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,VideoDetailController_forSpringDelegate,SRRefreshDelegate,UISearchBarDelegate, UISearchDisplayDelegate,changeCityTableViewControllerDelegate,UIAlertViewDelegate>
 @property (nonatomic, strong) UIScrollView * allScrollView;//节目列表总视图
 @property (nonatomic, strong) UIView * tabBarView;//春晚简介，最新动态，投票规则
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;//赶紧来报名吧
@@ -74,6 +74,8 @@ static NSString * const reuseIdentifier = @"cell";
     BOOL isCurrentCity;//是否是当前市
     int change_Pid;//选择后的省id
     int change_Cid;//选择后的城市id
+    
+    NSTimer * timerLast;
 }
 
 - (void)viewDidLoad {
@@ -873,6 +875,32 @@ static NSString * const reuseIdentifier = @"cell";
     [self refreshFollow];
 }
 
+static int haoMiao = 0;
+-(void)changeTimeFromAlert:(NSTimer *)timer
+{
+    UIAlertView * alert = timer.userInfo;
+    haoMiao--;
+    alert.message = [NSString stringWithFormat:@"您可以尝试其它栏目，请保持关注哦,距离播放时间还有：%@",[self getTimeStringBy:haoMiao]];
+}
+
+-(NSString *)getTimeStringBy:(double)timeMiao
+{
+    int day = timeMiao/(3600*24);
+    int hour = (timeMiao-day*(60*60*24))/3600;
+    int miu = (timeMiao-day*(60*60*24)-hour*3600)/60;
+    int sec = timeMiao-day*(60*60*24)-hour*3600-miu*60;
+    NSString * stringKKKKKK = [NSString stringWithFormat:@"%d天%d时%d分%d秒",day,hour,miu,sec];
+    return stringKKKKKK;
+}
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag==-1) {
+        [timerLast invalidate];
+        timerLast = nil;
+    }
+}
+
 -(void)refreshPositive//春晚正片
 {
     NSMutableDictionary *paramesRows=[NSMutableDictionary dictionary];
@@ -887,8 +915,17 @@ static NSString * const reuseIdentifier = @"cell";
         NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:res options:NSJapaneseEUCStringEncoding error:nil];
                 NSLog(@"showVoide positive===== %@",dic);
         if ([dic[@"retMsg"] integerValue]==1004) {
-            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"" message:@"正片未到播放时间，您可以尝试其它栏目，请保持关注哦" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+            NSTimeInterval TimeInterval = [dic[@"retData"] doubleValue];//毫秒计算直接乘法
+            int timeMiao = haoMiao=TimeInterval/1000;
+            NSString * stringKKKKKK = [self getTimeStringBy:timeMiao];
+            
+            NSString * showString = [NSString stringWithFormat:@"您可以尝试其它栏目，请保持关注哦,距离播放时间还有：%@",stringKKKKKK];
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"正片未到播放时间" message:showString delegate:self cancelButtonTitle:@"确定" otherButtonTitles: nil];
+            alert.tag = -1;
             [alert show];
+
+            timerLast = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(changeTimeFromAlert:) userInfo:alert repeats:YES];
+            
             return ;
         }
         if ([dic[@"retMsg"] integerValue]==1003) {//type为空
