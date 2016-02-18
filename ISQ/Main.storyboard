@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="cJ8-6E-EKo">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="cJ8-6E-EKo">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -6143,6 +6143,7 @@
                         <outlet property="cityBtn" destination="mBz-yN-gTv" id="o6A-eE-EJt"/>
                         <outlet property="followBtn" destination="P9t-Me-NSM" id="58H-FI-nyw"/>
                         <outlet property="imageView" destination="7cb-nG-613" id="Y5R-fu-zIk"/>
+                        <outlet property="imageViewHConstraint" destination="7CV-8X-D7S" id="5R8-cd-DVs"/>
                         <outlet property="positiveBtn" destination="l6p-Lj-enN" id="ZkW-4D-kSh"/>
                         <outlet property="rankBtn" destination="Ddf-ux-EjG" id="Fda-yR-VSC"/>
                         <outlet property="searchItemButton" destination="5Bs-tZ-qea" id="xCl-Mp-LYA"/>

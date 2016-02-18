@@ -24,7 +24,7 @@ static NSString * const reuseIdentifier = @"cell";
 @property (nonatomic, strong) UIScrollView * allScrollView;//节目列表总视图
 @property (nonatomic, strong) UIView * tabBarView;//春晚简介，最新动态，投票规则
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;//赶紧来报名吧
-@property (weak, nonatomic) IBOutlet UIView *topButtonsView;//当前市、看专场、排行榜、我关注
+@property (weak, nonatomic) IBOutlet UIView *topButtonsView;//看正片、当前市、看专场、排行榜、我关注
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *searchItemButton;
 @property (nonatomic, strong) UIButton * introduceBtn;//春晚简介
 @property (nonatomic, strong) UIButton * trendsBtn;//最新动态
@@ -51,6 +51,7 @@ static NSString * const reuseIdentifier = @"cell";
 @property (nonatomic, strong) SRRefreshView *slimeViewFollow;
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *changeCityItemButton;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *imageViewHConstraint;
 @end
 
 @implementation zhanBoViewController
@@ -729,6 +730,9 @@ static NSString * const reuseIdentifier = @"cell";
         }else {
             self.videoDetail.isSpecial = NO;
         }
+        if (collectionView == PositiveCollectionView) {
+            self.videoDetail.isPositiveSpringVideo = YES;
+        }
         [self.navigationController pushViewController:palyView animated:YES];
         [palyView addChildViewController:self.videoDetail];
         [palyView.view addSubview:self.videoDetail.view];
@@ -743,10 +747,13 @@ static NSString * const reuseIdentifier = @"cell";
         palyView.title= self.videoDetail.title=dataIndexDic[@"title"];
         self.videoDetail.httpData=dataIndexDic;
         self.videoDetail.delegate = self;
-        if (collectionView == SpecialCollectionView) {
+        if (collectionView == SpecialCollectionView || collectionView == PositiveCollectionView) {
             self.videoDetail.isSpecial = YES;
         }else {
             self.videoDetail.isSpecial = NO;
+        }
+        if (collectionView == PositiveCollectionView) {
+            self.videoDetail.isPositiveSpringVideo = YES;
         }
         [self.navigationController pushViewController:palyView animated:YES];
         [palyView addChildViewController:self.videoDetail];
@@ -875,11 +882,48 @@ static NSString * const reuseIdentifier = @"cell";
     [self refreshFollow];
 }
 
+-(void)thereIsNoImageView{//没有春晚报名
+    self.imageViewHConstraint.constant = 0;
+    
+    CGFloat scrollViewOriginY = self.topButtonsView.frame.origin.y+ self.topButtonsView.frame.size.height;
+    self.allScrollView.frame = CGRectMake(0, scrollViewOriginY, screenWidth, screenHeight-scrollViewOriginY-tabBarHeight);
+    self.allScrollView.contentSize = CGSizeMake(screenWidth*5, self.allScrollView.contentSize.height);
+    
+    PositiveCollectionView.frame = CGRectMake(0, 0, self.allScrollView.frame.size.width, self.allScrollView.frame.size.height);
+    CityCollectionView.frame = CGRectMake(screenWidth, 0, self.allScrollView.frame.size.width, self.allScrollView.frame.size.height);
+    SpecialCollectionView.frame = CGRectMake(screenWidth*2, 0, self.allScrollView.frame.size.width, self.allScrollView.frame.size.height);
+    RankCollectionView.frame = CGRectMake(screenWidth*3, 0, self.allScrollView.frame.size.width, self.allScrollView.frame.size.height);
+    FollowCollectionView.frame = CGRectMake(screenWidth*4, 0, self.allScrollView.frame.size.width, self.allScrollView.frame.size.height);
+
+}
+
+-(void)checkShowBannerWithDic:(NSDictionary *)dic
+{
+    showBanner = [[NSString alloc] init];
+    if (dic[@"showBanner"] == nil || [dic[@"showBanner"] isKindOfClass:[NSNull class]]) {
+        [self thereIsNoImageView];
+        return ;
+    }
+    showBanner = dic[@"showBanner"];
+    if (showBanner.length == 0) {
+        [self thereIsNoImageView];
+        return ;
+    }
+}
+
 static int haoMiao = 0;
 -(void)changeTimeFromAlert:(NSTimer *)timer
 {
     UIAlertView * alert = timer.userInfo;
     haoMiao--;
+    if (haoMiao<=0 &&self.arrayDataPositive.count==0) {
+        [self refreshPositive];
+        haoMiao=0;
+        [alert dismissWithClickedButtonIndex:0 animated:YES];
+        [timerLast invalidate];
+        timerLast = nil;
+        return;
+    }
     alert.message = [NSString stringWithFormat:@"您可以尝试其它栏目，请保持关注哦,距离播放时间还有：%@",[self getTimeStringBy:haoMiao]];
 }
 
@@ -948,18 +992,6 @@ static int haoMiao = 0;
         }
         [PositiveCollectionView reloadData];
         
-        id cityID = [user_info objectForKey:userCityID];
-        if (isCurrentCity && cityID== nil) {//在首次注册的用户使用时
-            showBanner = [[NSString alloc] init];
-            showBanner = dic[@"showBanner"];
-            [ISQHttpTool getHttp:showBanner contentType:nil params:nil success:^(id image) {
-                UIImage * image2 = [UIImage imageWithData:image];
-                self.imageView.image = image2;
-            } failure:^(NSError *erro) {
-                
-            }];
-        }
-        
     } failure:^(NSError *erro) {
         
     }];
@@ -1013,8 +1045,7 @@ static int haoMiao = 0;
         }
         [CityCollectionView reloadData];
         if (isCurrentCity) {
-            showBanner = [[NSString alloc] init];
-            showBanner = dic[@"showBanner"];
+            [self checkShowBannerWithDic:dic];
             [ISQHttpTool getHttp:showBanner contentType:nil params:nil success:^(id image) {
                 UIImage * image2 = [UIImage imageWithData:image];
                 self.imageView.image = image2;
@@ -1057,8 +1088,7 @@ static int haoMiao = 0;
         
         id cityID = [user_info objectForKey:userCityID];
         if (isCurrentCity && cityID== nil) {//在首次注册的用户使用时
-            showBanner = [[NSString alloc] init];
-            showBanner = dic[@"showBanner"];
+            [self checkShowBannerWithDic:dic];
             [ISQHttpTool getHttp:showBanner contentType:nil params:nil success:^(id image) {
                 UIImage * image2 = [UIImage imageWithData:image];
                 self.imageView.image = image2;

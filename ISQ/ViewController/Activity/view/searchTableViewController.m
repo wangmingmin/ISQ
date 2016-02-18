@@ -340,7 +340,7 @@
         palyView.title= self.videoDetail.title=dataNeed[@"title"];
         self.videoDetail.httpData=dataNeed;
         self.videoDetail.delegate = self;
-        if ([self.type isEqualToString:@"special"]) {
+        if ([self.type isEqualToString:@"special"]||[self.type isEqualToString:@"positive"]) {
             self.videoDetail.isSpecial = YES;
         }else {
             self.videoDetail.isSpecial = NO;
@@ -359,10 +359,13 @@
         palyView.title= self.videoDetail.title=dataIndexDic[@"title"];
         self.videoDetail.httpData=dataIndexDic;
         self.videoDetail.delegate = self;
-        if ([self.type isEqualToString:@"special"]) {
+        if ([self.type isEqualToString:@"special"]||[self.type isEqualToString:@"positive"]) {
             self.videoDetail.isSpecial = YES;
         }else {
             self.videoDetail.isSpecial = NO;
+        }
+        if ([self.type isEqualToString:@"positive"]) {
+            self.videoDetail.isPositiveSpringVideo = YES;
         }
         [self.navigationController pushViewController:palyView animated:YES];
         [palyView addChildViewController:self.videoDetail];

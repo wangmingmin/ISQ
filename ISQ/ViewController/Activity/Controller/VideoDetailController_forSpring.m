@@ -125,10 +125,6 @@ typedef NSInteger DWPLayerScreenSizeMode;
         self.collectBtnRightConstraint.constant = 10;
         self.shareBtnLeftConstraint.constant = 10;
     }
-
-    if (self.isPositiveSpringVideo) {//春晚正片
-        self.tabbarview.hidden = YES;
-    }
 }
 
 
@@ -887,6 +883,9 @@ typedef NSInteger DWPLayerScreenSizeMode;
             browseCount.font = [UIFont systemFontOfSize:12];
             [headerView addSubview:browseCount];
 
+            if (self.isPositiveSpringVideo) {
+                voteLabel.hidden = voteCount.hidden = browseCount.hidden = YES;
+            }
         }
         if (section ==1) {
             UILabel * labelTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 60, headerView.frame.size.height)];
