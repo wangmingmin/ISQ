@@ -13,6 +13,8 @@
 #import "AppDelegate.h"
 #import "MJRefresh.h"
 #import "pinyin.h"
+#import "MD5Func.h"
+#import "HMAC-SHA1.h"
 
 @interface CitySelectController ()<MJNIndexViewDataSource>{
     
@@ -103,6 +105,22 @@
 #pragma mark - 获取城市数据
 -(void)getCityData
 {
+    
+    //LBS查询附近社区
+    AppDelegate *location = (AppDelegate*)[[UIApplication sharedApplication]delegate];
+    
+    NSString *url = @"http://192.168.2.107/isq1.0/public/index.php/rest/community/locationCommunity";
+    NSString *timestamp = [NSString stringWithFormat:@"%@",[HMAC_SHA1 getTime]];
+    NSString *key = @"FkFITeRW";
+    
+    NSString *s = [NSString stringWithFormat:@"%@%@lat=%flimit=%@lng=%ftimestamp=%@%@",@"GET",url,location.theLa,@"3",location.theLo,timestamp,key];
+    NSCharacterSet *URLBase64CharacterSet = [[NSCharacterSet characterSetWithCharactersInString:@"/+=\n:"] invertedSet];
+    NSString *str1 = [s stringByAddingPercentEncodingWithAllowedCharacters:URLBase64CharacterSet];
+    NSString *sign = [MD5Func md5:str1];
+    NSString *URL = [NSString stringWithFormat:@"%@?lat=%f&lng=%f&timestamp=%@&sign=%@&limit=%@",url,location.theLa,location.theLo,timestamp,sign,@"3"];
+    
+    NSLog(@"URL1---%@",URL);
+
     
     //建立一个字典，字典保存key是A-Z  值是数组
     index=[NSMutableDictionary dictionaryWithCapacity:0];

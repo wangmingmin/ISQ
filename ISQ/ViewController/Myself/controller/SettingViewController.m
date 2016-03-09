@@ -216,9 +216,8 @@
            [[EaseMob sharedInstance].chatManager asyncLogoffWithUnbindDeviceToken:YES completion:^(NSDictionary *info, EMError *error) {
                [self hideHud];
                if (error && error.errorCode != EMErrorServerNotLogin) {
+                   
                    [self showHint:error.description];
-                   
-                   
                    
                }else{
 //                   NSString * string_id = [user_info objectForKey:MyUserID];
@@ -232,6 +231,7 @@
                    [[NSURLCache sharedURLCache] removeAllCachedResponses];
                    //清除cookies
                    NSHTTPCookie *cookie;
+                   
                    NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
                    for (cookie in [storage cookies])
                    {
