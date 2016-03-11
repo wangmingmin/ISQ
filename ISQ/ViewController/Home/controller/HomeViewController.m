@@ -30,7 +30,7 @@
 #import "VideoDetailController_forSpring.h"
 #import "LoginViewController.h"
 #import "MainViewController.h"
-
+#import "meetingTableViewController.h"
 
 @interface HomeViewController()<IChatManagerDelegate,SRRefreshDelegate,AnnouncementCellDelegate,UIAlertViewDelegate>{
     
@@ -527,6 +527,8 @@ bool theTop=true;
             NSString *url = [NSString stringWithFormat:@"%@",tenementURL];
             webVC.theUrl = url;
         }
+//        meetingTableViewController * meeting = [[meetingTableViewController alloc] init];
+//        [self.navigationController pushViewController:meeting animated:YES];
 
     //新鲜事
     }else if ([[           segue identifier] isEqualToString:@"communityNewThing"]){
