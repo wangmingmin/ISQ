@@ -3993,7 +3993,7 @@
                                                                         <color key="titleShadowColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                                     </state>
                                                                     <connections>
-                                                                        <segue destination="Ibd-Rv-P9O" kind="push" identifier="discuss" id="iXc-sz-r0h"/>
+                                                                        <action selector="OnDiscussToShowMeeting:" destination="BY0-zg-Jnc" eventType="touchUpInside" id="aDF-M4-v3F"/>
                                                                     </connections>
                                                                 </button>
                                                                 <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wbj-mz-6PO" customClass="HomeButton3">
@@ -7164,8 +7164,8 @@
         <image name="topBar_blue.png" width="500" height="80"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Kse-dT-5RL"/>
         <segue reference="Xf2-a7-gAb"/>
         <segue reference="K5Q-0k-Yu3"/>
+        <segue reference="Kse-dT-5RL"/>
     </inferredMetricsTieBreakers>
 </document>

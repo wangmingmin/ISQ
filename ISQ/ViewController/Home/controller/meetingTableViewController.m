@@ -9,12 +9,14 @@
 #import "meetingTableViewController.h"
 #import "TableViewMeetingCell.h"
 #import "meetingDetailsTableViewController.h"
-
+#import "ISQHttpTool.h"
+#import "SRRefreshView.h"
 #define cellHeight 120
-@interface meetingTableViewController ()<UISearchBarDelegate,UISearchResultsUpdating>
+@interface meetingTableViewController ()<UISearchBarDelegate,UISearchResultsUpdating,SRRefreshDelegate,UIScrollViewDelegate>
 @property (strong, nonatomic) UISearchController * searchController;
-@property (strong, nonatomic) NSArray * tableArrayData;
-@property (strong, nonatomic) NSArray * searchArrayData;
+@property (strong, nonatomic) NSArray * discussArray;
+@property (strong, nonatomic) NSArray * staticArrayForSearch;
+@property (nonatomic, strong) SRRefreshView *slimeViewPositive;
 @end
 
 @implementation meetingTableViewController
@@ -32,7 +34,105 @@
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = cellHeight;
     self.tableView.backgroundColor = [UIColor groupTableViewBackgroundColor];
+    
+    self.discussArray = [[NSArray alloc] init];
+    self.staticArrayForSearch = [[NSArray alloc] init];
     [self initSearchController];
+    [self refresh];
+    [self.tableView addSubview:self.slimeViewPositive];
+    self.edgesForExtendedLayout = NO;
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+}
+
+#pragma mark - 刷新
+- (SRRefreshView *)slimeViewPositive
+{
+    if (!_slimeViewPositive) {
+        _slimeViewPositive = [[SRRefreshView alloc] init];
+        _slimeViewPositive.delegate = self;
+        _slimeViewPositive.upInset = 0;
+        _slimeViewPositive.slimeMissWhenGoingBack = YES;
+        _slimeViewPositive.slime.bodyColor = [UIColor grayColor];
+        _slimeViewPositive.slime.skinColor = [UIColor grayColor];
+        _slimeViewPositive.slime.lineWith = 1;
+        _slimeViewPositive.slime.shadowBlur = 4;
+        _slimeViewPositive.slime.shadowColor = [UIColor grayColor];
+        _slimeViewPositive.backgroundColor = self.view.backgroundColor;
+        
+    }
+    return _slimeViewPositive;
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    CGFloat offY = scrollView.contentOffset.y;
+    if (offY<0) {
+        [_slimeViewPositive scrollViewDidScroll];
+    }
+}
+
+-(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    CGFloat offY = scrollView.contentOffset.y;
+//    if (offY > self.tableView.contentSize.height-self.tableView.frame.size.height+50) {
+//        [self refresh];
+//    }
+    if (offY<0) {
+        [_slimeViewPositive scrollViewDidEndDraging];
+    }
+}
+
+
+#pragma mark - slimeRefresh delegate
+//刷新列表
+- (void)slimeRefreshStartRefresh:(SRRefreshView *)refreshView
+{
+    [self.slimeViewPositive endRefresh];
+}
+
+-(void)slimeRefreshEndRefresh:(SRRefreshView *)refreshView
+{
+    [self.searchDisplayController.searchBar resignFirstResponder];
+    if (!self.searchController.searchBar.isFirstResponder) {
+        [self refresh];
+    }
+}
+
+//#pragma mark 上拉加载更多
+//- (void)addFooter
+//{
+//    __block UITableView * vc = self.tableView;
+//    
+//    // 添加上拉刷新尾部控件
+//    [self.tableView addFooterWithCallback:^{
+//        // 进入刷新状态就会回调这个Block
+//        
+//        //模拟延迟加载数据，因此2秒后才调用）
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//            //结束刷新
+//            [vc footerEndRefreshing];
+//        });
+//    }];
+//}
+
+-(void)refresh
+{
+    self.searchController.searchBar.text = @"";
+    NSString * httpStr = [NSString stringWithFormat:@"%@?communityId=%ld",getYSTList,717];
+    [ISQHttpTool getHttp:httpStr contentType:nil params:nil success:^(id resData) {
+        NSDictionary * dataDic = [NSJSONSerialization JSONObjectWithData:resData options:NSJapaneseEUCStringEncoding error:nil];
+//        NSLog(@"meeting Dic = %@",dataDic);
+        self.discussArray = dataDic[@"retData"];
+        self.staticArrayForSearch = self.discussArray;
+        [self.tableView reloadData];
+    } failure:^(NSError *erro) {
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"" message:@"暂无议事信息,稍后请重试" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+        [alert show];
+    }];
 }
 
 -(void)initSearchController
@@ -51,22 +151,34 @@
 -(void)updateSearchResultsForSearchController:(UISearchController *)searchController
 {
     NSString *filterString = searchController.searchBar.text;
+    if (filterString.length==0) {
+        return;
+    }
+
+    NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"SELF.title CONTAINS[cd] %@",filterString];
     
-    NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"SELF.provinceName CONTAINS[cd] %@",filterString];
-    
-    self.searchArrayData = [NSMutableArray arrayWithArray:[self.tableArrayData filteredArrayUsingPredicate:resultPredicate]];
-    
+    self.discussArray = [NSMutableArray arrayWithArray:[self.staticArrayForSearch filteredArrayUsingPredicate:resultPredicate]];
     [self.tableView reloadData];
 }
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    [self.tableView reloadData];
+    if (self.discussArray.count == 0) {
+        NSString * httpStr = [NSString stringWithFormat:@"%@?communityId=%ld&title=%@",getYSTList,[[user_info objectForKey:userCityID] integerValue],searchBar.text];
+        [ISQHttpTool getHttp:httpStr contentType:nil params:nil success:^(id resData) {
+            NSDictionary * dataDic = [NSJSONSerialization JSONObjectWithData:resData options:NSJapaneseEUCStringEncoding error:nil];
+            self.discussArray = dataDic[@"retData"];
+            [self.tableView reloadData];
+        } failure:^(NSError *erro) {
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"" message:@"暂无结果" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+            [alert show];
+        }];
+    }
 }
 
--(void)viewDidAppear:(BOOL)animated
+-(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
-    [super viewDidAppear:animated];
+    self.discussArray = self.staticArrayForSearch;
     [self.tableView reloadData];
 }
 
@@ -78,7 +190,7 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 10;
+    return self.discussArray.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -87,14 +199,28 @@
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    TableViewMeetingCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cellmy" forIndexPath:indexPath];
+    NSDictionary * oneDataDic = self.discussArray[indexPath.section];
     
+    TableViewMeetingCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cellmy" forIndexPath:indexPath];
+    cell.tag = [oneDataDic[@"id"] integerValue];
     // Configure the cell...
-    cell.titleMeeting = [NSString stringWithFormat:@"全国政协十二届四次会议首场新闻发布会.%ld - %ld",(long)indexPath.section,(long)indexPath.row];
-    cell.Lables = @[@"十二大",@"新闻发布",@"人大",@"热议"];
-    cell.timeDate = [NSDate date];
-    cell.howManyPeople = 2000;
-    cell.isInProgress = YES;
+    cell.titleMeeting = oneDataDic[@"title"];
+    cell.Lables = [oneDataDic[@"tag"] componentsSeparatedByString:@","];
+    cell.timeDate = [NSDate dateWithTimeIntervalSince1970:[oneDataDic[@"start_time"] longLongValue]];
+    cell.howManyPeople = [oneDataDic[@"count"] integerValue];
+    cell.isInProgress = [oneDataDic[@"status"] boolValue];
+    
+    if ([oneDataDic[@"image"] isKindOfClass:[NSNull class]]) {
+        cell.imageMeeting = nil;
+    }else{
+        NSURL *url = [NSURL URLWithString:oneDataDic[@"image"]];
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+        NSURLSessionDataTask * task = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+            UIImage * image = [UIImage imageWithData:data];
+            cell.imageMeeting = image;
+        }];
+        [task resume];
+    }
     cell.imageMeeting = [[UIImage alloc] init];
     return cell;
 }
@@ -118,8 +244,11 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    TableViewMeetingCell * cell = (TableViewMeetingCell *)[tableView cellForRowAtIndexPath:indexPath];
+    NSInteger tagId = cell.tag;
     [self.searchController dismissViewControllerAnimated:YES completion:nil];
-    meetingDetailsTableViewController * Details = [[meetingDetailsTableViewController alloc] init];
+    
+    meetingDetailsTableViewController * Details = [[meetingDetailsTableViewController alloc] initWithID:tagId];
     [self.navigationController pushViewController:Details animated:YES];
 }
 /*

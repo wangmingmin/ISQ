@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface meetingDetailsTableViewController : UITableViewController
-
+-(instancetype)initWithID:(NSInteger)ID;
 @end

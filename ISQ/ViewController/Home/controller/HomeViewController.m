@@ -463,6 +463,11 @@ bool theTop=true;
     
 }
 
+- (IBAction)OnDiscussToShowMeeting:(UIButton *)sender {
+  //议事厅
+    meetingTableViewController * meeting = [[meetingTableViewController alloc] init];
+    [self.navigationController pushViewController:meeting animated:YES];
+}
 #pragma mark - Segues
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     
@@ -518,7 +523,7 @@ bool theTop=true;
         [alertView show];
         
         
-   //议事厅
+   //议事厅-已经断开storyboard的segue链接，改为原生
     }else if ([[segue identifier] isEqualToString:@"discuss"]){        
         SeconWebController *webVC = [segue destinationViewController];
         if ([[saveCityName objectForKey:saveCommunityName] hasPrefix:@"百步亭"]) {
@@ -527,8 +532,6 @@ bool theTop=true;
             NSString *url = [NSString stringWithFormat:@"%@",tenementURL];
             webVC.theUrl = url;
         }
-//        meetingTableViewController * meeting = [[meetingTableViewController alloc] init];
-//        [self.navigationController pushViewController:meeting animated:YES];
 
     //新鲜事
     }else if ([[           segue identifier] isEqualToString:@"communityNewThing"]){

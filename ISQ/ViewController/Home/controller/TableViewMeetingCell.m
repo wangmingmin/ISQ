@@ -56,6 +56,9 @@
         self.imageWithConstraint.constant = self.stateLeadingConstraint.constant=self.titleleadingConstraint.constant=self.timeleadingConstraint.constant=self.lablesViewLeadingConstraint.constant=0;
     }else{
         self.imageViewShow.image = imageMeeting;
+        [UIView animateWithDuration:0.1 animations:^{
+            self.imageViewShow.alpha = 1;
+        }];
     }
 }
 
@@ -72,12 +75,8 @@
         });
 
     }else{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            UIImage * image = [self drawImageCoustem:self.blueIcon.frame withColor:[UIColor colorWithRed:60.0/255.0 green:183.0/255.0 blue:250.0/255.0 alpha:1]];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self.blueIcon.image = image;
-            });
-        });
+        UIImage * image = [self drawImageCoustem:self.blueIcon.frame withColor:[UIColor colorWithRed:60.0/255.0 green:183.0/255.0 blue:250.0/255.0 alpha:1]];
+        self.blueIcon.image = image;
     }
 }
 
@@ -100,29 +99,33 @@
 
 -(void)setLables:(NSArray *)Lables
 {
+    [self.labelsView.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [obj removeFromSuperview];
+    }];
+    
     if (Lables.count == 0 || Lables== nil) {
         self.labelsView.backgroundColor = self.backgroundColor;
     }else {
         int width = 60;
-        NSArray * colors = @[[UIColor blackColor],[UIColor redColor],[UIColor blueColor],[UIColor greenColor]];
+        NSArray * colors = @[
+                             [UIColor colorWithRed:107.0/255.0 green:108.0/255.0 blue:109.0/255 alpha:1],
+                             [UIColor colorWithRed:246.0/255.0 green:97.0/255.0 blue:134.0/255.0 alpha:1],
+                             [UIColor colorWithRed:93.0/255.0 green:190.0/255.0 blue:247.0/255.0 alpha:1],
+                             [UIColor colorWithRed:125.0/255.0 green:175.0/255.0 blue:134.0/255.0 alpha:1]
+                             ];
 //        colors = [[GKRandomSource sharedRandom] arrayByShufflingObjectsInArray:colors];
         
         [Lables enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                // 耗时的操作
-                UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(idx * (width+15), 0, width, self.labelsView.frame.size.height)];
-                label.textAlignment = NSTextAlignmentCenter;
-                label.font = [UIFont systemFontOfSize:12];
-                label.layer.borderColor = [UIColor groupTableViewBackgroundColor].CGColor;
-                label.layer.borderWidth = 0.7;
-                label.layer.cornerRadius = 4;
-                label.layer.masksToBounds = YES;
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    label.text = (NSString *)obj;
-                    label.textColor = colors[idx];
-                    [self.labelsView addSubview:label];
-                });
-            });
+            UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(idx * (width+15), 0, width, self.labelsView.frame.size.height)];
+            label.textAlignment = NSTextAlignmentCenter;
+            label.font = [UIFont systemFontOfSize:12];
+            label.layer.borderColor = [UIColor groupTableViewBackgroundColor].CGColor;
+            label.layer.borderWidth = 0.7;
+            label.layer.cornerRadius = 4;
+            label.layer.masksToBounds = YES;
+            label.text = (NSString *)obj;
+            label.textColor = colors[idx];
+            [self.labelsView addSubview:label];
         }];
     }
 }
