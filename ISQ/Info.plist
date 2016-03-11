@@ -129,7 +129,7 @@
 		<string>voip</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
-	<string>RegisterLogin</string>
+	<string>Main</string>
 	<key>UIMainStoryboardFile</key>
 	<string>RegisterLogin</string>
 	<key>UIRequiredDeviceCapabilities</key>

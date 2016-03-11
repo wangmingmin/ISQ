@@ -31,8 +31,10 @@
 #import "UserDetailViewController.h"
 #import "ImgURLisFount.h"
 #import "MyFriendsModle.h"
+#import "MainViewController.h"
+#import "LoginViewController.h"
 
-@interface MessageViewController ()<MJNIndexViewDataSource, UISearchDisplayDelegate,SRRefreshDelegate, UISearchBarDelegate,IChatManagerDelegate>{
+@interface MessageViewController ()<MJNIndexViewDataSource, UISearchDisplayDelegate,SRRefreshDelegate, UISearchBarDelegate,IChatManagerDelegate,UIAlertViewDelegate>{
     NSMutableArray *data;
     NSArray *filterData;
     UISearchDisplayController *searchDisplayController;
@@ -1151,39 +1153,78 @@ NSInteger applyCount; //通知的条数
 //从服务器获取并刷新用户自身数据及好友数据
 -(void)updateFriendsData{
     
-    NSDictionary *arry=@{@"user":[user_info objectForKey:userAccount],@"pwd":[user_info objectForKey:userPassword]};
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/plain"];
-    
-    [manager GET:IMFRIENDSDATA parameters:arry success:^(AFHTTPRequestOperation *operation, id responseObject) {
-
+    if ([user_info objectForKey:userAccount] && [user_info objectForKey:userPassword]) {
+        
+        NSDictionary *arry=@{@"user":[user_info objectForKey:userAccount],@"pwd":[user_info objectForKey:userPassword]};
+        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+        
+        manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+        manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+        manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/plain"];
+        
+        [manager GET:IMFRIENDSDATA parameters:arry success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            
             [theCache setPlist:responseObject forKey:IMCACHEDATA];
             //将responseObject通过NSJSONSerialization转化为字典
-             _friendsDataSource = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+            _friendsDataSource = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
             //对好友数据进行数据分组a~z#
             [self formattingFriendsData];
             [self theIndexForFriends];
             [self.frindsTableview reloadData];
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-        if([theCache plistForKey:IMCACHEDATA]){
             
-            _friendsDataSource=[NSJSONSerialization JSONObjectWithData:[theCache plistForKey:IMCACHEDATA] options:NSJapaneseEUCStringEncoding error:nil];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            
+            if([theCache plistForKey:IMCACHEDATA]){
+                
+                _friendsDataSource=[NSJSONSerialization JSONObjectWithData:[theCache plistForKey:IMCACHEDATA] options:NSJapaneseEUCStringEncoding error:nil];
+                //对好友数据进行数据分组a~z#
+                [self formattingFriendsData];
+            }
+            
             //对好友数据进行数据分组a~z#
             [self formattingFriendsData];
-        }
+            [self theIndexForFriends];
+            [self.frindsTableview reloadData];
+            
+        }];
         
-        //对好友数据进行数据分组a~z#
-        [self formattingFriendsData];        
-        [self theIndexForFriends];
-        [self.frindsTableview reloadData];
+
         
-    }];
+    }
     
+//    NSDictionary *arry=@{@"user":[user_info objectForKey:userAccount],@"pwd":[user_info objectForKey:userPassword]};
+//    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+//    
+//    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+//    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+//    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/plain"];
+//    
+//    [manager GET:IMFRIENDSDATA parameters:arry success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//
+//            [theCache setPlist:responseObject forKey:IMCACHEDATA];
+//            //将responseObject通过NSJSONSerialization转化为字典
+//             _friendsDataSource = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+//            //对好友数据进行数据分组a~z#
+//            [self formattingFriendsData];
+//            [self theIndexForFriends];
+//            [self.frindsTableview reloadData];
+//        
+//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//        
+//        if([theCache plistForKey:IMCACHEDATA]){
+//            
+//            _friendsDataSource=[NSJSONSerialization JSONObjectWithData:[theCache plistForKey:IMCACHEDATA] options:NSJapaneseEUCStringEncoding error:nil];
+//            //对好友数据进行数据分组a~z#
+//            [self formattingFriendsData];
+//        }
+//        
+//        //对好友数据进行数据分组a~z#
+//        [self formattingFriendsData];        
+//        [self theIndexForFriends];
+//        [self.frindsTableview reloadData];
+//        
+//    }];
+//    
 }
 
 //删除好友
@@ -1362,20 +1403,49 @@ NSInteger applyCount; //通知的条数
 }
 
 
--(void)viewWillAppear:(BOOL)animated
-{
+-(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    if (self.messageTableview) {
-        [self refreshDataSource];
+    
+    //判断登陆后获取数据
+    if ([user_info objectForKey:userPassword]&&[user_info objectForKey:userAccount]){
+    
+        if (self.messageTableview) {
+            [self refreshDataSource];
+        }
+        
+        [self registerNotifications];
+    }else{
+        
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"立刻登陆使用聊天功能" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    
+    [alertView show]; 
         
     }
-    
-    [self registerNotifications];
 }
--(void)viewWillDisappear:(BOOL)animated
-{
+
+-(void)viewWillDisappear:(BOOL)animated{ 
     [super viewWillDisappear:animated];
     [self unregisterNotifications];
+}
+
+#pragma mark - UIAlertView delegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+
+    if (buttonIndex == 0) {
+        
+        UIStoryboard *mainStory=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        MainViewController *mainVC=[mainStory instantiateViewControllerWithIdentifier:@"MainViewStory"];
+        self.navigationController.navigationBar.hidden=YES;
+        [self.navigationController pushViewController:mainVC animated:YES];
+        
+    }else if (buttonIndex == 1){
+    
+        UIStoryboard *board=[UIStoryboard storyboardWithName:@"RegisterLogin" bundle:nil];
+        LoginViewController *loginVC=[board instantiateViewControllerWithIdentifier:@"LoginStoryboard"];
+        [self.navigationController pushViewController:loginVC animated:YES];
+
+    }
 }
 
 

@@ -13,7 +13,11 @@
 #import "SRRefreshView.h"
 #import "ChekMyHelpController.h"
 #import "CommunityViewController.h"
-@interface CommunityHelpController ()<SRRefreshDelegate>{
+#import "LoginViewController.h"
+#import "MainViewController.h"
+
+
+@interface CommunityHelpController ()<SRRefreshDelegate,UIAlertViewDelegate>{
     
     UIView *ComLine;
     AppDelegate *locationDelegate;
@@ -44,19 +48,46 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
-    if (locationDelegate.theAddress) {
+    
+    if ([user_info objectForKey:userAccount] && [user_info objectForKey:userPassword]) {
         
-        self.helpAdressEd.text=locationDelegate.theAddress;
+        if (locationDelegate.theAddress) {
+            
+            self.helpAdressEd.text=locationDelegate.theAddress;
+        }
+        if ([user_info objectForKey:@"saveCommunityName"]) {
+            self.helpCommunity_ed.text=[user_info objectForKey:@"saveCommunityName"];
+            name = self.helpCommunity_ed.text;
+            
+        }
+        //上拉加载
+        [self addFooter];
+        //下拉刷新
+        [self addHeader];
     }
-    if ([user_info objectForKey:@"saveCommunityName"]) {
-        self.helpCommunity_ed.text=[user_info objectForKey:@"saveCommunityName"];
-        name = self.helpCommunity_ed.text;
+    
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"立刻登陆访问找书记" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    
+    [alertView show];
+    
+}
+
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+
+    if (buttonIndex == 0) {
         
+        UIStoryboard *mainStory=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        MainViewController *mainVC=[mainStory instantiateViewControllerWithIdentifier:@"MainViewStory"];
+        self.navigationController.navigationBar.hidden=YES;
+        [self.navigationController pushViewController:mainVC animated:YES];
+        
+    }else if (buttonIndex == 1){
+    
+        UIStoryboard *board=[UIStoryboard storyboardWithName:@"RegisterLogin" bundle:nil];
+        LoginViewController *loginVC=[board instantiateViewControllerWithIdentifier:@"LoginStoryboard"];
+        [self.navigationController pushViewController:loginVC animated:YES];
     }
-    //上拉加载
-    [self addFooter];
-    //下拉刷新
-    [self addHeader];
 }
 
 - (void)addHeader

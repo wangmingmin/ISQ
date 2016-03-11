@@ -718,30 +718,55 @@ static NSString *kGroupName = @"GroupName";
 //从服务器获取环信相关数据
 -(void)getImFriendsData{
     
-    NSDictionary *arry=@{@"user":[userSetting objectForKey:userAccount],@"pwd":[userSetting objectForKey:userPassword]};
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/plain"];
-    
-    
-    
-    [manager GET:IMFRIENDSDATA parameters:arry success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    if ([userSetting objectForKey:userAccount] && [userSetting objectForKey:userPassword]) {
         
-        NSDictionary *myData=[NSJSONSerialization JSONObjectWithData:responseObject options:NSJapaneseEUCStringEncoding  error:nil];
+        NSDictionary *arry=@{@"user":[userSetting objectForKey:userAccount],@"pwd":[userSetting objectForKey:userPassword]};
+        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
         
+        manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+        manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+        manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/plain"];
         
-        if ([myData[@"code"] intValue]==0) {
+        [manager GET:IMFRIENDSDATA parameters:arry success:^(AFHTTPRequestOperation *operation, id responseObject) {
             
-            [theCache setPlist:responseObject forKey:IMCACHEDATA];
+            NSDictionary *myData=[NSJSONSerialization JSONObjectWithData:responseObject options:NSJapaneseEUCStringEncoding  error:nil];
             
-        }
-        
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-    }];
+            
+            if ([myData[@"code"] intValue]==0) {
+                
+                [theCache setPlist:responseObject forKey:IMCACHEDATA];
+                
+            }
+            
+            
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            
+        }];
+
+    }
+    
+//    NSDictionary *arry=@{@"user":[userSetting objectForKey:userAccount],@"pwd":[userSetting objectForKey:userPassword]};
+//    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+//    
+//    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+//    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+//    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/plain"];
+//    
+//    [manager GET:IMFRIENDSDATA parameters:arry success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//        
+//        NSDictionary *myData=[NSJSONSerialization JSONObjectWithData:responseObject options:NSJapaneseEUCStringEncoding  error:nil];
+//        
+//        
+//        if ([myData[@"code"] intValue]==0) {
+//            
+//            [theCache setPlist:responseObject forKey:IMCACHEDATA];
+//            
+//        }
+//        
+//        
+//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//        
+//    }];
     
 }
 
@@ -776,7 +801,6 @@ static NSString *kGroupName = @"GroupName";
 +(void)theShareSDK:(NSDictionary  *)dic{
 
         NSString *imagePath =   [NSString stringWithFormat:@"%@",dic[@"img"]? dic[@"img"]:@""];
-    
         NSString *theTitle =    [NSString stringWithFormat:@"%@",dic[@"title"]? dic[@"title"]:@""];
         NSString *theDesc =     [NSString stringWithFormat:@"%@",dic[@"desc"]? dic[@"desc"]:@""];
         NSString *shareURL =    [NSString stringWithFormat:@"%@",dic[@"url"]? dic[@"url"]:@""];

@@ -28,7 +28,11 @@
 #import "OrderDetailModel.h"
 #import "OrderDetailimageCell.h"
 #import "VideoDetailController_forSpring.h"
-@interface HomeViewController()<IChatManagerDelegate,SRRefreshDelegate,AnnouncementCellDelegate>{
+#import "LoginViewController.h"
+#import "MainViewController.h"
+
+
+@interface HomeViewController()<IChatManagerDelegate,SRRefreshDelegate,AnnouncementCellDelegate,UIAlertViewDelegate>{
     
     AppDelegate *HomeDelegate;
     NSArray *hornData;
@@ -495,15 +499,24 @@ bool theTop=true;
         
     //物业
     }else if ([[segue identifier] isEqualToString:@"tenement"]){
-        SeconWebController *webVC = [segue destinationViewController];
-        if ([[saveCityName objectForKey:saveCommunityName] hasPrefix:@"百步亭"]) {
+        
+        if ([user_info objectForKey:userAccount] && [user_info objectForKey:userPassword]) {
             
-            NSString *url = [NSString stringWithFormat:@"%@%@%@",@"http://webapp.wisq.cn/property/index/uid/",[saveCityName objectForKey:MyUserID],@".html"];
-            webVC.theUrl = url;
-        }else{
-            NSString *url = [NSString stringWithFormat:@"%@",tenementURL];
-            webVC.theUrl = url;
+            SeconWebController *webVC = [segue destinationViewController];
+            if ([[saveCityName objectForKey:saveCommunityName] hasPrefix:@"百步亭"]) {
+                
+                NSString *url = [NSString stringWithFormat:@"%@%@%@",@"http://webapp.wisq.cn/property/index/uid/",[saveCityName objectForKey:MyUserID],@".html"];
+                webVC.theUrl = url;
+            }else{
+                NSString *url = [NSString stringWithFormat:@"%@",tenementURL];
+                webVC.theUrl = url;
+            }
         }
+        
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"立刻登陆访问物业" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+        
+        [alertView show];
+        
         
    //议事厅
     }else if ([[segue identifier] isEqualToString:@"discuss"]){        
@@ -534,6 +547,28 @@ bool theTop=true;
         
     }
 }
+
+
+#pragma mark - UIALertView delagate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    
+    if (buttonIndex == 0) {
+        
+        UIStoryboard *mainStory=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        MainViewController *mainVC=[mainStory instantiateViewControllerWithIdentifier:@"MainViewStory"];
+        self.navigationController.navigationBar.hidden=YES;
+        [self.navigationController pushViewController:mainVC animated:YES];
+        
+    }else if (buttonIndex == 1) {
+        
+        UIStoryboard *board=[UIStoryboard storyboardWithName:@"RegisterLogin" bundle:nil];
+        LoginViewController *loginVC=[board instantiateViewControllerWithIdentifier:@"LoginStoryboard"];
+        [self.navigationController pushViewController:loginVC animated:YES];
+
+    }
+}
+
 
 - (IBAction)HomeSelectCity_bt:(id)sender {
     

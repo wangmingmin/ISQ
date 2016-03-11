@@ -829,13 +829,10 @@ typedef NSInteger DWPLayerScreenSizeMode;
 #pragma  mark 参与人员
 -(void)joinPeople{
     
-    
-    
     numOfJoin=[[UILabel alloc]init];
     numOfJoin.width=200;
     numOfJoin.height=35;
     numOfJoin.text=[NSString stringWithFormat:@"%@ 人参加活动",data.joinNum];
-    
     
     if (data.activeID) {
         joinView=[[UIView alloc]init];
@@ -918,7 +915,6 @@ typedef NSInteger DWPLayerScreenSizeMode;
 - (void)callSender:(UIButton *)sender{
 
      NSString *phoneNum = [[NSString alloc] initWithFormat:@"%@",phoneArray[sender.tag]];
-    NSLog(@"phoneNum--%@",phoneNum);
     
     
     //拨号

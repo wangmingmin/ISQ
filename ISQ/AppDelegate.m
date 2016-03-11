@@ -359,51 +359,99 @@ bool islogin=false;
 //信息更改一次就重新获取用户信息
 -(void)ToObtainInfo:(NSString*)str{
     
-    
-    NSString *http=[requestTheCodeURL stringByAppendingString:@"login"];
-    NSDictionary *arry=@{@"phone":[user_info objectForKey:userAccount],@"pwd":[user_info objectForKey:userPassword]};
-    
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/plain"];
-    
-    [manager GET:http parameters:arry success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    if ([user_info objectForKey:userAccount] && [user_info objectForKey:userPassword]) {
         
+        NSString *http=[requestTheCodeURL stringByAppendingString:@"login"];
+        NSDictionary *arry=@{@"phone":[user_info objectForKey:userAccount],@"pwd":[user_info objectForKey:userPassword]};
         
-        NSLog(@"%lu",(unsigned long)[responseObject length]);
-        NSData *thaData = responseObject;
-        returnString=  [NSJSONSerialization JSONObjectWithData:thaData options:NSJapaneseEUCStringEncoding  error:nil];
+        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+        manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+        manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+        manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/plain"];
         
-        //用户信息存储
-        [user_info setObject:returnString[userAccount] forKey:userAccount];
-        [user_info setObject:returnString[userNickname] forKey:userNickname];
-        [user_info setObject:returnString[userGender] forKey:userGender];
-        [user_info setObject:returnString[userIntro] forKey:userIntro];
-        [user_info setObject:returnString[userCommunityID] forKey:userCommunityID];
-        [user_info setObject:returnString[userIsqCode] forKey:userIsqCode];
-        [user_info setObject:returnString[userCityID] forKey:userCityID];
-        
-        [user_info setObject:returnString[MyUserID] forKey:MyUserID];
-        
+        [manager GET:http parameters:arry success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            
+            
+            NSLog(@"%lu",(unsigned long)[responseObject length]);
+            NSData *thaData = responseObject;
+            returnString=  [NSJSONSerialization JSONObjectWithData:thaData options:NSJapaneseEUCStringEncoding  error:nil];
+            
+            //用户信息存储
+            [user_info setObject:returnString[userAccount] forKey:userAccount];
+            [user_info setObject:returnString[userNickname] forKey:userNickname];
+            [user_info setObject:returnString[userGender] forKey:userGender];
+            [user_info setObject:returnString[userIntro] forKey:userIntro];
+            [user_info setObject:returnString[userCommunityID] forKey:userCommunityID];
+            [user_info setObject:returnString[userIsqCode] forKey:userIsqCode];
+            [user_info setObject:returnString[userCityID] forKey:userCityID];
+            
+            [user_info setObject:returnString[MyUserID] forKey:MyUserID];
+            
             warInt=true;
-        ISQLog(@"userNickname-%@--userGender--%@--userIntro%@--",returnString[userNickname],returnString[userGender],returnString[userIntro]);
-        
-        
-        if (str==nil || [str length]<=0) {
-            [self warning2:@"保存成功！"];
-        }
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-        NSLog(@"Error:%@",error);
-        warInt=false;
-        if (str==nil || [str length]<=0) {
-             [self warning2:@"服务器未响应，请检查网络" ];
-        }
-        
-        
-    }];
+            ISQLog(@"userNickname-%@--userGender--%@--userIntro%@--",returnString[userNickname],returnString[userGender],returnString[userIntro]);
+            
+            
+            if (str==nil || [str length]<=0) {
+                [self warning2:@"保存成功！"];
+            }
+            
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            
+            NSLog(@"Error:%@",error);
+            warInt=false;
+            if (str==nil || [str length]<=0) {
+                [self warning2:@"服务器未响应，请检查网络" ];
+            }
+            
+            
+        }];
+
+    }
+    
+//    NSString *http=[requestTheCodeURL stringByAppendingString:@"login"];
+//    NSDictionary *arry=@{@"phone":[user_info objectForKey:userAccount],@"pwd":[user_info objectForKey:userPassword]};
+//    
+//    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+//    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+//    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+//    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/plain"];
+//    
+//    [manager GET:http parameters:arry success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//        
+//        
+//        NSLog(@"%lu",(unsigned long)[responseObject length]);
+//        NSData *thaData = responseObject;
+//        returnString=  [NSJSONSerialization JSONObjectWithData:thaData options:NSJapaneseEUCStringEncoding  error:nil];
+//        
+//        //用户信息存储
+//        [user_info setObject:returnString[userAccount] forKey:userAccount];
+//        [user_info setObject:returnString[userNickname] forKey:userNickname];
+//        [user_info setObject:returnString[userGender] forKey:userGender];
+//        [user_info setObject:returnString[userIntro] forKey:userIntro];
+//        [user_info setObject:returnString[userCommunityID] forKey:userCommunityID];
+//        [user_info setObject:returnString[userIsqCode] forKey:userIsqCode];
+//        [user_info setObject:returnString[userCityID] forKey:userCityID];
+//        
+//        [user_info setObject:returnString[MyUserID] forKey:MyUserID];
+//        
+//            warInt=true;
+//        ISQLog(@"userNickname-%@--userGender--%@--userIntro%@--",returnString[userNickname],returnString[userGender],returnString[userIntro]);
+//        
+//        
+//        if (str==nil || [str length]<=0) {
+//            [self warning2:@"保存成功！"];
+//        }
+//        
+//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//        
+//        NSLog(@"Error:%@",error);
+//        warInt=false;
+//        if (str==nil || [str length]<=0) {
+//             [self warning2:@"服务器未响应，请检查网络" ];
+//        }
+//        
+//        
+//    }];
     
 }
 

@@ -28,7 +28,9 @@
 #import "ActivityDetailImgController.h"
 #import "AnnouncementModel.h"
 #import "zhanBoViewController.h"
-@interface ActivityViewController ()<SRRefreshDelegate>
+#import "LoginViewController.h"
+
+@interface ActivityViewController ()<SRRefreshDelegate,UIAlertViewDelegate>
 
 @property (nonatomic,strong) UIButton *leftButton;
 @property (nonatomic,strong) SearchBar *searchBar;
@@ -279,34 +281,56 @@
     locationCityDelegate = (AppDelegate*)[[UIApplication sharedApplication]delegate];
     CGFloat la = locationCityDelegate.theLa;
     CGFloat lo = locationCityDelegate.theLo;
-    NSString *location_x = [NSString stringWithFormat:@"%f",la];
-    NSString *location_y = [NSString stringWithFormat:@"%f",lo];
+    NSString *location_y = [NSString stringWithFormat:@"%f",la];
+    NSString *location_x = [NSString stringWithFormat:@"%f",lo];
     NSString *account = [userInfo objectForKey:userAccount];
-    NSDictionary *dict = @{@"location_x":location_x,@"location_y":location_y,@"userAccount":account,@"rows":[NSString stringWithFormat:@"%ld",(long)rows]};
+    //区分登陆模式
+    if ([user_info objectForKey:userAccount] && [user_info objectForKey:userPassword]) {
+    
+        NSDictionary *dict = @{@"location_x":location_x,@"location_y":location_y,@"userAccount":account,@"rows":[NSString stringWithFormat:@"%ld",(long)rows]};
+        [ISQHttpTool getHttp:getNearActiveList contentType:nil params:dict success:^(id responseObject) {
+            
+            if (rows==0) {
+                nearRows=0;
+                nearData = [[NSMutableArray alloc] init];
+            }
+            NSDictionary *nearDic=[[NSDictionary alloc]init];
+            nearDic= [NSJSONSerialization JSONObjectWithData:responseObject options:NSJapaneseEUCStringEncoding  error:nil];
+            nearRows=nearRows+[nearDic[@"nearavtives"] count];
+            
+            if (nearDic)
+                [nearData addObjectsFromArray:nearDic[@"nearavtives"]];
+            [self hideHud];
+            
+            [self.nearTableView reloadData];
+            
+        } failure:^(NSError *erro) {
+            
+            [self hideHud];
+        }];
+    }
+    
+    NSDictionary *dict = @{@"location_x":location_x,@"location_y":location_y,@"rows":[NSString stringWithFormat:@"%ld",(long)rows]};
     [ISQHttpTool getHttp:getNearActiveList contentType:nil params:dict success:^(id responseObject) {
-       
+        
         if (rows==0) {
             nearRows=0;
             nearData = [[NSMutableArray alloc] init];
         }
+        NSDictionary *nearDic=[[NSDictionary alloc]init];
+        nearDic= [NSJSONSerialization JSONObjectWithData:responseObject options:NSJapaneseEUCStringEncoding  error:nil];
+        nearRows=nearRows+[nearDic[@"nearavtives"] count];
         
+        if (nearDic)
+            [nearData addObjectsFromArray:nearDic[@"nearavtives"]];
+        [self hideHud];
         
-       NSDictionary *nearDic=[[NSDictionary alloc]init];
-       
-       nearDic= [NSJSONSerialization JSONObjectWithData:responseObject options:NSJapaneseEUCStringEncoding  error:nil];
-       
-       nearRows=nearRows+[nearDic[@"nearavtives"] count];
-      
-       if (nearDic)
-       [nearData addObjectsFromArray:nearDic[@"nearavtives"]];
-       [self hideHud];
+        [self.nearTableView reloadData];
         
-      [self.nearTableView reloadData];
+    } failure:^(NSError *erro) {
         
-  } failure:^(NSError *erro) {
-      [self hideHud];
-  }];
-    
+        [self hideHud];
+    }];
 }
 
 
@@ -430,29 +454,48 @@
 
 //热门分享
 - (void)hotshareAction:(UIButton *)sender{
-
-    if(fromHttpData){
-    NSMutableDictionary *dic1=[NSMutableDictionary dictionary];
     
-    dic1[@"img"]=fromHttpData[sender.tag][@"shareUrl"];
-    dic1[@"title"]=fromHttpData[sender.tag][@"title"];
-    dic1[@"desc"]=fromHttpData[sender.tag][@"content"];
-    
-    if ([fromHttpData[sender.tag][@"titleUrl"] isEqualToString:@"SPRING_NIGHT"]) {
+    if ([user_info objectForKey:userAccount] && [user_info objectForKey:userPassword]) {
         
-        dic1[@"url"] = @"http://webapp.wisq.cn/Spring/index";
-
-    }else{
-    
-        dic1[@"url"]=fromHttpData[sender.tag][@"titleUrl"];
-        
+        if(fromHttpData){
+            NSMutableDictionary *dic1=[NSMutableDictionary dictionary];
+            
+            dic1[@"img"]=fromHttpData[sender.tag][@"shareUrl"];
+            dic1[@"title"]=fromHttpData[sender.tag][@"title"];
+            dic1[@"desc"]=fromHttpData[sender.tag][@"content"];
+            
+            if ([fromHttpData[sender.tag][@"titleUrl"] isEqualToString:@"SPRING_NIGHT"]) {
+                
+                dic1[@"url"] = @"http://webapp.wisq.cn/Spring/index";
+                
+            }else{
+                
+                dic1[@"url"]=fromHttpData[sender.tag][@"titleUrl"];
+                
+            }
+            
+            [MainViewController theShareSDK:dic1];
+            
+        }
     }
-
-    [MainViewController theShareSDK:dic1];
-        
-    }
+    
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"登陆后才能使用此功能，立刻登陆" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    
+    [alertView show];
+    
 }
 
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+
+    if (buttonIndex == 1) {
+        
+        UIStoryboard *board=[UIStoryboard storyboardWithName:@"RegisterLogin" bundle:nil];
+        LoginViewController *loginVC=[board instantiateViewControllerWithIdentifier:@"LoginStoryboard"];
+        [self.navigationController pushViewController:loginVC animated:YES];
+
+    }
+}
 
 //热门参加
 - (void)hotJoinAction:(UIButton *)sender{
