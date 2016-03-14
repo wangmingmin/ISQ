@@ -14,7 +14,7 @@
 #define cellHeight 120
 @interface meetingTableViewController ()<UISearchBarDelegate,UISearchResultsUpdating,SRRefreshDelegate,UIScrollViewDelegate>
 @property (strong, nonatomic) UISearchController * searchController;
-@property (strong, nonatomic) NSArray * discussArray;
+@property (strong, nonatomic) NSMutableArray * discussArray;
 @property (strong, nonatomic) NSArray * staticArrayForSearch;
 @property (nonatomic, strong) SRRefreshView *slimeViewPositive;
 @end
@@ -35,11 +35,13 @@
     self.tableView.estimatedRowHeight = cellHeight;
     self.tableView.backgroundColor = [UIColor groupTableViewBackgroundColor];
     
-    self.discussArray = [[NSArray alloc] init];
+    self.discussArray = [[NSMutableArray alloc] initWithCapacity:10];
     self.staticArrayForSearch = [[NSArray alloc] init];
+    rowInt = 0;
     [self initSearchController];
     [self refresh];
     [self.tableView addSubview:self.slimeViewPositive];
+    [self addFooter];
     self.edgesForExtendedLayout = NO;
 }
 
@@ -78,9 +80,9 @@
 -(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
     CGFloat offY = scrollView.contentOffset.y;
-//    if (offY > self.tableView.contentSize.height-self.tableView.frame.size.height+50) {
-//        [self refresh];
-//    }
+    if (offY > self.tableView.contentSize.height-self.tableView.frame.size.height+50) {
+        [self refresh];
+    }
     if (offY<0) {
         [_slimeViewPositive scrollViewDidEndDraging];
     }
@@ -94,39 +96,48 @@
     [self.slimeViewPositive endRefresh];
 }
 
+static int rowInt;
 -(void)slimeRefreshEndRefresh:(SRRefreshView *)refreshView
 {
     [self.searchDisplayController.searchBar resignFirstResponder];
     if (!self.searchController.searchBar.isFirstResponder) {
+        self.staticArrayForSearch = @[];
         [self refresh];
     }
 }
 
-//#pragma mark 上拉加载更多
-//- (void)addFooter
-//{
-//    __block UITableView * vc = self.tableView;
-//    
-//    // 添加上拉刷新尾部控件
-//    [self.tableView addFooterWithCallback:^{
-//        // 进入刷新状态就会回调这个Block
-//        
-//        //模拟延迟加载数据，因此2秒后才调用）
-//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//            //结束刷新
-//            [vc footerEndRefreshing];
-//        });
-//    }];
-//}
+#pragma mark 上拉加载更多
+- (void)addFooter
+{
+    __block UITableView * vc = self.tableView;
+    
+    // 添加上拉刷新尾部控件
+    [self.tableView addFooterWithCallback:^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            //结束刷新
+            [vc footerEndRefreshing];
+        });
+    }];
+}
 
 -(void)refresh
 {
     self.searchController.searchBar.text = @"";
-    NSString * httpStr = [NSString stringWithFormat:@"%@?communityId=%ld",getYSTList,717];
+    rowInt = ((int)self.staticArrayForSearch.count/10)*10;
+    NSString * httpStr = [NSString stringWithFormat:@"%@?communityId=%d&row=%d",getYSTList,[[user_info objectForKey:userCityID] intValue],rowInt];
     [ISQHttpTool getHttp:httpStr contentType:nil params:nil success:^(id resData) {
         NSDictionary * dataDic = [NSJSONSerialization JSONObjectWithData:resData options:NSJapaneseEUCStringEncoding error:nil];
 //        NSLog(@"meeting Dic = %@",dataDic);
-        self.discussArray = dataDic[@"retData"];
+        NSArray * dataArr = dataDic[@"retData"];
+        self.discussArray = (NSMutableArray *)self.staticArrayForSearch;
+        [dataArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            if (rowInt==self.staticArrayForSearch.count) {
+                [self.discussArray addObject:obj];
+            }else{
+                int index = rowInt+(int)idx+1;
+                [self.discussArray replaceObjectAtIndex:index withObject:obj];
+            }
+        }];
         self.staticArrayForSearch = self.discussArray;
         [self.tableView reloadData];
     } failure:^(NSError *erro) {
@@ -163,22 +174,20 @@
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    if (self.discussArray.count == 0) {
-        NSString * httpStr = [NSString stringWithFormat:@"%@?communityId=%ld&title=%@",getYSTList,[[user_info objectForKey:userCityID] integerValue],searchBar.text];
-        [ISQHttpTool getHttp:httpStr contentType:nil params:nil success:^(id resData) {
-            NSDictionary * dataDic = [NSJSONSerialization JSONObjectWithData:resData options:NSJapaneseEUCStringEncoding error:nil];
-            self.discussArray = dataDic[@"retData"];
-            [self.tableView reloadData];
-        } failure:^(NSError *erro) {
-            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"" message:@"暂无结果" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
-            [alert show];
-        }];
-    }
+    NSString * httpStr = [NSString stringWithFormat:@"%@?communityId=%d&title=%@",getYSTList,[[user_info objectForKey:userCityID] intValue],searchBar.text];
+    [ISQHttpTool getHttp:httpStr contentType:nil params:nil success:^(id resData) {
+        NSDictionary * dataDic = [NSJSONSerialization JSONObjectWithData:resData options:NSJapaneseEUCStringEncoding error:nil];
+        self.discussArray = dataDic[@"retData"];
+        [self.tableView reloadData];
+    } failure:^(NSError *erro) {
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"" message:@"暂无结果" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+        [alert show];
+    }];
 }
 
 -(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
-    self.discussArray = self.staticArrayForSearch;
+    self.discussArray = (NSMutableArray *)self.staticArrayForSearch;
     [self.tableView reloadData];
 }
 
