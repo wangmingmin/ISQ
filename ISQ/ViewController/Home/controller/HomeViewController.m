@@ -511,12 +511,13 @@ bool theTop=true;
                 NSString *url = [NSString stringWithFormat:@"%@",tenementURL];
                 webVC.theUrl = url;
             }
-        }
+        }else{
         
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"立刻登陆访问物业" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"登陆后才能使用此功能" message:@"立刻登陆" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
         
         [alertView show];
-        
+            
+        }
         
    //议事厅
     }else if ([[segue identifier] isEqualToString:@"discuss"]){        

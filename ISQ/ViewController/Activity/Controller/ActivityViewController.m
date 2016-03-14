@@ -385,9 +385,18 @@
 #pragma mark - clicks
 
 - (void)startAction:(UIButton *)button{
-    UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    StartActivityViewController *startActivityVC = [storyBoard instantiateViewControllerWithIdentifier:@"startActivity"];
-    [self.navigationController pushViewController:startActivityVC animated:YES];
+    
+    if ([user_info objectForKey:userAccount] && [user_info objectForKey:userPassword]) {
+        
+        UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        StartActivityViewController *startActivityVC = [storyBoard instantiateViewControllerWithIdentifier:@"startActivity"];
+        [self.navigationController pushViewController:startActivityVC animated:YES];
+    }else{
+    
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"此功能需要登陆才能使用" message:@"立刻登陆" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+        
+        [alertView show];
+    }
 }
 
 
@@ -405,50 +414,81 @@
 //点赞活动
 - (void)clickzAction:(UIButton *)sender{
     
-    sender.selected=!sender.selected;
+    if ([user_info objectForKey:userAccount] && [user_info objectForKey:userPassword]) {
+        
+        sender.selected=!sender.selected;
+        
+        if (sender.selected==YES) {
+            
+            //赞
+            [self praise:sender];
+            
+            
+        }else {
+            
+            //取消赞
+            [self cancelPraise:sender];
+        }
+
+    }else{
     
-    if (sender.selected==YES) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"此功能需要登陆才能使用" message:@"立刻登陆" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
         
-        //赞
-        [self praise:sender];
-       
+        [alertView show];
         
-    }else {
-        
-        //取消赞
-        [self cancelPraise:sender];
     }
 }
+    
+    
 
 
 //参加活动
 - (void)joinAction:(UIButton *)sender{
     
-    [self loadJoinData:sender];
+    if ([user_info objectForKey:userAccount] && [user_info objectForKey:userPassword]) {
+        
+        [self loadJoinData:sender];
+    }else{
+    
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"此功能需要登陆才能使用" message:@"立刻登陆" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    
+    [alertView show];
+        
+    }
     
 }
 
 
 //附近活动分享
 - (void)nearshareAction:(UIButton *)sender{
-
-    NSMutableDictionary *shareDic=[NSMutableDictionary dictionary];
-    NSArray *imgArray = [[NSArray alloc] init];
-    NSString *imgPaths = nearData[sender.tag-20000][@"image"];
-    if ([self isNullString:imgPaths]) {
-        
-        shareDic[@"img"] = [NSString stringWithFormat:@"icon58"];
-        
-    }else{
-        
-        imgArray = [imgPaths componentsSeparatedByString:@","];
-        shareDic[@"img"]= imgArray?imgArray[0]:@"";        
-    }    
-    shareDic[@"title"]=nearData[sender.tag-20000][@"title"];
-    shareDic[@"desc"]=nearData[sender.tag-20000][@"detail"];
-    shareDic[@"url"]=@"http://down.app.wisq.cn";
     
-    [MainViewController theShareSDK:shareDic];
+    if ([user_info objectForKey:userAccount] && [user_info objectForKey:userPassword]) {
+    
+        NSMutableDictionary *shareDic=[NSMutableDictionary dictionary];
+        NSArray *imgArray = [[NSArray alloc] init];
+        NSString *imgPaths = nearData[sender.tag-20000][@"image"];
+        if ([self isNullString:imgPaths]) {
+            
+            shareDic[@"img"] = [NSString stringWithFormat:@"icon58"];
+            
+        }else{
+            
+            imgArray = [imgPaths componentsSeparatedByString:@","];
+            shareDic[@"img"]= imgArray?imgArray[0]:@"";
+        }
+        shareDic[@"title"]=nearData[sender.tag-20000][@"title"];
+        shareDic[@"desc"]=nearData[sender.tag-20000][@"detail"];
+        shareDic[@"url"]=@"http://down.app.wisq.cn";
+        
+        [MainViewController theShareSDK:shareDic];
+    }else{
+    
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"此功能需要登陆才能使用" message:@"立刻登陆" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+        
+        [alertView show];
+    }
+
+    
 }
 
 
@@ -460,28 +500,29 @@
         if(fromHttpData){
             NSMutableDictionary *dic1=[NSMutableDictionary dictionary];
             
-            dic1[@"img"]=fromHttpData[sender.tag][@"shareUrl"];
+            dic1[@"img"]=fromHttpData[sender.tag][@"image"];
             dic1[@"title"]=fromHttpData[sender.tag][@"title"];
             dic1[@"desc"]=fromHttpData[sender.tag][@"content"];
             
-            if ([fromHttpData[sender.tag][@"titleUrl"] isEqualToString:@"SPRING_NIGHT"]) {
+            if ([fromHttpData[sender.tag][@"titleUrl"] isEqualToString:@"springVideoShow"]) {
                 
-                dic1[@"url"] = @"http://webapp.wisq.cn/Spring/index";
+                dic1[@"url"] = @"http://down.app.wisq.cn";
                 
             }else{
                 
                 dic1[@"url"]=fromHttpData[sender.tag][@"titleUrl"];
-                
             }
             
             [MainViewController theShareSDK:dic1];
             
         }
-    }
+    }else{
     
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"登陆后才能使用此功能，立刻登陆" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"登陆后才能使用此功能" message:@"立刻登陆" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
     
     [alertView show];
+        
+    }
     
 }
 
@@ -493,7 +534,6 @@
         UIStoryboard *board=[UIStoryboard storyboardWithName:@"RegisterLogin" bundle:nil];
         LoginViewController *loginVC=[board instantiateViewControllerWithIdentifier:@"LoginStoryboard"];
         [self.navigationController pushViewController:loginVC animated:YES];
-
     }
 }
 

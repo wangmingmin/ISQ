@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MyselfViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate>
+@interface MyselfViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,UIGestureRecognizerDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *theTableview;
-- (IBAction)signButton:(id)sender;
+
 
 @end

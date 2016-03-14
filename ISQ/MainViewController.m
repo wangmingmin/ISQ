@@ -804,7 +804,7 @@ static NSString *kGroupName = @"GroupName";
         NSString *theTitle =    [NSString stringWithFormat:@"%@",dic[@"title"]? dic[@"title"]:@""];
         NSString *theDesc =     [NSString stringWithFormat:@"%@",dic[@"desc"]? dic[@"desc"]:@""];
         NSString *shareURL =    [NSString stringWithFormat:@"%@",dic[@"url"]? dic[@"url"]:@""];
-        
+    
         //构造分享内容
         id<ISSContent> publishContent = [ShareSDK content:theDesc
                                            defaultContent:nil

@@ -20,7 +20,7 @@
 #import "ActivityDetailImgController.h"
 #import "VideoDetailController.h"
 #import "MainViewController.h"
-@interface LaunchActivityController (){
+@interface LaunchActivityController ()<SRRefreshDelegate>{
     
     NSMutableArray *fromHttpData;
     NSInteger joinRows;

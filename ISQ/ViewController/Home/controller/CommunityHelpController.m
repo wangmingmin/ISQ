@@ -49,7 +49,7 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
     
-    if ([user_info objectForKey:userAccount] && [user_info objectForKey:userPassword]) {
+    if ([user_info objectForKey:userAccount] && [user_info objectForKey:userPassword]){
         
         if (locationDelegate.theAddress) {
             
@@ -64,11 +64,12 @@
         [self addFooter];
         //下拉刷新
         [self addHeader];
-    }
+    }else{
     
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"立刻登陆访问找书记" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"登陆后才能使用此功能" message:@"立刻登陆" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
     
     [alertView show];
+    }
     
 }
 

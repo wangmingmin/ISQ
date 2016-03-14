@@ -13,12 +13,9 @@
 #import "ImgURLisFount.h"
 
 @interface LoginViewController (){
-//    MBProgressHUD *HUD;
     NSDictionary *returnString;
 
     EGOCache *theCache;
-    
-    
 }
 
 @end
@@ -128,18 +125,19 @@ bool warInt=true;
 }
 
 
--(BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
-{
-    
+-(BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer{
     
     return NO;
 }
 
+- (IBAction)visitorAction:(id)sender {
+    
+    UIStoryboard *mainStory=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    MainViewController *mainVC=[mainStory instantiateViewControllerWithIdentifier:@"MainViewStory"];
+    self.navigationController.navigationBar.hidden=YES;
+    [self.navigationController pushViewController:mainVC animated:YES];
 
-- (IBAction)greenAdmin:(id)sender {
-    
-    
-    
-    
 }
+
+
 @end

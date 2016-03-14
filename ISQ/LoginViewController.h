@@ -14,9 +14,7 @@
 - (IBAction)login_bt:(id)sender;
 
 @property (weak, nonatomic) IBOutlet UIView *loginPassView;
-
 @property (weak, nonatomic) IBOutlet UIView *loginLoginView;
-- (IBAction)greenAdmin:(id)sender;
-
+- (IBAction)visitorAction:(id)sender;
 
 @end

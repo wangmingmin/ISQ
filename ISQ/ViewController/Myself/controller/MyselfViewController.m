@@ -46,10 +46,11 @@
 
 
 
+#pragma mark - tableView delagate
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return 9;
+    return 8;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -70,17 +71,26 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.useravatar.layer.masksToBounds = YES;
         cell.useravatar.layer.cornerRadius = 75/2;
-        cell.useravatar.layer.borderWidth = 2.0;
         cell.useravatar.layer.borderColor = [UIColor whiteColor].CGColor;
-        cell.userName.text=[user_info objectForKey:userNickname];
-        if([user_info objectForKey:MYSELFHEADNAME]){
-            NSURL *imgUrl=[[NSURL alloc]initWithString:[user_info objectForKey:MYSELFHEADNAME]];
-            [cell.useravatar setImageWithURL:imgUrl placeholderImage:[UIImage imageNamed:@"placeholder-avatar"]];
-            if ([ImgURLisFount TheDataIsImgage:cell.useravatar.image]==2) {
-            }else{
-                cell.useravatar.image=[UIImage imageNamed:@"defuleImg"];
-            }}else{
-            cell.useravatar.image=[UIImage imageNamed:@"defuleImg"];
+        cell.statusLabel.text = [user_info objectForKey:userNickname];
+        //已登陆与未登录两种状态
+        if ([user_info objectForKey:userAccount] && [user_info objectForKey:userPassword]) {
+            if([user_info objectForKey:MYSELFHEADNAME]){
+                NSURL *imgUrl=[[NSURL alloc]initWithString:[user_info objectForKey:MYSELFHEADNAME]];
+                [cell.useravatar setImageWithURL:imgUrl placeholderImage:[UIImage imageNamed:@"personalData"]];
+                if ([ImgURLisFount TheDataIsImgage:cell.useravatar.image]==2) {
+                }else{
+                    cell.useravatar.image = [UIImage imageNamed:@"personalData"];
+                }}else{
+                    cell.useravatar.image=[UIImage imageNamed:@"personalData"];
+                }
+        }else{
+        
+        cell.useravatar.image = [UIImage imageNamed:@"personalData"];
+        cell.statusLabel.text = @"立刻登陆";
+        cell.statusLabel.userInteractionEnabled = YES;
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(stateButtonAction:)];
+        [cell.statusLabel addGestureRecognizer:tap];
         }
         
     }else if(indexPath.row == 1||indexPath.row == 3||indexPath.row == 7){
@@ -98,10 +108,6 @@
             cell.myIocn.image=[UIImage imageNamed:@"my3"];
             cell.ContName.text=@"我的收藏";
         }else if (indexPath.row == 6){
-            cell.myIocn.image = [UIImage imageNamed:@"liwu"];
-            cell.ContName.text = @"我的礼物";
-            
-        }else if (indexPath.row == 8){
             cell.myIocn.image = [UIImage imageNamed:@"my4"];
             cell.ContName.text = @"设置";
         }
@@ -120,51 +126,71 @@
        
     }
     else if(indexPath.row == 2){
-        PersonalDataViewController *personalDataVC = [storyBoard instantiateViewControllerWithIdentifier:@"personalData"];
-        [personalDataVC setHidesBottomBarWhenPushed:YES];
-        [self.navigationController pushViewController:personalDataVC animated:YES];
+        
+        if ([user_info objectForKey:userAccount] && [user_info objectForKey:userPassword]) {
+            
+            PersonalDataViewController *personalDataVC = [storyBoard instantiateViewControllerWithIdentifier:@"personalData"];
+            [personalDataVC setHidesBottomBarWhenPushed:YES];
+            [self.navigationController pushViewController:personalDataVC animated:YES];
+        }else{
+        
+        UIAlertView *alertView  = [[UIAlertView alloc] initWithTitle:@"登陆后可查看" message:@"立刻登陆" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+        
+        [alertView show];
+            
+        }
+       
         
     }else if(indexPath.row == 4){
-        MyActivityViewController *myActivityVC = [storyBoard instantiateViewControllerWithIdentifier:@"myactivity"];
-        [myActivityVC setHidesBottomBarWhenPushed:YES];
-        [self.navigationController pushViewController:myActivityVC animated:YES];
+        
+        if ([user_info objectForKey:userAccount] && [user_info objectForKey:userPassword]){
+        
+            MyActivityViewController *myActivityVC = [storyBoard instantiateViewControllerWithIdentifier:@"myactivity"];
+            [myActivityVC setHidesBottomBarWhenPushed:YES];
+            [self.navigationController pushViewController:myActivityVC animated:YES];
+        }else{
+        
+        UIAlertView *alertView  = [[UIAlertView alloc] initWithTitle:@"登陆后可查看" message:@"立刻登陆" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+        
+        [alertView show];
+        }
         
     }else if (indexPath.row == 5){
-//        MyFavoriteViewController *myFavorite = [storyBoard instantiateViewControllerWithIdentifier:@"myfavorite"];
-//        [myFavorite setHidesBottomBarWhenPushed:YES];
-//        [self.navigationController pushViewController:myFavorite animated:YES];
-        UIAlertView *alertView1 = [[UIAlertView alloc] initWithTitle:@"您所在的社区暂未开放此项功能" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-        
-        [alertView1 show];
-        
-    }else if (indexPath.row == 6){
-        
-        UIAlertView *alertView2 = [[UIAlertView alloc] initWithTitle:@"您所在的社区暂未开放此项功能" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-        
-        [alertView2 show];
-        
 
+        if ([user_info objectForKey:userAccount] && [user_info objectForKey:userPassword]) {
+            
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"您所在的社区暂未开放此项功能" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            
+            [alertView show];
+        }else{
         
-    }else if (indexPath.row == 8){
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"登陆后可查看" message:@"立刻登陆" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+        
+        [alertView show];
+        }
+        
+    }else if (indexPath.row == 6){ 
+        
         SettingViewController *myCollectionVC=[storyBoard instantiateViewControllerWithIdentifier:@"Mysetting"];
         [self.navigationController pushViewController:myCollectionVC animated:NO];
     }
 }
 
 
-
-
-- (IBAction)signButton:(id)sender {
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     
-//    UIStoryboard *storyBoard=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//    GetCoinViewController *getCoinVC = [storyBoard instantiateViewControllerWithIdentifier:@"getconiinfo"];
-//    [getCoinVC setHidesBottomBarWhenPushed:YES];
-//    [self.navigationController pushViewController:getCoinVC animated:YES];
-    
-    UIAlertView *alertView3 = [[UIAlertView alloc] initWithTitle:@"您所在的社区暂未开放此项功能" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-    
-    [alertView3 show];
+    if (buttonIndex == 1) {
+        
+        UIStoryboard *board=[UIStoryboard storyboardWithName:@"RegisterLogin" bundle:nil];
+        LoginViewController *loginVC=[board instantiateViewControllerWithIdentifier:@"LoginStoryboard"];
+        [self.navigationController pushViewController:loginVC animated:YES];
+    }
 }
 
+- (void)stateButtonAction:(id *)sender{
+    UIStoryboard *board=[UIStoryboard storyboardWithName:@"RegisterLogin" bundle:nil];
+    LoginViewController *loginVC=[board instantiateViewControllerWithIdentifier:@"LoginStoryboard"];
+    [self.navigationController pushViewController:loginVC animated:YES];
+}
 
 @end

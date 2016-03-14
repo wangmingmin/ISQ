@@ -12,8 +12,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *myIocn;
 @property (weak, nonatomic) IBOutlet UILabel *ContName;
 @property (weak, nonatomic) IBOutlet UIImageView *useravatar;
-@property (weak, nonatomic) IBOutlet UILabel *userName;
-@property (weak, nonatomic) IBOutlet UILabel *moneyCount;
-@property (weak, nonatomic) IBOutlet UIButton *signButton;
+@property (weak, nonatomic) IBOutlet UILabel *statusLabel;
+
 
 @end
