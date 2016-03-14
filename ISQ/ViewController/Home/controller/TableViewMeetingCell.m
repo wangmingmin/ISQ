@@ -54,27 +54,26 @@
 {
     if (imageMeeting == nil) {
         self.imageWithConstraint.constant = self.stateLeadingConstraint.constant=self.titleleadingConstraint.constant=self.timeleadingConstraint.constant=self.lablesViewLeadingConstraint.constant=0;
-    }else{
+    }else if(imageMeeting != nil){
+        self.imageWithConstraint.constant =90;
+        self.stateLeadingConstraint.constant=17;
+        self.titleleadingConstraint.constant=11;
+        self.timeleadingConstraint.constant=self.lablesViewLeadingConstraint.constant=15;
         self.imageViewShow.image = imageMeeting;
-        [UIView animateWithDuration:0.1 animations:^{
-            self.imageViewShow.alpha = 1;
-        }];
     }
 }
 
--(void)setIsInProgress:(BOOL)isInProgress
+-(void)setIsInProgress:(int)isInProgress
 {
-    if (!isInProgress) {
+    if (isInProgress==2 || isInProgress==0) {
         self.state.backgroundColor = [UIColor lightGrayColor];
-        self.state.text = @"已结束";
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            UIImage * image = [self drawImageCoustem:self.blueIcon.frame withColor:[UIColor lightGrayColor]];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self.blueIcon.image = image;
-            });
-        });
+        self.state.text = isInProgress==2?@"已结束":@"未开始";
+        UIImage * image = [self drawImageCoustem:self.blueIcon.frame withColor:[UIColor lightGrayColor]];
+        self.blueIcon.image = image;
 
-    }else{
+    }else if(isInProgress==1){
+        self.state.backgroundColor = [UIColor colorWithRed:255.0/255.0 green:136.0/255.0 blue:68.0/255.0 alpha:1];
+        self.state.text = @"进行中";
         UIImage * image = [self drawImageCoustem:self.blueIcon.frame withColor:[UIColor colorWithRed:60.0/255.0 green:183.0/255.0 blue:250.0/255.0 alpha:1]];
         self.blueIcon.image = image;
     }

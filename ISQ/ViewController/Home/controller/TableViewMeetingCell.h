@@ -12,7 +12,7 @@
 @property (strong, nonatomic) NSArray <NSString *>* Lables;
 @property (strong, nonatomic) NSString * titleMeeting;
 @property (strong, nonatomic) UIImage * imageMeeting;
-@property (assign, nonatomic) BOOL isInProgress;//必须赋值
+@property (assign, nonatomic) int isInProgress;//必须赋值
 @property (strong, nonatomic) NSDate * timeDate;
 @property (assign, nonatomic) NSInteger howManyPeople;
 @end

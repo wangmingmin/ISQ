@@ -134,8 +134,13 @@
     [cell.contentView addSubview:percentageLabel];
     
     UIButton * button = [[UIButton alloc] initWithFrame:CGRectMake(20, 8, cell.frame.size.height-16, cell.frame.size.height-16)];
+    button.tag = [oneDicOption[@"id"] integerValue];
     [button setImage:[UIImage imageNamed:@"discuss_details_gouN"] forState:UIControlStateNormal];
     [button setImage:[UIImage imageNamed:@"discuss_details_gouS"] forState:UIControlStateSelected];
+    int status = [self.detailsDictionary[@"status"] intValue];
+    if (status==1) {
+        [button addTarget:self action:@selector(onChooseOption:) forControlEvents:UIControlEventTouchUpInside];
+    }
     [cell.contentView addSubview:button];
     
     return cell;
@@ -177,14 +182,14 @@
     headerView.backgroundColor = [UIColor whiteColor];
     if (section == 0) {
         UILabel * labelState = [[UILabel alloc] initWithFrame:CGRectMake(15, 20, 50, 20)];
-        BOOL status = [self.detailsDictionary[@"status"] boolValue];
-        labelState.text = status?@"进行中":@"已结束";
+        int status = [self.detailsDictionary[@"status"] intValue];
+        labelState.text = status==1?@"进行中":(status==0?@"未开始":@"已结束");
         labelState.textColor = [UIColor whiteColor];
         labelState.textAlignment = NSTextAlignmentCenter;
         labelState.font = [UIFont systemFontOfSize:12];
         labelState.layer.cornerRadius = labelState.frame.size.height/2.0;
         labelState.layer.masksToBounds = YES;
-        labelState.backgroundColor = status?[UIColor orangeColor]:[UIColor lightGrayColor];
+        labelState.backgroundColor = status==1?[UIColor orangeColor]:[UIColor lightGrayColor];
         [headerView addSubview:labelState];
         
         UILabel * labelTitle = [[UILabel alloc] initWithFrame:CGRectMake(labelState.frame.origin.x + labelState.frame.size.width + 10, labelState.center.y-15, self.view.frame.size.width-(labelState.frame.origin.x + labelState.frame.size.width + 10), 30)];
@@ -274,6 +279,12 @@
     UIGraphicsEndImageContext();
     
     return image;
+}
+
+-(void)onChooseOption:(UIButton *)button
+{
+    button.selected = !button.selected;
+    NSInteger ID = button.tag;
 }
 
 /*

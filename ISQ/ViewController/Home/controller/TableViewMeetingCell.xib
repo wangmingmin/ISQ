@@ -15,7 +15,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="410" height="119"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="dc9-3F-omu">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="dc9-3F-omu">
                         <rect key="frame" x="15" y="15" width="90" height="90"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="90" id="6I1-OO-hzo"/>
@@ -33,7 +33,7 @@
                     </textView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="进行中" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xh3-Bw-AUz">
                         <rect key="frame" x="122" y="17" width="39" height="17"/>
-                        <color key="backgroundColor" red="1" green="0.53146736665976113" blue="0.26846313521617948" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="1" green="0.53333333333333333" blue="0.26666666666666666" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="39" id="BIt-96-60Q"/>
                             <constraint firstAttribute="height" constant="17" id="h1Q-me-m7W"/>

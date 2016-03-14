@@ -17,6 +17,7 @@
 @property (strong, nonatomic) NSMutableArray * discussArray;
 @property (strong, nonatomic) NSArray * staticArrayForSearch;
 @property (nonatomic, strong) SRRefreshView *slimeViewPositive;
+@property (strong, nonatomic) NSMutableDictionary * imagesDic;
 @end
 
 @implementation meetingTableViewController
@@ -35,8 +36,9 @@
     self.tableView.estimatedRowHeight = cellHeight;
     self.tableView.backgroundColor = [UIColor groupTableViewBackgroundColor];
     
-    self.discussArray = [[NSMutableArray alloc] initWithCapacity:10];
+    self.discussArray = [[NSMutableArray alloc] initWithArray:@[]];
     self.staticArrayForSearch = [[NSArray alloc] init];
+    self.imagesDic = [NSMutableDictionary dictionary];
     rowInt = 0;
     [self initSearchController];
     [self refresh];
@@ -81,7 +83,9 @@
 {
     CGFloat offY = scrollView.contentOffset.y;
     if (offY > self.tableView.contentSize.height-self.tableView.frame.size.height+50) {
-        [self refresh];
+        if (!self.searchController.active) {
+            [self refresh];
+        }
     }
     if (offY<0) {
         [_slimeViewPositive scrollViewDidEndDraging];
@@ -102,7 +106,14 @@ static int rowInt;
     [self.searchDisplayController.searchBar resignFirstResponder];
     if (!self.searchController.searchBar.isFirstResponder) {
         self.staticArrayForSearch = @[];
-        [self refresh];
+        [self.discussArray removeAllObjects];
+        [self.imagesDic removeAllObjects];
+        self.view.userInteractionEnabled = NO;
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self refresh];
+            self.view.userInteractionEnabled = YES;
+            [self.searchController dismissViewControllerAnimated:YES completion:nil];
+        });
     }
 }
 
@@ -124,17 +135,23 @@ static int rowInt;
 {
     self.searchController.searchBar.text = @"";
     rowInt = ((int)self.staticArrayForSearch.count/10)*10;
-    NSString * httpStr = [NSString stringWithFormat:@"%@?communityId=%d&row=%d",getYSTList,[[user_info objectForKey:userCityID] intValue],rowInt];
+    NSString * httpStr = [NSString stringWithFormat:@"%@?communityId=%d&row=%d",getYSTList,717,rowInt];
     [ISQHttpTool getHttp:httpStr contentType:nil params:nil success:^(id resData) {
         NSDictionary * dataDic = [NSJSONSerialization JSONObjectWithData:resData options:NSJapaneseEUCStringEncoding error:nil];
 //        NSLog(@"meeting Dic = %@",dataDic);
         NSArray * dataArr = dataDic[@"retData"];
-        self.discussArray = (NSMutableArray *)self.staticArrayForSearch;
+        if(rowInt == 0){
+            [self.discussArray addObjectsFromArray:dataArr];
+            self.staticArrayForSearch = self.discussArray;
+            [self.tableView reloadData];
+            return ;
+        }
+        [self.discussArray addObjectsFromArray:self.staticArrayForSearch];
         [dataArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             if (rowInt==self.staticArrayForSearch.count) {
                 [self.discussArray addObject:obj];
             }else{
-                int index = rowInt+(int)idx+1;
+                int index = rowInt+(int)idx;
                 [self.discussArray replaceObjectAtIndex:index withObject:obj];
             }
         }];
@@ -174,10 +191,15 @@ static int rowInt;
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
+    [self.discussArray removeAllObjects];
     NSString * httpStr = [NSString stringWithFormat:@"%@?communityId=%d&title=%@",getYSTList,[[user_info objectForKey:userCityID] intValue],searchBar.text];
     [ISQHttpTool getHttp:httpStr contentType:nil params:nil success:^(id resData) {
         NSDictionary * dataDic = [NSJSONSerialization JSONObjectWithData:resData options:NSJapaneseEUCStringEncoding error:nil];
-        self.discussArray = dataDic[@"retData"];
+        [self.discussArray addObjectsFromArray: dataDic[@"retData"]];
+        if (self.discussArray.count==0) {
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"" message:@"暂无结果" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+            [alert show];
+        }
         [self.tableView reloadData];
     } failure:^(NSError *erro) {
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"" message:@"暂无结果" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
@@ -217,20 +239,33 @@ static int rowInt;
     cell.Lables = [oneDataDic[@"tag"] componentsSeparatedByString:@","];
     cell.timeDate = [NSDate dateWithTimeIntervalSince1970:[oneDataDic[@"start_time"] longLongValue]];
     cell.howManyPeople = [oneDataDic[@"count"] integerValue];
-    cell.isInProgress = [oneDataDic[@"status"] boolValue];
-    
-    if ([oneDataDic[@"image"] isKindOfClass:[NSNull class]]) {
+    cell.isInProgress = [oneDataDic[@"status"] intValue];
+
+    //image
+    if (![oneDataDic[@"image"] isKindOfClass:[NSNull class]]) {
+        NSArray * allkeys = [self.imagesDic allKeys];
+        NSString * urlStr = oneDataDic[@"image"];
+        if (![allkeys containsObject:urlStr]) {
+            self.imagesDic[urlStr] = [[UIImage alloc] init];
+            NSURL *url = [NSURL URLWithString:urlStr];
+            NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+            NSURLSessionDataTask * task = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {//自动异步线程，界面更新需要到主线程
+                UIImage * image = [UIImage imageWithData:data];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    cell.imageMeeting = image;
+                    self.imagesDic[urlStr] = image;
+                });
+
+            }];
+            [task resume];
+        }else{
+            cell.imageMeeting = self.imagesDic[urlStr];
+        }
+    }else {
         cell.imageMeeting = nil;
-    }else{
-        NSURL *url = [NSURL URLWithString:oneDataDic[@"image"]];
-        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-        NSURLSessionDataTask * task = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-            UIImage * image = [UIImage imageWithData:data];
-            cell.imageMeeting = image;
-        }];
-        [task resume];
     }
-    cell.imageMeeting = [[UIImage alloc] init];
+    
+    
     return cell;
 }
 
@@ -241,6 +276,9 @@ static int rowInt;
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
+    if (section==self.discussArray.count-1) {
+        return 0;
+    }
     return 12;
 }
 
