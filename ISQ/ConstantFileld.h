@@ -14,7 +14,7 @@
 
 #define SYSTEMVERSION [[[UIDevice currentDevice] systemVersion] floatValue] //系统版本
 
-#define BAIDUMAPKEY @"CLSf3H2zHic6Og0ljnTW0G6f"   //百度key 个人fCNjVFDlVp19AaZp9mUDhYYC  企业CLSf3H2zHic6Og0ljnTW0G6f
+#define BAIDUMAPKEY @"fCNjVFDlVp19AaZp9mUDhYYC"   //百度key 个人fCNjVFDlVp19AaZp9mUDhYYC  企业CLSf3H2zHic6Og0ljnTW0G6f
 #define BAIDUIPLOCATIONKEY @"OLfGqbwREfteiCnKNoNkwDAj" //百度web-Kye
 #define BAIDUIPLOCATIONURL @"http://api.map.baidu.com/location/ip"//百度IP定位
 
@@ -252,6 +252,14 @@
  */
 #define getPositiveSpringVideo @"http://121.41.18.126:8080/isqbms/getPositiveSpringVideo.from"
 
+/**
+ *获取议事厅列表
+ */
+#define getYSTList @"http://192.168.2.111:8080/isqbms/getYSTList.from"
+/**
+ *获取议事厅详情
+ */
+#define getYSTDetail @"http://192.168.2.111:8080/isqbms/getYSTDetail.from"
 
 #define user_info [NSUserDefaults standardUserDefaults]
 #define weixinAppID @"wx625b0199b2d176bd"
