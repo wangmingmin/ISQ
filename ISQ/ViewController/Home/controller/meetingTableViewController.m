@@ -246,7 +246,7 @@ static int rowInt;
         NSArray * allkeys = [self.imagesDic allKeys];
         NSString * urlStr = oneDataDic[@"image"];
         if (![allkeys containsObject:urlStr]) {
-            self.imagesDic[urlStr] = [[UIImage alloc] init];
+            self.imagesDic[urlStr] = nil;
             NSURL *url = [NSURL URLWithString:urlStr];
             NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
             NSURLSessionDataTask * task = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {//自动异步线程，界面更新需要到主线程
@@ -259,6 +259,20 @@ static int rowInt;
             }];
             [task resume];
         }else{
+            if(self.imagesDic[urlStr] == nil){
+                self.imagesDic[urlStr] = [[UIImage alloc] init];
+                NSURL *url = [NSURL URLWithString:urlStr];
+                NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+                NSURLSessionDataTask * task = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {//自动异步线程，界面更新需要到主线程
+                    UIImage * image = [UIImage imageWithData:data];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        cell.imageMeeting = image;
+                        self.imagesDic[urlStr] = image;
+                    });
+                    
+                }];
+                [task resume];
+            }
             cell.imageMeeting = self.imagesDic[urlStr];
         }
     }else {

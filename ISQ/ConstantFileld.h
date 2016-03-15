@@ -260,6 +260,10 @@
  *获取议事厅详情
  */
 #define getYSTDetail @"http://192.168.2.111:8080/isqbms/getYSTDetail.from"
+/**
+ *议事厅选择选项
+ */
+#define YSTChooseOption @"http://192.168.2.111:8080/isqbms/chooseOption.from"
 
 #define user_info [NSUserDefaults standardUserDefaults]
 #define weixinAppID @"wx625b0199b2d176bd"
