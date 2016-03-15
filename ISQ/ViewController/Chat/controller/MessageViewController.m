@@ -1414,13 +1414,14 @@ NSInteger applyCount; //通知的条数
         }
         
         [self registerNotifications];
-    }else{
-        
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"此功能需要登陆才能使用" message:@"立刻登陆" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-    
-    [alertView show]; 
-        
     }
+//    else{
+//        
+//    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"此功能需要登陆才能使用" message:@"立刻登陆" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+//    
+//    [alertView show]; 
+//        
+//    }
 }
 
 -(void)viewWillDisappear:(BOOL)animated{ 

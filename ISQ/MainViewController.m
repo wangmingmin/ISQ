@@ -72,7 +72,6 @@ static NSString *kGroupName = @"GroupName";
 }
 
 
-
 #pragma mark 获取用户基本资料
 -(void)getUserInfo{
     
