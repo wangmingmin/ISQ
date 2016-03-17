@@ -284,6 +284,12 @@
 
 -(void)onChooseOption:(UIButton *)button
 {
+    id MyUserIDGet = [user_info objectForKey:MyUserID];
+    if (MyUserIDGet == nil) {
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"" message:@"您未登录,请登录后重试" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+        [alert show];
+        return;
+    }
     int ID = (int)button.tag;
     NSString * httpStr = [NSString stringWithFormat:@"%@?id=%d&userId=%d",YSTChooseOption,ID,[[user_info objectForKey:MyUserID] intValue]];
     [ISQHttpTool getHttp:httpStr contentType:nil params:nil success:^(id res) {

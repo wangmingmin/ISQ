@@ -192,7 +192,7 @@ static int rowInt;
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
     [self.discussArray removeAllObjects];
-    NSString * httpStr = [NSString stringWithFormat:@"%@?communityId=%d&title=%@",getYSTList,[[user_info objectForKey:userCityID] intValue],searchBar.text];
+    NSString * httpStr = [NSString stringWithFormat:@"%@?communityId=%d&title=%@",getYSTList,[[user_info objectForKey:userCommunityID] intValue],searchBar.text];
     [ISQHttpTool getHttp:httpStr contentType:nil params:nil success:^(id resData) {
         NSDictionary * dataDic = [NSJSONSerialization JSONObjectWithData:resData options:NSJapaneseEUCStringEncoding error:nil];
         [self.discussArray addObjectsFromArray: dataDic[@"retData"]];
