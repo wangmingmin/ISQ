@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="cJ8-6E-EKo">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="cJ8-6E-EKo">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -3071,7 +3071,7 @@
                                 <rect key="frame" x="0.0" y="5" width="375" height="667"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <view key="tableFooterView" contentMode="scaleToFill" id="daC-gn-iVB">
-                                    <rect key="frame" x="0.0" y="474" width="375" height="60"/>
+                                    <rect key="frame" x="0.0" y="410" width="375" height="60"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="etJ-XP-uBQ">
@@ -3095,7 +3095,7 @@
                                 </view>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="sendHelpCell1" rowHeight="54" id="vug-ny-sqt" customClass="LocalTableViewCell">
-                                        <rect key="frame" x="0.0" y="86" width="375" height="54"/>
+                                        <rect key="frame" x="0.0" y="22" width="375" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vug-ny-sqt" id="5lX-A3-fzj">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="54"/>
@@ -3143,7 +3143,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="sendHelpCell4" rowHeight="54" id="XvY-6u-FBm" customClass="LocalTableViewCell">
-                                        <rect key="frame" x="0.0" y="140" width="375" height="54"/>
+                                        <rect key="frame" x="0.0" y="76" width="375" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XvY-6u-FBm" id="y7T-zN-mfo">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="54"/>
@@ -3194,7 +3194,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="sendHelpCell2" rowHeight="10" id="R1s-bB-ce8" customClass="LocalTableViewCell">
-                                        <rect key="frame" x="0.0" y="194" width="375" height="10"/>
+                                        <rect key="frame" x="0.0" y="130" width="375" height="10"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="R1s-bB-ce8" id="d7V-vQ-Xex">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="10"/>
@@ -3202,7 +3202,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="sendHelpCell3" rowHeight="270" id="tav-sl-rhu" customClass="LocalTableViewCell">
-                                        <rect key="frame" x="0.0" y="204" width="375" height="270"/>
+                                        <rect key="frame" x="0.0" y="140" width="375" height="270"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="tav-sl-rhu" id="IAm-R0-tpT">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="270"/>
@@ -3378,13 +3378,13 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <view key="tableFooterView" contentMode="scaleToFill" id="heP-Tm-boq">
-                                    <rect key="frame" x="0.0" y="420" width="375" height="60"/>
+                                    <rect key="frame" x="0.0" y="356" width="375" height="60"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </view>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="sendHelpCell1" rowHeight="54" id="oeH-Df-RM0" customClass="LocalTableViewCell">
-                                        <rect key="frame" x="0.0" y="86" width="375" height="54"/>
+                                        <rect key="frame" x="0.0" y="22" width="375" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="oeH-Df-RM0" id="QDZ-XU-qOJ">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="54"/>
@@ -3433,7 +3433,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="sendHelpCell2" rowHeight="10" id="kw9-hb-fl1" customClass="LocalTableViewCell">
-                                        <rect key="frame" x="0.0" y="140" width="375" height="10"/>
+                                        <rect key="frame" x="0.0" y="76" width="375" height="10"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kw9-hb-fl1" id="Kfr-Vm-TGf">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="10"/>
@@ -3441,7 +3441,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="sendHelpCell3" rowHeight="270" id="Pda-SY-eR5" customClass="LocalTableViewCell">
-                                        <rect key="frame" x="0.0" y="150" width="375" height="270"/>
+                                        <rect key="frame" x="0.0" y="86" width="375" height="270"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Pda-SY-eR5" id="yiS-V9-CJJ">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="270"/>
@@ -3827,7 +3827,7 @@
                     </state>
                 </button>
             </objects>
-            <point key="canvasLocation" x="-780.5" y="-2436.5"/>
+            <point key="canvasLocation" x="-797.5" y="-2461.5"/>
         </scene>
         <!--Home View Controller-->
         <scene sceneID="PrC-sZ-gPV">
@@ -3912,7 +3912,7 @@
                                                                         <color key="titleShadowColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                                     </state>
                                                                     <connections>
-                                                                        <segue destination="2Nu-42-8CW" kind="push" id="kJU-eG-UHO"/>
+                                                                        <action selector="showCommitteeAction:" destination="BY0-zg-Jnc" eventType="touchUpInside" id="8gY-Hv-clj"/>
                                                                     </connections>
                                                                 </button>
                                                                 <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WwC-WM-Rey" customClass="HomeButton3">
@@ -3967,7 +3967,7 @@
                                                                         <color key="titleShadowColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                                     </state>
                                                                     <connections>
-                                                                        <segue destination="Ibd-Rv-P9O" kind="push" identifier="tenement" id="oJC-SN-Zws"/>
+                                                                        <action selector="showDiscussAction:" destination="BY0-zg-Jnc" eventType="touchUpInside" id="qxv-X3-u03"/>
                                                                     </connections>
                                                                 </button>
                                                                 <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OWO-e8-VQU" customClass="HomeButton">
@@ -7092,8 +7092,8 @@
         <image name="topBar_blue.png" width="500" height="80"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Xf2-a7-gAb"/>
+        <segue reference="oav-9c-ZkE"/>
         <segue reference="K5Q-0k-Yu3"/>
-        <segue reference="Kse-dT-5RL"/>
+        <segue reference="Xf2-a7-gAb"/>
     </inferredMetricsTieBreakers>
 </document>

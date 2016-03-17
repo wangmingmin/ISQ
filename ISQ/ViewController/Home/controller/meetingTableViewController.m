@@ -132,7 +132,7 @@ static int rowInt;
 }
 
 -(void)refresh
-{
+{ 
     self.searchController.searchBar.text = @"";
     rowInt = ((int)self.staticArrayForSearch.count/10)*10;
     NSString * httpStr = [NSString stringWithFormat:@"%@?communityId=%d&row=%d",getYSTList,717,rowInt];

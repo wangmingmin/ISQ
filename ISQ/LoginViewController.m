@@ -64,7 +64,7 @@ bool warInt=true;
     [ISQHttpTool getHttp:http contentType:nil params:arry success:^(id responseObject) {
         
         returnString=  [NSJSONSerialization JSONObjectWithData:responseObject options:NSJapaneseEUCStringEncoding  error:nil];
-        
+    
         if ([returnString[userAccount] isEqualToString:self.loginPhoneNumber_tv.text] ) {
             
             [self hideHud];
@@ -77,7 +77,6 @@ bool warInt=true;
             [user_info setObject:returnString[userIntro] forKey:userIntro];
             [user_info setObject:returnString[userIsqCode] forKey:userIsqCode];
             [user_info setObject:returnString[MyUserID] forKey:MyUserID];
-            
             
             [user_info setObject:[NSString stringWithFormat:@"%@%@",MYHEADIMGURL,returnString[@"userFace"]] forKey:MYSELFHEADNAME];
             

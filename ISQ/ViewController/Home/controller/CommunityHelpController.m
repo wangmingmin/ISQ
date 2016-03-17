@@ -48,51 +48,26 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
-    
-    if ([user_info objectForKey:userAccount] && [user_info objectForKey:userPassword]){
+
+    if (locationDelegate.theAddress) {
         
-        if (locationDelegate.theAddress) {
-            
-            self.helpAdressEd.text=locationDelegate.theAddress;
-        }
-        if ([user_info objectForKey:@"saveCommunityName"]) {
-            self.helpCommunity_ed.text=[user_info objectForKey:@"saveCommunityName"];
-            name = self.helpCommunity_ed.text;
-            
-        }
-        //上拉加载
-        [self addFooter];
-        //下拉刷新
-        [self addHeader];
-    }else{
-    
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"登陆后才能使用此功能" message:@"立刻登陆" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-    
-    [alertView show];
+        self.helpAdressEd.text=locationDelegate.theAddress;
     }
-    
+    if ([user_info objectForKey:@"saveCommunityName"]) {
+        self.helpCommunity_ed.text=[user_info objectForKey:@"saveCommunityName"];
+        name = self.helpCommunity_ed.text;
+        
+    }
+    //上拉加载
+    [self addFooter];
+    //下拉刷新
+    [self addHeader];
+
 }
 
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-
-    if (buttonIndex == 0) {
-        
-        UIStoryboard *mainStory=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        MainViewController *mainVC=[mainStory instantiateViewControllerWithIdentifier:@"MainViewStory"];
-        self.navigationController.navigationBar.hidden=YES;
-        [self.navigationController pushViewController:mainVC animated:YES];
-        
-    }else if (buttonIndex == 1){
+- (void)addHeader{
     
-        UIStoryboard *board=[UIStoryboard storyboardWithName:@"RegisterLogin" bundle:nil];
-        LoginViewController *loginVC=[board instantiateViewControllerWithIdentifier:@"LoginStoryboard"];
-        [self.navigationController pushViewController:loginVC animated:YES];
-    }
-}
-
-- (void)addHeader
-{
     __unsafe_unretained typeof(self) vc = self;
     // 添加下拉刷新头部控件
     [self.myMessageTableview addHeaderWithCallback:^{
