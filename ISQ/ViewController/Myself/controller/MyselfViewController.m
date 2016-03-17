@@ -72,9 +72,10 @@
         cell.useravatar.layer.masksToBounds = YES;
         cell.useravatar.layer.cornerRadius = 75/2;
         cell.useravatar.layer.borderColor = [UIColor whiteColor].CGColor;
-        cell.statusLabel.text = [user_info objectForKey:userNickname];
+       
         //已登陆与未登录两种状态
         if ([user_info objectForKey:userAccount] && [user_info objectForKey:userPassword]) {
+             cell.statusLabel.text = [user_info objectForKey:userNickname];
             if([user_info objectForKey:MYSELFHEADNAME]){
                 NSURL *imgUrl=[[NSURL alloc]initWithString:[user_info objectForKey:MYSELFHEADNAME]];
                 [cell.useravatar setImageWithURL:imgUrl placeholderImage:[UIImage imageNamed:@"personalData"]];

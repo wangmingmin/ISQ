@@ -20,7 +20,7 @@
 #import "AppDelegate.h"
 #import "Reachability.h"
 
-@interface MainViewController ()<UIAlertViewDelegate, IChatManagerDelegate, EMCallManagerDelegate>
+@interface MainViewController ()<UIAlertViewDelegate, IChatManagerDelegate, EMCallManagerDelegate,UITabBarControllerDelegate>
 
 {
     
@@ -47,6 +47,7 @@ static NSString *kGroupName = @"GroupName";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.delegate = self;
     _msgVC=[[MessageViewController alloc]init];
     _chatListVC = [[ChatListViewController alloc] init];
     //用户的设置状态
@@ -71,8 +72,44 @@ static NSString *kGroupName = @"GroupName";
     
 }
 
+//这个方法在选中tabBar的时候调用
+- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController{
+    
+    NSArray *array = viewController.childViewControllers;
+    for (UIViewController *vc in array) {
+        
+        if ([vc isKindOfClass:[MessageViewController class]]) {
+            
+            if (![user_info objectForKey:userAccount] || ![user_info objectForKey:userPassword]) {
+                
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"登陆后才能使用此功能" message:@"立刻登陆" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+                
+                [alertView show];
+                
+                
+                return NO;
+            }
+        }
+    
+    }
+    
+    return YES;
+}
+
+#pragma mark - UIAlertView delegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+
+    if (buttonIndex == 1) {
+        
+        UIStoryboard *board=[UIStoryboard storyboardWithName:@"RegisterLogin" bundle:nil];
+        LoginViewController *loginVC=[board instantiateViewControllerWithIdentifier:@"LoginStoryboard"];
+        [self.navigationController pushViewController:loginVC animated:YES];
+    }
+}
 
 #pragma mark 获取用户基本资料
+
 -(void)getUserInfo{
     
     AppDelegate *delget=(AppDelegate*)[[UIApplication sharedApplication]delegate];
@@ -136,9 +173,7 @@ static NSString *kGroupName = @"GroupName";
         }
         
         if (error) {
-            //            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"error", @"error") message:error.description delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
-            //            [alertView show];
-        }
+            }
     }
 }
 
@@ -706,6 +741,8 @@ static NSString *kGroupName = @"GroupName";
             //发送自动登陆状态通知
             [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];
             
+        }else{
+        
         }
         
     } onQueue:nil];

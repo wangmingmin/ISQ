@@ -11,7 +11,9 @@
 #import "HotVideoModel.h"
 #import "MainViewController.h"
 #import "VideoDetailController_forSpring.h"
-@interface searchTableViewController ()<UISearchBarDelegate,UISearchDisplayDelegate,VideoDetailController_forSpringDelegate>
+#import "LoginViewController.h"
+
+@interface searchTableViewController ()<UISearchBarDelegate,UISearchDisplayDelegate,VideoDetailController_forSpringDelegate,UIAlertViewDelegate>
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (strong, nonatomic) UISearchDisplayController * searchDisplayController;
 @property (strong, nonatomic) NSArray * dataSearch;
@@ -302,23 +304,43 @@
     return YES;
 }
 #pragma 点击分享
--(void)onShareVideo:(UIButton *)button
-{
-    NSDictionary * dataIndexDic = self.dataSearch[button.tag];
+-(void)onShareVideo:(UIButton *)button{
     
-    HotVideoModel * dataHot = [HotVideoModel objectWithKeyValues:dataIndexDic];
+    if ([user_info objectForKey:userAccount] && [user_info objectForKey:userPassword]) {
+        
+        NSDictionary * dataIndexDic = self.dataSearch[button.tag];
+        
+        HotVideoModel * dataHot = [HotVideoModel objectWithKeyValues:dataIndexDic];
+        
+        NSMutableDictionary *shareDic=[NSMutableDictionary dictionary];
+        NSString *imageurls = dataHot.image;
+        NSArray * imgUrlArray = [imageurls componentsSeparatedByString:@","];
+        shareDic[@"img"]= imgUrlArray?imgUrlArray[0]:@"";
+        shareDic[@"title"]=dataHot.title;
+        shareDic[@"desc"]=dataHot.detail;
+        shareDic[@"url"]=@"http://down.app.wisq.cn";
+        
+        [MainViewController theShareSDK:shareDic];
+        
+        [self.navigationController setNavigationBarHidden:YES animated:YES];
+
+    }else{
     
-    NSMutableDictionary *shareDic=[NSMutableDictionary dictionary];
-    NSString *imageurls = dataHot.image;
-    NSArray * imgUrlArray = [imageurls componentsSeparatedByString:@","];
-    shareDic[@"img"]= imgUrlArray?imgUrlArray[0]:@"";
-    shareDic[@"title"]=dataHot.title;
-    shareDic[@"desc"]=dataHot.detail;
-    shareDic[@"url"]=@"http://down.app.wisq.cn";
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"此功能需要登陆才可使用" message:@"立刻登陆" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+        
+        [alertView show];
+    }
     
-    [MainViewController theShareSDK:shareDic];
-    
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+
+    if (buttonIndex == 1) {
+        
+        UIStoryboard *board=[UIStoryboard storyboardWithName:@"RegisterLogin" bundle:nil];
+        LoginViewController *loginVC=[board instantiateViewControllerWithIdentifier:@"LoginStoryboard"];
+        [self.navigationController pushViewController:loginVC animated:YES];
+    }
 }
 
 #pragma 观看

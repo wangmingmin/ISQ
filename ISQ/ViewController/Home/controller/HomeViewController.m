@@ -31,6 +31,7 @@
 #import "LoginViewController.h"
 #import "MainViewController.h"
 #import "meetingTableViewController.h"
+#import "CommunityHelpController.h"
 
 @interface HomeViewController()<IChatManagerDelegate,SRRefreshDelegate,AnnouncementCellDelegate,UIAlertViewDelegate>{
     
@@ -463,12 +464,63 @@ bool theTop=true;
     
 }
 
+#pragma mark - clicks
+
+//找书记
+- (IBAction)showCommitteeAction:(id)sender {
+    
+    if ([user_info objectForKey:userAccount] && [user_info objectForKey:userPassword]){
+    
+        UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        CommunityHelpController *helpVC = [storyBoard instantiateViewControllerWithIdentifier:@"CommunityHelp"];
+    
+        [self.navigationController pushViewController:helpVC animated:YES];
+    }else{
+    
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"此功能需要登陆才可访问" message:@"立刻登陆" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+        
+        [alertView show];
+    }
+}
+
+
+//议事厅
 - (IBAction)OnDiscussToShowMeeting:(UIButton *)sender {
-  //议事厅
+  
     meetingTableViewController * meeting = [[meetingTableViewController alloc] init];
     [self.navigationController pushViewController:meeting animated:YES];
 }
+
+
+//物业
+- (IBAction)showDiscussAction:(id)sender {
+    
+    if ([user_info objectForKey:userAccount] && [user_info objectForKey:userPassword]){
+    
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        SeconWebController *webVC  = [storyboard instantiateViewControllerWithIdentifier:@"SeconWebController"];
+        if ([[saveCityName objectForKey:saveCommunityName] hasPrefix:@"百步亭"]) {
+            
+            NSString *url = [NSString stringWithFormat:@"%@%@%@",@"http://webapp.wisq.cn/property/index/uid/",[saveCityName objectForKey:MyUserID],@".html"];
+            webVC.theUrl = url;
+        }else{
+            NSString *url = [NSString stringWithFormat:@"%@",tenementURL];
+            webVC.theUrl = url;
+        }
+    
+        [self.navigationController pushViewController:webVC animated:YES];
+    }else{
+    
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"此功能需要登陆才可访问" message:@"立刻登陆" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+        
+        [alertView show];
+
+    }
+}
+
+
 #pragma mark - Segues
+
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     
     AppDelegate *locationCityDelegate;
@@ -502,40 +554,8 @@ bool theTop=true;
         SeconWebController *webVC = [segue destinationViewController];
         webVC.theUrl = url;
         
-    //物业
-    }else if ([[segue identifier] isEqualToString:@"tenement"]){
-        
-        if ([user_info objectForKey:userAccount] && [user_info objectForKey:userPassword]) {
-            
-            SeconWebController *webVC = [segue destinationViewController];
-            if ([[saveCityName objectForKey:saveCommunityName] hasPrefix:@"百步亭"]) {
-                
-                NSString *url = [NSString stringWithFormat:@"%@%@%@",@"http://webapp.wisq.cn/property/index/uid/",[saveCityName objectForKey:MyUserID],@".html"];
-                webVC.theUrl = url;
-            }else{
-                NSString *url = [NSString stringWithFormat:@"%@",tenementURL];
-                webVC.theUrl = url;
-            }
-        }else{
-        
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"登陆后才能使用此功能" message:@"立刻登陆" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-        
-        [alertView show];
-            
-        }
-        
-   //议事厅-已经断开storyboard的segue链接，改为原生
-    }else if ([[segue identifier] isEqualToString:@"discuss"]){        
-        SeconWebController *webVC = [segue destinationViewController];
-        if ([[saveCityName objectForKey:saveCommunityName] hasPrefix:@"百步亭"]) {
-            webVC.theUrl = discuss;
-        }else{
-            NSString *url = [NSString stringWithFormat:@"%@",tenementURL];
-            webVC.theUrl = url;
-        }
-
     //新鲜事
-    }else if ([[           segue identifier] isEqualToString:@"communityNewThing"]){
+    }else if ([[segue identifier] isEqualToString:@"communityNewThing"]){
         NSString *communityID = [saveCityName objectForKey:userCommunityID];
         NSString *url = [NSString stringWithFormat:@"%@%@",communityNewThing,communityID];
         SeconWebController *webVC = [segue destinationViewController];
@@ -555,18 +575,11 @@ bool theTop=true;
 }
 
 
-#pragma mark - UIALertView delagate
+#pragma mark - UIAlertView delagate
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     
-    if (buttonIndex == 0) {
-        
-        UIStoryboard *mainStory=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        MainViewController *mainVC=[mainStory instantiateViewControllerWithIdentifier:@"MainViewStory"];
-        self.navigationController.navigationBar.hidden=YES;
-        [self.navigationController pushViewController:mainVC animated:YES];
-        
-    }else if (buttonIndex == 1) {
+    if (buttonIndex == 1) {
         
         UIStoryboard *board=[UIStoryboard storyboardWithName:@"RegisterLogin" bundle:nil];
         LoginViewController *loginVC=[board instantiateViewControllerWithIdentifier:@"LoginStoryboard"];
@@ -575,6 +588,7 @@ bool theTop=true;
     }
 }
 
+#pragma mark - community select
 
 - (IBAction)HomeSelectCity_bt:(id)sender {
     

@@ -393,7 +393,7 @@
         [self.navigationController pushViewController:startActivityVC animated:YES];
     }else{
     
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"此功能需要登陆才能使用" message:@"立刻登陆" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"立刻登陆发起活动" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
         
         [alertView show];
     }
@@ -431,7 +431,7 @@
         }
 
     }else{
-    
+      
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"此功能需要登陆才能使用" message:@"立刻登陆" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
         
         [alertView show];

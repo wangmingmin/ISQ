@@ -1406,47 +1406,17 @@ NSInteger applyCount; //通知的条数
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
-    //判断登陆后获取数据
-    if ([user_info objectForKey:userPassword]&&[user_info objectForKey:userAccount]){
-    
-        if (self.messageTableview) {
-            [self refreshDataSource];
-        }
-        
-        [self registerNotifications];
+    if (self.messageTableview) {
+        [self refreshDataSource];
     }
-//    else{
-//        
-//    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"此功能需要登陆才能使用" message:@"立刻登陆" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-//    
-//    [alertView show]; 
-//        
-//    }
+    
+    [self registerNotifications];
+
 }
 
 -(void)viewWillDisappear:(BOOL)animated{ 
     [super viewWillDisappear:animated];
     [self unregisterNotifications];
-}
-
-#pragma mark - UIAlertView delegate
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-
-    if (buttonIndex == 0) {
-        
-        UIStoryboard *mainStory=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        MainViewController *mainVC=[mainStory instantiateViewControllerWithIdentifier:@"MainViewStory"];
-        self.navigationController.navigationBar.hidden=YES;
-        [self.navigationController pushViewController:mainVC animated:YES];
-        
-    }else if (buttonIndex == 1){
-    
-        UIStoryboard *board=[UIStoryboard storyboardWithName:@"RegisterLogin" bundle:nil];
-        LoginViewController *loginVC=[board instantiateViewControllerWithIdentifier:@"LoginStoryboard"];
-        [self.navigationController pushViewController:loginVC animated:YES];
-
-    }
 }
 
 

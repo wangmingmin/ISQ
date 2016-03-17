@@ -17,6 +17,8 @@
 #import "SRRefreshView.h"
 #import "searchTableViewController.h"
 #import "changeCityTableViewController.h"
+#import "LoginViewController.h"
+
 static NSString * const reuseIdentifier = @"cell";
 #define backColor [UIColor groupTableViewBackgroundColor]
 
@@ -469,6 +471,11 @@ static NSString * const reuseIdentifier = @"cell";
 }
 
 - (IBAction)onFollow:(UIButton *)sender {
+    
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"立刻登陆查看关注" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    
+    [alertView show];
+    
     [self movingByButton:sender.tag];
 }
 
@@ -791,37 +798,47 @@ static NSString * const reuseIdentifier = @"cell";
 #pragma 点击分享
 -(void)onShareVideo:(UIButton *)button
 {
-    NSArray *data = [[NSArray alloc] init];
-    int pageNumber = self.movingView.center.x/(screenWidth/5);
-    if (pageNumber==0) {
-        data = self.arrayDataPositive;
-    }
-    if (pageNumber==1) {
-        data = self.arrayDataCity;
-    }
-    if (pageNumber==2) {
-        data = self.arrayDataSpecial;
-    }
-    if (pageNumber==3) {
-        data = self.arrayDataRank;
-    }
-    if (pageNumber==4) {
-        data = self.arrayDataFollow;
-    }
+    if ([user_info objectForKey:userAccount] && [user_info objectForKey:userPassword]) {
+        
+        NSArray *data = [[NSArray alloc] init];
+        int pageNumber = self.movingView.center.x/(screenWidth/5);
+        if (pageNumber==0) {
+            data = self.arrayDataPositive;
+        }
+        if (pageNumber==1) {
+            data = self.arrayDataCity;
+        }
+        if (pageNumber==2) {
+            data = self.arrayDataSpecial;
+        }
+        if (pageNumber==3) {
+            data = self.arrayDataRank;
+        }
+        if (pageNumber==4) {
+            data = self.arrayDataFollow;
+        }
+        
+        NSDictionary * dataIndexDic = data[button.tag];
+        
+        HotVideoModel * dataHot = [HotVideoModel objectWithKeyValues:dataIndexDic];
+        
+        NSMutableDictionary *shareDic=[NSMutableDictionary dictionary];
+        NSString *imageurls = dataHot.image;
+        NSArray * imgUrlArray = [imageurls componentsSeparatedByString:@","];
+        shareDic[@"img"]= imgUrlArray?imgUrlArray[0]:@"";
+        shareDic[@"title"]=dataHot.title;
+        shareDic[@"desc"]=dataHot.detail;
+        shareDic[@"url"]=@"http://down.app.wisq.cn";
+        
+        [MainViewController theShareSDK:shareDic];
+    }else{
     
-    NSDictionary * dataIndexDic = data[button.tag];
-    
-    HotVideoModel * dataHot = [HotVideoModel objectWithKeyValues:dataIndexDic];
-    
-    NSMutableDictionary *shareDic=[NSMutableDictionary dictionary];
-    NSString *imageurls = dataHot.image;
-    NSArray * imgUrlArray = [imageurls componentsSeparatedByString:@","];
-    shareDic[@"img"]= imgUrlArray?imgUrlArray[0]:@"";
-    shareDic[@"title"]=dataHot.title;
-    shareDic[@"desc"]=dataHot.detail;
-    shareDic[@"url"]=@"http://down.app.wisq.cn";
-    
-    [MainViewController theShareSDK:shareDic];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"此功能需要登陆才可使用" message:@"立刻登陆" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+        
+        [alertView show];
+
+    }
+   
 
 }
 
@@ -942,6 +959,11 @@ static int haoMiao = 0;
     if (alertView.tag==-1) {
         [timerLast invalidate];
         timerLast = nil;
+    }else if (buttonIndex == 1){
+    
+        UIStoryboard *board=[UIStoryboard storyboardWithName:@"RegisterLogin" bundle:nil];
+        LoginViewController *loginVC=[board instantiateViewControllerWithIdentifier:@"LoginStoryboard"];
+        [self.navigationController pushViewController:loginVC animated:YES];
     }
 }
 
@@ -1004,8 +1026,7 @@ static int haoMiao = 0;
     
     id cityID = [user_info objectForKey:userCityID];
     if (cityID == nil) {
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"未找到社区" message:@"没有您所在社区的信息，请返回首页选择您所在的社区" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
-        [alert show];
+        
         return;
     }
     paramesCityID[@"cityId"]=cityID;
@@ -1029,7 +1050,6 @@ static int haoMiao = 0;
     isAddRefresh = YES;
     [ISQHttpTool getHttp:httpUrl contentType:nil params:paramesCityID success:^(id res) {
         NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:res options:NSJapaneseEUCStringEncoding error:nil];
-        //        NSLog(@"showVoide city===== %@",dic);
         if (rowsCount == self.arrayDataCity.count) {
             [self.arrayDataCity addObjectsFromArray:dic[@"retData"]];
         }
@@ -1134,39 +1154,43 @@ static int haoMiao = 0;
     }];
     
 }
--(void)refreshFollow
-{
-    NSMutableDictionary *paramesUserAccount=[NSMutableDictionary dictionary];
+-(void)refreshFollow{
     
-    id userAccountNumber = [user_info objectForKey:userAccount];
-    paramesUserAccount[@"userAccount"]=userAccountNumber;
-    
-    NSInteger rowsCount = (self.arrayDataFollow.count/10)*(isAddRefresh?10:0);
-    paramesUserAccount[@"rows"] =[NSString stringWithFormat:@"%ld",(long)rowsCount];
-    
-    NSString * httpUrl = [NSString stringWithFormat:@"%@type=follow",getSpringVideoListServer];
-    isAddRefresh = YES;
-    [ISQHttpTool getHttp:httpUrl contentType:nil params:paramesUserAccount success:^(id res) {
-        NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:res options:NSJapaneseEUCStringEncoding error:nil];
-        //        NSLog(@"showVoide follow===== %@",dic);
-        if (rowsCount == self.arrayDataFollow.count) {
-            [self.arrayDataFollow addObjectsFromArray:dic[@"retData"]];
-        }
-        else if (rowsCount<self.arrayDataFollow.count && rowsCount != 0&&self.arrayDataFollow.count%rowsCount!=0){//当数据已经全部获取且数量不为整十数时后：比如：一共有12条数据时
-            NSInteger last = self.arrayDataFollow.count%rowsCount;
-            for (int i = 0; i<last; i++) {
-                [self.arrayDataFollow removeLastObject];
+    if ([user_info objectForKey:userAccount] && [user_info objectForKey:userPassword]) {
+        
+        NSMutableDictionary *paramesUserAccount=[NSMutableDictionary dictionary];
+        
+        id userAccountNumber = [user_info objectForKey:userAccount];
+        paramesUserAccount[@"userAccount"]=userAccountNumber;
+        
+        NSInteger rowsCount = (self.arrayDataFollow.count/10)*(isAddRefresh?10:0);
+        paramesUserAccount[@"rows"] = [NSString stringWithFormat:@"%ld",(long)rowsCount];
+        
+        NSString * httpUrl = [NSString stringWithFormat:@"%@type=follow",getSpringVideoListServer];
+        isAddRefresh = YES;
+        [ISQHttpTool getHttp:httpUrl contentType:nil params:paramesUserAccount success:^(id res) {
+            NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:res options:NSJapaneseEUCStringEncoding error:nil];
+            //        NSLog(@"showVoide follow===== %@",dic);
+            if (rowsCount == self.arrayDataFollow.count) {
+                [self.arrayDataFollow addObjectsFromArray:dic[@"retData"]];
             }
-            [self.arrayDataFollow addObjectsFromArray:dic[@"retData"]];
-        }
-        else {
-            self.arrayDataFollow = dic[@"retData"];
-        }
-        [FollowCollectionView reloadData];
-        
-    } failure:^(NSError *erro) {
-        
-    }];
+            else if (rowsCount<self.arrayDataFollow.count && rowsCount != 0&&self.arrayDataFollow.count%rowsCount!=0){//当数据已经全部获取且数量不为整十数时后：比如：一共有12条数据时
+                NSInteger last = self.arrayDataFollow.count%rowsCount;
+                for (int i = 0; i<last; i++) {
+                    [self.arrayDataFollow removeLastObject];
+                }
+                [self.arrayDataFollow addObjectsFromArray:dic[@"retData"]];
+            }
+            else {
+                self.arrayDataFollow = dic[@"retData"];
+            }
+            [FollowCollectionView reloadData];
+            
+        } failure:^(NSError *erro) {
+            
+        }];
+
+    }
     
 }
 
@@ -1192,7 +1216,7 @@ static int haoMiao = 0;
         if (pageNumber==1) {
             search.type = @"city";
             search.isCurrentCity = isCurrentCity;
-            search.pid = change_Pid;
+            search.pid = change_Pid; 
             search.cid = change_Cid;
         }
         if (pageNumber==2) search.type = @"special";
