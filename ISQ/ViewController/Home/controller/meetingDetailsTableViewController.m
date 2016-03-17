@@ -46,6 +46,10 @@
 -(void)refresh
 {
     NSString * httpStr = [NSString stringWithFormat:@"%@?id=%ld&userId=%d",getYSTDetail,ID_Details,[[user_info objectForKey:MyUserID] intValue]];
+    id MyUserIDGet = [user_info objectForKey:MyUserID];
+    if (MyUserIDGet == nil) {
+        httpStr = [NSString stringWithFormat:@"%@?id=%ld",getYSTDetail,ID_Details];
+    }
     [ISQHttpTool getHttp:httpStr contentType:nil params:nil success:^(id resData) {
         NSDictionary * dataDic = [NSJSONSerialization JSONObjectWithData:resData options:NSJapaneseEUCStringEncoding error:nil];
 //        NSLog(@"detail Dic = %@",dataDic);
@@ -126,7 +130,7 @@
     labelLineProgress.frame = rectLine;
     [cell.contentView addSubview:labelLineProgress];
     
-    UILabel * percentageLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.view.frame.size.width-50, 0, 35, cell.frame.size.height)];
+    UILabel * percentageLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.view.frame.size.width-50, 0, 40, cell.frame.size.height)];
     percentageLabel.text = [NSString stringWithFormat:@"%.0f%%",percentage*100];
     percentageLabel.font = [UIFont systemFontOfSize:15];
     percentageLabel.textAlignment = NSTextAlignmentRight;
@@ -137,7 +141,9 @@
     button.tag = [oneDicOption[@"id"] integerValue];
     [button setImage:[UIImage imageNamed:@"discuss_details_gouN"] forState:UIControlStateNormal];
     [button setImage:[UIImage imageNamed:@"discuss_details_gouS"] forState:UIControlStateSelected];
-    button.selected = [oneDicOption[@"isChecked"] boolValue];
+    if ([[oneDicOption allKeys] containsObject:@"isChecked"]) {
+        button.selected = [oneDicOption[@"isChecked"] boolValue];
+    }
     int status = [self.detailsDictionary[@"status"] intValue];
     if (status==1) {
         [button addTarget:self action:@selector(onChooseOption:) forControlEvents:UIControlEventTouchUpInside];
