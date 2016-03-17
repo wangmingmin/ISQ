@@ -142,6 +142,8 @@ static int rowInt;
         return;
     }
     NSString * httpStr = [NSString stringWithFormat:@"%@?communityId=%d&row=%d",getYSTList,[[user_info objectForKey:userCommunityID] intValue],rowInt];
+    const char *strUTF8 = [httpStr UTF8String];
+    httpStr = [NSString stringWithUTF8String:strUTF8];
     [ISQHttpTool getHttp:httpStr contentType:nil params:nil success:^(id resData) {
         NSDictionary * dataDic = [NSJSONSerialization JSONObjectWithData:resData options:NSJapaneseEUCStringEncoding error:nil];
 //        NSLog(@"meeting Dic = %@",dataDic);
@@ -164,7 +166,8 @@ static int rowInt;
         self.staticArrayForSearch = self.discussArray;
         [self.tableView reloadData];
     } failure:^(NSError *erro) {
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"" message:@"暂无议事信息,稍后请重试" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+        NSString * erroStr = @"暂无议事信息,稍后请重试";
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"" message:erroStr delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
         [alert show];
     }];
 }
