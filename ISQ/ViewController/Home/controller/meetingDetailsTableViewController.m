@@ -45,10 +45,10 @@
 
 -(void)refresh
 {
-    NSString * httpStr = [NSString stringWithFormat:@"%@?id=%ld",getYSTDetail,ID_Details];
+    NSString * httpStr = [NSString stringWithFormat:@"%@?id=%ld&userId=%d",getYSTDetail,ID_Details,[[user_info objectForKey:MyUserID] intValue]];
     [ISQHttpTool getHttp:httpStr contentType:nil params:nil success:^(id resData) {
         NSDictionary * dataDic = [NSJSONSerialization JSONObjectWithData:resData options:NSJapaneseEUCStringEncoding error:nil];
-        NSLog(@"detail Dic = %@",dataDic);
+//        NSLog(@"detail Dic = %@",dataDic);
         self.detailsDictionary = dataDic[@"retData"];
         self.optionArray = dataDic[@"optionDate"];
         [self.tableView reloadData];
@@ -121,7 +121,7 @@
     CGFloat percentage = total==0?0:[oneDicOption[@"count"] floatValue]/total;
     UILabel * labelLineProgress = [[UILabel alloc] initWithFrame:CGRectMake(optionCount.frame.origin.x+optionCount.frame.size.width+8, cell.contentView.frame.size.height/2.0-5, self.view.frame.size.width-(optionCount.frame.origin.x+optionCount.frame.size.width+8)-55, 10)];
     CGRect rectLine = labelLineProgress.frame;
-    labelLineProgress.backgroundColor = arrayColor[indexPath.row];
+    labelLineProgress.backgroundColor = arrayColor[indexPath.row%arrayColor.count];
     rectLine.size.width = percentage*rectLine.size.width;
     labelLineProgress.frame = rectLine;
     [cell.contentView addSubview:labelLineProgress];
@@ -137,6 +137,7 @@
     button.tag = [oneDicOption[@"id"] integerValue];
     [button setImage:[UIImage imageNamed:@"discuss_details_gouN"] forState:UIControlStateNormal];
     [button setImage:[UIImage imageNamed:@"discuss_details_gouS"] forState:UIControlStateSelected];
+    button.selected = [oneDicOption[@"isChecked"] boolValue];
     int status = [self.detailsDictionary[@"status"] intValue];
     if (status==1) {
         [button addTarget:self action:@selector(onChooseOption:) forControlEvents:UIControlEventTouchUpInside];
@@ -233,7 +234,7 @@
             label.layer.cornerRadius = 4;
             label.layer.masksToBounds = YES;
             label.text = (NSString *)obj;
-            label.textColor = colors[idx];
+            label.textColor = colors[idx%colors.count];
             [headerView addSubview:label];
         }];
 
@@ -283,8 +284,24 @@
 
 -(void)onChooseOption:(UIButton *)button
 {
-    button.selected = !button.selected;
-    NSInteger ID = button.tag;
+    int ID = (int)button.tag;
+    NSString * httpStr = [NSString stringWithFormat:@"%@?id=%d&userId=%d",YSTChooseOption,ID,[[user_info objectForKey:MyUserID] intValue]];
+    [ISQHttpTool getHttp:httpStr contentType:nil params:nil success:^(id res) {
+        button.selected = !button.selected;
+    } failure:^(NSError *erro) {
+        NSString *title = @"";
+        NSString *message = @"选择失败，稍后请重试";
+        NSString *cancelButtonTitle = @"确定";
+        
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+        
+        // Create the actions.
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:cancelButtonTitle style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        }];
+        [alertController addAction:cancelAction];
+        
+        [self presentViewController:alertController animated:YES completion:nil];
+    }];
 }
 
 /*

@@ -123,7 +123,7 @@
             label.layer.cornerRadius = 4;
             label.layer.masksToBounds = YES;
             label.text = (NSString *)obj;
-            label.textColor = colors[idx];
+            label.textColor = colors[idx%colors.count];
             [self.labelsView addSubview:label];
         }];
     }
