@@ -135,7 +135,13 @@ static int rowInt;
 { 
     self.searchController.searchBar.text = @"";
     rowInt = ((int)self.staticArrayForSearch.count/10)*10;
-    NSString * httpStr = [NSString stringWithFormat:@"%@?communityId=%d&row=%d",getYSTList,717,rowInt];
+    id userCommunityIDget = [user_info objectForKey:userCommunityID];
+    if(userCommunityIDget == nil) {
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"" message:@"您未选择社区，请返回首页重新选择社区" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+        [alert show];
+        return;
+    }
+    NSString * httpStr = [NSString stringWithFormat:@"%@?communityId=%d&row=%d",getYSTList,[[user_info objectForKey:userCommunityID] intValue],rowInt];
     [ISQHttpTool getHttp:httpStr contentType:nil params:nil success:^(id resData) {
         NSDictionary * dataDic = [NSJSONSerialization JSONObjectWithData:resData options:NSJapaneseEUCStringEncoding error:nil];
 //        NSLog(@"meeting Dic = %@",dataDic);
