@@ -117,7 +117,7 @@
         [Lables enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(idx * (width+15), 0, width, self.labelsView.frame.size.height)];
             label.textAlignment = NSTextAlignmentCenter;
-            label.font = [UIFont systemFontOfSize:12];
+            label.font = [UIFont systemFontOfSize:14];
             label.layer.borderColor = [UIColor lightGrayColor].CGColor;
             label.layer.borderWidth = 0.7;
             label.layer.cornerRadius = 4;

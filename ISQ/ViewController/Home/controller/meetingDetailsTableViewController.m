@@ -234,8 +234,8 @@
         [Lables enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(labelState.frame.origin.x + idx * (width+15), headerView.frame.size.height-38, width, 25)];
             label.textAlignment = NSTextAlignmentCenter;
-            label.font = [UIFont systemFontOfSize:13];
-            label.layer.borderColor = [UIColor groupTableViewBackgroundColor].CGColor;
+            label.font = [UIFont systemFontOfSize:14];
+            label.layer.borderColor = [UIColor lightGrayColor].CGColor;
             label.layer.borderWidth = 0.7;
             label.layer.cornerRadius = 4;
             label.layer.masksToBounds = YES;
