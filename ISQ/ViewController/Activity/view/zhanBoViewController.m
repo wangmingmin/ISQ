@@ -471,11 +471,12 @@ static NSString * const reuseIdentifier = @"cell";
 }
 
 - (IBAction)onFollow:(UIButton *)sender {
-    
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"立刻登陆查看关注" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-    
-    [alertView show];
-    
+    if ([user_info objectForKey:userAccount]==nil || [user_info objectForKey:userPassword]==nil) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"立刻登陆查看关注" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+        
+        [alertView show];
+    }
+
     [self movingByButton:sender.tag];
 }
 
