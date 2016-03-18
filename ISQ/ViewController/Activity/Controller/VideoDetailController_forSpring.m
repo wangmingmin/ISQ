@@ -20,6 +20,8 @@
 #import "MainViewController.h"
 #import "AppDelegate.h"
 #import "ISQCommonFunc.h"
+#import "LoginViewController.h"
+
 typedef NSInteger DWPLayerScreenSizeMode;
 
 @interface VideoDetailController_forSpring (){
@@ -129,6 +131,16 @@ typedef NSInteger DWPLayerScreenSizeMode;
 
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    
+    if (alertView.tag == 1000) {
+        
+        if (buttonIndex == 1) {
+            
+            UIStoryboard *board=[UIStoryboard storyboardWithName:@"RegisterLogin" bundle:nil];
+            LoginViewController *loginVC=[board instantiateViewControllerWithIdentifier:@"LoginStoryboard"];
+            [self.navigationController pushViewController:loginVC animated:YES];
+        }
+    }else{
     if (buttonIndex == 0) {
         
         //停止播放
@@ -153,8 +165,9 @@ typedef NSInteger DWPLayerScreenSizeMode;
             // 继续播放
             image = [UIImage imageNamed:@"player-pausebutton"];
             [self.player play];
-        }
+            }
         
+        }
     }
 }
 
@@ -1023,40 +1036,55 @@ typedef NSInteger DWPLayerScreenSizeMode;
 
 //关注
 - (IBAction)collectAction:(UIButton*)sender {
-    BOOL isCollect = [self.httpData[@"isCollect"] boolValue];
-    if (!isCollect) {
-        NSString * httpUrl = [NSString stringWithFormat:@"%@activeID=%@&userAccount=%@",followVideoServer,data.activeID,[user_info objectForKey:userAccount]];
-        [ISQHttpTool getHttp:httpUrl contentType:nil params:nil success:^(id responseObj) {
-            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"成功" message:@"关注已成功,可以在关注一栏查看" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
-            [alert show];
+    
+    if ([user_info objectForKey:userAccount] && [user_info objectForKey:userPassword]) {
+    
+        NSLog(@"data--%@",self.httpData[@"isCollect"]);
+        
+        BOOL isCollect = [self.httpData[@"isCollect"] boolValue];
+        if (!isCollect) {
+            NSString * httpUrl = [NSString stringWithFormat:@"%@activeID=%@&userAccount=%@",followVideoServer,data.activeID,[user_info objectForKey:userAccount]];
+            [ISQHttpTool getHttp:httpUrl contentType:nil params:nil success:^(id responseObj) {
+                UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"成功" message:@"关注已成功,可以在关注一栏查看" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+                [alert show];
+                
+                NSDictionary * dic=[NSJSONSerialization JSONObjectWithData:responseObj options:NSJapaneseEUCStringEncoding error:nil];
+                NSLog(@"dic attention = %@",dic);
+                [self refresh];
+                [self.delegate VideoDetailController_forSpringIsFinshedFollow];
+                
+            } failure:^(NSError *erro) {
+                UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"失败" message:@"关注失败，稍后请重新关注" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+                [alert show];
+            }];
             
-            NSDictionary * dic=[NSJSONSerialization JSONObjectWithData:responseObj options:NSJapaneseEUCStringEncoding error:nil];
-            NSLog(@"dic attention = %@",dic);
-            [self refresh];
-            [self.delegate VideoDetailController_forSpringIsFinshedFollow];
+        }else if (isCollect){
+            NSString * httpUrl = [NSString stringWithFormat:@"%@activeID=%@&userAccount=%@",noFollowVideoServer,data.activeID,[user_info objectForKey:userAccount]];
+            [ISQHttpTool getHttp:httpUrl contentType:nil params:nil success:^(id responseObj) {
+                UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"成功" message:@"取消关注已成功,该节目已移出关注一栏" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+                [alert show];
+                
+                NSDictionary * dic=[NSJSONSerialization JSONObjectWithData:responseObj options:NSJapaneseEUCStringEncoding error:nil];
+                NSLog(@"dic attention = %@",dic);
+                [self refresh];
+                [self.delegate VideoDetailController_forSpringIsFinshedFollow];
+                
+            } failure:^(NSError *erro) {
+                UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"失败" message:@"取消关注失败咯，稍后请重试" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+                [alert show];
+            }];
             
-        } failure:^(NSError *erro) {
-            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"失败" message:@"关注失败咯，稍后请重新关注" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
-            [alert show];
-        }];
+        }
 
-    }else if (isCollect){
-        NSString * httpUrl = [NSString stringWithFormat:@"%@activeID=%@&userAccount=%@",noFollowVideoServer,data.activeID,[user_info objectForKey:userAccount]];
-        [ISQHttpTool getHttp:httpUrl contentType:nil params:nil success:^(id responseObj) {
-            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"成功" message:@"取消关注已成功,该节目已移出关注一栏" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
-            [alert show];
-            
-            NSDictionary * dic=[NSJSONSerialization JSONObjectWithData:responseObj options:NSJapaneseEUCStringEncoding error:nil];
-            NSLog(@"dic attention = %@",dic);
-            [self refresh];
-            [self.delegate VideoDetailController_forSpringIsFinshedFollow];
-            
-        } failure:^(NSError *erro) {
-            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"失败" message:@"取消关注失败咯，稍后请重试" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
-            [alert show];
-        }];
-
+    }else{
+    
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"此功能需要登录后才可使用哦" message:@"立刻登录" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+        
+        alertView.tag = 1000;
+        
+        [alertView show];
     }
+    
 }
 
 -(void)checkIfIsFollow
