@@ -291,7 +291,7 @@
 -(void)onChooseOption:(UIButton *)button
 {
     id MyUserIDGet = [saveCityName objectForKey:MyUserID];
-    if (MyUserIDGet == nil) {
+    if (MyUserIDGet == nil||[user_info objectForKey:userAccount]==nil || [user_info objectForKey:userPassword]==nil) {
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"" message:@"您未登录,请登录后重试" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
         [alert show];
         return;
