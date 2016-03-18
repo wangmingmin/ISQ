@@ -17,6 +17,7 @@
 
 @implementation meetingDetailsTableViewController{
     NSInteger ID_Details;
+    BOOL isChoosedAlready;
 }
 
 - (void)viewDidLoad {
@@ -45,6 +46,7 @@
 
 -(void)refresh
 {
+    isChoosedAlready = NO;
     NSString * httpStr = [NSString stringWithFormat:@"%@?id=%ld&userId=%d",getYSTDetail,ID_Details,[[saveCityName objectForKey:MyUserID] intValue]];
     id MyUserIDGet = [saveCityName objectForKey:MyUserID];
     if (MyUserIDGet == nil) {
@@ -143,6 +145,9 @@
     [button setImage:[UIImage imageNamed:@"discuss_details_gouS"] forState:UIControlStateSelected];
     if ([[oneDicOption allKeys] containsObject:@"isChecked"]) {
         button.selected = [oneDicOption[@"isChecked"] boolValue];
+        if (button.selected) {
+            isChoosedAlready = YES;
+        }
     }
     int status = [self.detailsDictionary[@"status"] intValue];
     if (status==1) {
@@ -290,30 +295,34 @@
 
 -(void)onChooseOption:(UIButton *)button
 {
-    id MyUserIDGet = [saveCityName objectForKey:MyUserID];
-    if (MyUserIDGet == nil||[user_info objectForKey:userAccount]==nil || [user_info objectForKey:userPassword]==nil) {
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"" message:@"您未登录,请登录后重试" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+    if (isChoosedAlready) {
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"" message:@"您已经投过票了。" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
         [alert show];
         return;
     }
-    int ID = (int)button.tag;
-    NSString * httpStr = [NSString stringWithFormat:@"%@?id=%d&userId=%d",YSTChooseOption,ID,[[saveCityName objectForKey:MyUserID] intValue]];
-    [ISQHttpTool getHttp:httpStr contentType:nil params:nil success:^(id res) {
-        button.selected = !button.selected;
-    } failure:^(NSError *erro) {
-        NSString *title = @"";
-        NSString *message = @"选择失败，稍后请重试";
-        NSString *cancelButtonTitle = @"确定";
-        
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
-        
-        // Create the actions.
-        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:cancelButtonTitle style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+    if ([user_info objectForKey:userAccount] && [user_info objectForKey:userPassword]) {
+        int ID = (int)button.tag;
+        NSString * httpStr = [NSString stringWithFormat:@"%@?id=%d&userId=%d",YSTChooseOption,ID,[[saveCityName objectForKey:MyUserID] intValue]];
+        [ISQHttpTool getHttp:httpStr contentType:nil params:nil success:^(id res) {
+            button.selected = !button.selected;
+        } failure:^(NSError *erro) {
+            NSString *title = @"";
+            NSString *message = @"选择失败，稍后请重试";
+            NSString *cancelButtonTitle = @"确定";
+            
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+            
+            // Create the actions.
+            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:cancelButtonTitle style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+            }];
+            [alertController addAction:cancelAction];
+            
+            [self presentViewController:alertController animated:YES completion:nil];
         }];
-        [alertController addAction:cancelAction];
-        
-        [self presentViewController:alertController animated:YES completion:nil];
-    }];
+    }else{
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"" message:@"您未登录,请登录后重试" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+        [alert show];
+    }
 }
 
 /*
