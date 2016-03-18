@@ -146,13 +146,13 @@ static int rowInt;
 
     self.searchController.searchBar.text = @"";
     rowInt = ((int)self.staticArrayForSearch.count/10)*10;
-    id userCommunityIDget = [user_info objectForKey:userCommunityID];
+    id userCommunityIDget = [saveCityName objectForKey:userCommunityID];
     if(userCommunityIDget == nil) {
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"" message:@"您未选择社区，请返回首页重新选择社区" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
         [alert show];
         return;
     }
-    NSString * httpStr = [NSString stringWithFormat:@"%@?communityId=%d&row=%d",getYSTList,[[user_info objectForKey:userCommunityID] intValue],rowInt];
+    NSString * httpStr = [NSString stringWithFormat:@"%@?communityId=%d&row=%d",getYSTList,[[saveCityName objectForKey:userCommunityID] intValue],rowInt];
     const char *strUTF8 = [httpStr UTF8String];
     httpStr = [NSString stringWithUTF8String:strUTF8];
     [ISQHttpTool getHttp:httpStr contentType:nil params:nil success:^(id resData) {
@@ -216,7 +216,7 @@ static int rowInt;
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
     [self.discussArray removeAllObjects];
-    NSString * httpStr = [NSString stringWithFormat:@"%@?communityId=%d&title=%@",getYSTList,[[user_info objectForKey:userCommunityID] intValue],searchBar.text];
+    NSString * httpStr = [NSString stringWithFormat:@"%@?communityId=%d&title=%@",getYSTList,[[saveCityName objectForKey:userCommunityID] intValue],searchBar.text];
     [ISQHttpTool getHttp:httpStr contentType:nil params:nil success:^(id resData) {
         NSDictionary * dataDic = [NSJSONSerialization JSONObjectWithData:resData options:NSJapaneseEUCStringEncoding error:nil];
         [self.discussArray addObjectsFromArray: dataDic[@"retData"]];

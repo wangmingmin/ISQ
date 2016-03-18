@@ -45,8 +45,8 @@
 
 -(void)refresh
 {
-    NSString * httpStr = [NSString stringWithFormat:@"%@?id=%ld&userId=%d",getYSTDetail,ID_Details,[[user_info objectForKey:MyUserID] intValue]];
-    id MyUserIDGet = [user_info objectForKey:MyUserID];
+    NSString * httpStr = [NSString stringWithFormat:@"%@?id=%ld&userId=%d",getYSTDetail,ID_Details,[[saveCityName objectForKey:MyUserID] intValue]];
+    id MyUserIDGet = [saveCityName objectForKey:MyUserID];
     if (MyUserIDGet == nil) {
         httpStr = [NSString stringWithFormat:@"%@?id=%ld",getYSTDetail,ID_Details];
     }
@@ -290,14 +290,14 @@
 
 -(void)onChooseOption:(UIButton *)button
 {
-    id MyUserIDGet = [user_info objectForKey:MyUserID];
+    id MyUserIDGet = [saveCityName objectForKey:MyUserID];
     if (MyUserIDGet == nil) {
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"" message:@"您未登录,请登录后重试" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
         [alert show];
         return;
     }
     int ID = (int)button.tag;
-    NSString * httpStr = [NSString stringWithFormat:@"%@?id=%d&userId=%d",YSTChooseOption,ID,[[user_info objectForKey:MyUserID] intValue]];
+    NSString * httpStr = [NSString stringWithFormat:@"%@?id=%d&userId=%d",YSTChooseOption,ID,[[saveCityName objectForKey:MyUserID] intValue]];
     [ISQHttpTool getHttp:httpStr contentType:nil params:nil success:^(id res) {
         button.selected = !button.selected;
     } failure:^(NSError *erro) {
