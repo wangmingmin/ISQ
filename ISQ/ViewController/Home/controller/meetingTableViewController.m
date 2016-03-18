@@ -20,7 +20,9 @@
 @property (strong, nonatomic) NSMutableDictionary * imagesDic;
 @end
 
-@implementation meetingTableViewController
+@implementation meetingTableViewController{
+    UIAlertView * alertfailure;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -41,7 +43,6 @@
     self.imagesDic = [NSMutableDictionary dictionary];
     rowInt = 0;
     [self initSearchController];
-    [self refresh];
     [self.tableView addSubview:self.slimeViewPositive];
     [self addFooter];
     self.edgesForExtendedLayout = NO;
@@ -50,8 +51,15 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    [self refresh];
 }
-
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [self hideHud];
+    [alertfailure dismissWithClickedButtonIndex:0 animated:YES];
+    [alertfailure removeFromSuperview];
+}
 #pragma mark - 刷新
 - (SRRefreshView *)slimeViewPositive
 {
@@ -132,7 +140,10 @@ static int rowInt;
 }
 
 -(void)refresh
-{ 
+{
+    [self hideHud];
+    [self showHudInView:self.view.superview hint:@"正在加载..."];
+
     self.searchController.searchBar.text = @"";
     rowInt = ((int)self.staticArrayForSearch.count/10)*10;
     id userCommunityIDget = [user_info objectForKey:userCommunityID];
@@ -145,6 +156,7 @@ static int rowInt;
     const char *strUTF8 = [httpStr UTF8String];
     httpStr = [NSString stringWithUTF8String:strUTF8];
     [ISQHttpTool getHttp:httpStr contentType:nil params:nil success:^(id resData) {
+        [self hideHud];
         NSDictionary * dataDic = [NSJSONSerialization JSONObjectWithData:resData options:NSJapaneseEUCStringEncoding error:nil];
 //        NSLog(@"meeting Dic = %@",dataDic);
         NSArray * dataArr = dataDic[@"retData"];
@@ -166,9 +178,12 @@ static int rowInt;
         self.staticArrayForSearch = self.discussArray;
         [self.tableView reloadData];
     } failure:^(NSError *erro) {
+        [self hideHud];
+        [alertfailure dismissWithClickedButtonIndex:0 animated:NO];
+        [alertfailure removeFromSuperview];
         NSString * erroStr = @"暂无议事信息,稍后请重试";
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"" message:erroStr delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
-        [alert show];
+        alertfailure = [[UIAlertView alloc] initWithTitle:@"" message:erroStr delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+        [alertfailure show];
     }];
 }
 
