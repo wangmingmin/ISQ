@@ -16,7 +16,6 @@
     
     NSDictionary *returnString;
     ChangeInfoCell *cell;
-    NSUserDefaults *saveCityName;
 }
 
 @end

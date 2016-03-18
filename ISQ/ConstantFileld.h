@@ -85,7 +85,7 @@
 #define MedicalURL  @"http://webapp.wisq.cn/Medical/lists/location/"  //医疗
 #define tenementURL   @"http://webapp.wisq.cn/Yetopen"   //物业
 #define discuss   @"http://webapp.wisq.cn/talk/"    //议事厅
-#define officeURL  @"http://webapp.wisq.cn/office/lists/location/"  //居委会
+#define officeURL  @"http://webapp.wisq.cn/office/lists/"  //居委会
 #define communityNewThing @"http://webapp.wisq.cn/Communitynews/lists/cid/" //新鲜事
 
 //设置>开关状态保存
@@ -266,6 +266,7 @@
 #define YSTChooseOption @"http://192.168.2.111:8080/isqbms/chooseOption.from"
 
 #define user_info [NSUserDefaults standardUserDefaults]
+#define saveCityName [NSUserDefaults standardUserDefaults]
 #define weixinAppID @"wx625b0199b2d176bd"
 #define weixinAppSecret @"b5efd07930e874660f7c3fcd4c726282"
 

@@ -18,7 +18,6 @@
     CityTableViewCell *cell;
     NSArray *cityToCommunity;
     NSArray *returnString;
-    NSUserDefaults *saveCityName;
     AppDelegate *locationCityDelegate;
     NSMutableDictionary*index;
     NSArray*arraylist;
@@ -118,7 +117,6 @@
 #pragma mark - 获取社区数据
 -(void)getCommnityData
 {
-    saveCityName=[NSUserDefaults standardUserDefaults];
     //建立一个字典，字典保存key是A-Z  值是数组
     index=[NSMutableDictionary dictionaryWithCapacity:0];
     
@@ -395,6 +393,9 @@
 -(void)toSaveCommunityID{
     
     NSString *http=[requestTheCodeURL stringByAppendingString:@"updatecommunity"];
+    
+    NSLog(@"saveCityName---%@",saveCityName);
+    
     NSDictionary *arry=@{@"phone":[NSString stringWithFormat:@"%@",[saveCityName objectForKey:userAccount]],@"cid":[NSString stringWithFormat:@"%d",[[saveCityName objectForKey:userCommunityID] intValue ]]};
     
     [ISQHttpTool getHttp:http contentType:nil params:arry success:^(id resposeObject) {

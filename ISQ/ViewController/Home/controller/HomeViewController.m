@@ -37,7 +37,6 @@
     
     AppDelegate *HomeDelegate;
     NSArray *hornData;
-    NSUserDefaults *saveCityName;
     NSArray *locationSelectData;
     NSMutableArray *locationEssenceAdRUL1;
     NSMutableArray *locationEssenceimgRight;
@@ -70,7 +69,6 @@ bool theTop=true;
     contentDic = [[NSArray alloc] init];
     self.tabelview.tableFooterView = [[UIView alloc] init];
     //记录城市选择或者定位的结果
-    saveCityName=[NSUserDefaults standardUserDefaults];
     HomeDelegate=(AppDelegate*)[[UIApplication sharedApplication]delegate];
     
     [self navigationControllerView];
@@ -550,9 +548,19 @@ bool theTop=true;
         
     //居委会
     }else if ([[segue identifier] isEqualToString:@"committee"]){
-        NSString *url = [NSString stringWithFormat:@"%@%f,%f.html",officeURL,locationCityDelegate.theLa,locationCityDelegate.theLo];
+        
+        if ([user_info objectForKey:userAccount] && [user_info objectForKey:userPassword]) {
+            
+            NSString *url  = [NSString stringWithFormat:@"%@cid/%@/uid/%@",officeURL,[saveCityName objectForKey:userCommunityID],[user_info objectForKey:MyUserID]];
+            SeconWebController *webVC = [segue destinationViewController];
+            webVC.theUrl = url;
+        }else{
+        
+        NSString *url = [NSString stringWithFormat:@"%@cid/%@",officeURL,[saveCityName objectForKey:userCommunityID]];
         SeconWebController *webVC = [segue destinationViewController];
         webVC.theUrl = url;
+            
+        }
         
     //新鲜事
     }else if ([[segue identifier] isEqualToString:@"communityNewThing"]){
