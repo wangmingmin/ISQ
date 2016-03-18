@@ -141,6 +141,7 @@
     
     UIButton * button = [[UIButton alloc] initWithFrame:CGRectMake(20, 8, cell.frame.size.height-16, cell.frame.size.height-16)];
     button.tag = [oneDicOption[@"id"] integerValue];
+    cell.tag = cell.contentView.tag = [oneDicOption[@"yst_id"] integerValue];
     [button setImage:[UIImage imageNamed:@"discuss_details_gouN"] forState:UIControlStateNormal];
     [button setImage:[UIImage imageNamed:@"discuss_details_gouS"] forState:UIControlStateSelected];
     if ([[oneDicOption allKeys] containsObject:@"isChecked"]) {
@@ -302,7 +303,8 @@
     }
     if ([user_info objectForKey:userAccount] && [user_info objectForKey:userPassword]) {
         int ID = (int)button.tag;
-        NSString * httpStr = [NSString stringWithFormat:@"%@?id=%d&userId=%d",YSTChooseOption,ID,[[saveCityName objectForKey:MyUserID] intValue]];
+        int yst_id = (int)button.superview.tag;
+        NSString * httpStr = [NSString stringWithFormat:@"%@?id=%d&userId=%d&ystId=%d",YSTChooseOption,ID,[[saveCityName objectForKey:MyUserID] intValue],yst_id];
         [ISQHttpTool getHttp:httpStr contentType:nil params:nil success:^(id res) {
             button.selected = !button.selected;
             [self refresh];
