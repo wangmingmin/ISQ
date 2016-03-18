@@ -305,6 +305,7 @@
         NSString * httpStr = [NSString stringWithFormat:@"%@?id=%d&userId=%d",YSTChooseOption,ID,[[saveCityName objectForKey:MyUserID] intValue]];
         [ISQHttpTool getHttp:httpStr contentType:nil params:nil success:^(id res) {
             button.selected = !button.selected;
+            [self refresh];
         } failure:^(NSError *erro) {
             NSString *title = @"";
             NSString *message = @"选择失败，稍后请重试";
