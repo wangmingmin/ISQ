@@ -1041,7 +1041,7 @@ typedef NSInteger DWPLayerScreenSizeMode;
     
         NSLog(@"data--%@",self.httpData[@"isCollect"]);
         
-        BOOL isCollect = [self.httpData[@"isCollect"] boolValue];
+        BOOL isCollect = [self.httpData[@"isCollect"]isKindOfClass:[NSNull class]]?0:[self.httpData[@"isCollect"] boolValue];
         if (!isCollect) {
             NSString * httpUrl = [NSString stringWithFormat:@"%@activeID=%@&userAccount=%@",followVideoServer,data.activeID,[user_info objectForKey:userAccount]];
             [ISQHttpTool getHttp:httpUrl contentType:nil params:nil success:^(id responseObj) {
