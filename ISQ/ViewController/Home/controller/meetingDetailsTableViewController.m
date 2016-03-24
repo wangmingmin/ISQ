@@ -9,8 +9,9 @@
 #import "meetingDetailsTableViewController.h"
 #import "TableViewCellDetails.h"
 #import "ISQHttpTool.h"
+#import "LoginViewController.h"
 
-@interface meetingDetailsTableViewController ()
+@interface meetingDetailsTableViewController ()<UIAlertViewDelegate>
 @property (strong, nonatomic) NSDictionary * detailsDictionary;
 @property (strong, nonatomic) NSArray * optionArray;
 @end
@@ -323,8 +324,19 @@
             [self presentViewController:alertController animated:YES completion:nil];
         }];
     }else{
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"" message:@"您未登录,请登录后重试" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"" message:@"您未登录,请登录后重试" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+        
         [alert show];
+    }
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+
+    if (buttonIndex == 1) {
+        
+        UIStoryboard *board=[UIStoryboard storyboardWithName:@"RegisterLogin" bundle:nil];
+        LoginViewController *loginVC=[board instantiateViewControllerWithIdentifier:@"LoginStoryboard"];
+        [self.navigationController pushViewController:loginVC animated:YES];
     }
 }
 

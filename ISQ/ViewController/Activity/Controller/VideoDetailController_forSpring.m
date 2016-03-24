@@ -130,9 +130,11 @@ typedef NSInteger DWPLayerScreenSizeMode;
 }
 
 
+#pragma mark - UIAlertView delegate
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     
-    if (alertView.tag == 1000) {
+    if (alertView.tag == 1000 || alertView.tag == 2000) {
         
         if (buttonIndex == 1) {
             
@@ -1167,15 +1169,27 @@ typedef NSInteger DWPLayerScreenSizeMode;
 
 //分享
 - (IBAction)shareAction:(id)sender {
-    NSMutableDictionary *shareDic=[NSMutableDictionary dictionary];
-    NSString *imageurls = data.image;
-    imgUrlArray = [imageurls componentsSeparatedByString:@","];
-    shareDic[@"img"]= imgUrlArray?imgUrlArray[0]:@"";
-    shareDic[@"title"]=data.title;
-    shareDic[@"desc"]=data.detail;
-    shareDic[@"url"]=@"http://down.app.wisq.cn";
     
-    [MainViewController theShareSDK:shareDic];
+    if ([user_info objectForKey:userAccount] && [user_info objectForKey:userPassword]) {
+        
+        NSMutableDictionary *shareDic=[NSMutableDictionary dictionary];
+        NSString *imageurls = data.image;
+        imgUrlArray = [imageurls componentsSeparatedByString:@","];
+        shareDic[@"img"]= imgUrlArray?imgUrlArray[0]:@"";
+        shareDic[@"title"]=data.title;
+        shareDic[@"desc"]=data.detail;
+        shareDic[@"url"]=@"http://down.app.wisq.cn";
+        
+        [MainViewController theShareSDK:shareDic];
+        
+    }else{
+    
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"此功能需要登录后才可使用哦" message:@"立刻登录" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+        
+        alertView.tag = 2000;
+        [alertView show];
+        
+    }
     
 }
 
