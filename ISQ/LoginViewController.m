@@ -11,12 +11,16 @@
 #import "AFURLResponseSerialization.h"
 #import "AppDelegate.h"
 #import "ImgURLisFount.h"
+#import <TencentOpenAPI/TencentOAuth.h>
+#import "WXApi.h"
 
-@interface LoginViewController (){
+@interface LoginViewController ()<TencentSessionDelegate,WXApiDelegate>
+{
     NSDictionary *returnString;
 
     EGOCache *theCache;
 }
+@property (strong, nonatomic) TencentOAuth * tencentOAuth;
 
 @end
 
@@ -31,7 +35,9 @@ bool warInt=true;
     
     
     [super viewDidLoad];
-    
+    _tencentOAuth = [[TencentOAuth alloc] initWithAppId:QQAppID
+                                            andDelegate:self];
+
     theCache=[[EGOCache alloc]init];
     self.navigationController.navigationBar.hidden=YES;
     self.navigationController.interactivePopGestureRecognizer.delegate = (id<UIGestureRecognizerDelegate>)self;
@@ -138,5 +144,112 @@ bool warInt=true;
 
 }
 
+- (IBAction)QQLogIn:(UIButton *)sender {
+    [self QQLogin];
+}
+
+- (IBAction)weixinLogIn:(UIButton *)sender {
+    [self sendAuthRequest];
+}
+
+#pragma QQ
+- (void)QQLogin
+{
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"accessToken"]!= nil) {
+        [_tencentOAuth setAccessToken:[[NSUserDefaults standardUserDefaults] objectForKey:@"accessToken"]];
+        [_tencentOAuth setOpenId:[[NSUserDefaults standardUserDefaults] objectForKey:@"openId"]];
+        [_tencentOAuth setExpirationDate:[[NSUserDefaults standardUserDefaults] objectForKey:@"expirationDate"]];
+        
+    }
+    NSArray* permissions = [NSArray arrayWithObjects:
+                            kOPEN_PERMISSION_GET_USER_INFO,
+                            kOPEN_PERMISSION_GET_SIMPLE_USER_INFO,
+                            kOPEN_PERMISSION_ADD_ALBUM,
+                            kOPEN_PERMISSION_ADD_ONE_BLOG,
+                            kOPEN_PERMISSION_ADD_SHARE,
+                            kOPEN_PERMISSION_ADD_TOPIC,
+                            kOPEN_PERMISSION_CHECK_PAGE_FANS,
+                            kOPEN_PERMISSION_GET_INFO,
+                            kOPEN_PERMISSION_GET_OTHER_INFO,
+                            kOPEN_PERMISSION_LIST_ALBUM,
+                            kOPEN_PERMISSION_UPLOAD_PIC,
+                            kOPEN_PERMISSION_GET_VIP_INFO,
+                            kOPEN_PERMISSION_GET_VIP_RICH_INFO,
+                            nil];
+    
+    [_tencentOAuth authorize:permissions inSafari:NO];
+}
+
+-(void)tencentDidLogin
+{
+    if (_tencentOAuth.accessToken && 0 != [_tencentOAuth.accessToken length])
+    {
+        // 记录登录用户的OpenID、Token以及过期时间,测试时存在本地，建议各种信息存在云端服务器上,需要时访问服务器获取
+        [[NSUserDefaults standardUserDefaults] setObject:_tencentOAuth.accessToken forKey:@"accessToken"];
+        [[NSUserDefaults standardUserDefaults] setObject:_tencentOAuth.openId forKey:@"openId"];
+        [[NSUserDefaults standardUserDefaults] setObject:_tencentOAuth.expirationDate forKey:@"expirationDate"];
+        
+        
+        NSString * httpString = [NSString stringWithFormat:@"https://openmobile.qq.com/user/get_simple_userinfo?access_token=%@&oauth_consumer_key=%@&openid=%@",_tencentOAuth.accessToken,_tencentOAuth.appId,_tencentOAuth.openId];
+        [ISQHttpTool getHttp:httpString contentType:nil params:nil success:^(id data) {
+            NSDictionary * dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+            NSLog(@"dic = %@",dic);
+
+        } failure:^(NSError *erro) {
+            
+        }];
+        
+    }
+    else
+    {
+        
+    }
+    
+}
+
+-(void)tencentDidNotLogin:(BOOL)cancelled
+{
+    if (cancelled)
+    {
+    }
+    else
+    {
+    }
+    
+}
+
+-(void)tencentDidNotNetWork
+{
+    
+}
+
+-(void)tencentDidLogout
+{
+    
+}
+
+#pragma weixin
+-(void)sendAuthRequest
+{
+    //构造SendAuthReq结构体
+    SendAuthReq* req =[[SendAuthReq alloc ] init ];
+    req.scope = @"snsapi_userinfo" ;
+    req.state = @"123" ;
+    //第三方向微信终端发送一个SendAuthReq消息结构
+    if ([WXApi isWXAppInstalled]) {
+        [WXApi sendReq:req];//安装微信时onResp:在Appdelegate中
+    }else {
+        [WXApi sendAuthReq:req viewController:self delegate:self];
+    }
+}
+
+-(void)onResp:(BaseResp *)resp//没有安装微信时,安装微信后在Appdelegate中响应相同的方法
+{
+    if (!resp.errCode) {
+        SendAuthResp * AuthResp = (SendAuthResp *)resp;
+        
+    }
+    
+}
 
 @end

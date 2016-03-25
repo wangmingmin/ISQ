@@ -269,5 +269,7 @@
 #define saveCityName [NSUserDefaults standardUserDefaults]
 #define weixinAppID @"wx625b0199b2d176bd"
 #define weixinAppSecret @"b5efd07930e874660f7c3fcd4c726282"
+#define QQAppID @"1104175103"
+#define QQAppSecret @"aed9b0303e3ed1e27bae87c33761161d"
 
 #endif
