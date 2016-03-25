@@ -45,19 +45,19 @@
 //已经登陆过则进入主界面，未登录则进入登录界面
 -(void)toStart{
     
-//    if ([user_info objectForKey:userPassword]&&[user_info objectForKey:userAccount]) {
+    if ([user_info objectForKey:userPassword]&&[user_info objectForKey:userAccount]) {
         UIStoryboard *mainStory=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
         MainViewController *mainVC=[mainStory instantiateViewControllerWithIdentifier:@"MainViewStory"];
         self.navigationController.navigationBar.hidden=YES;
         [self.navigationController pushViewController:mainVC animated:YES];
 
-//    }
-//    else {
-//        
-//        UIStoryboard *board=[UIStoryboard storyboardWithName:@"RegisterLogin" bundle:nil];
-//        LoginViewController *loginVC=[board instantiateViewControllerWithIdentifier:@"LoginStoryboard"];
-//        [self.navigationController pushViewController:loginVC animated:YES];
-//    }
+    }
+    else {
+        
+        UIStoryboard *board=[UIStoryboard storyboardWithName:@"RegisterLogin" bundle:nil];
+        LoginViewController *loginVC=[board instantiateViewControllerWithIdentifier:@"LoginStoryboard"];
+        [self.navigationController pushViewController:loginVC animated:YES];
+    }
 
 }
 
