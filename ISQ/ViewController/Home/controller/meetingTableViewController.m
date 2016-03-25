@@ -51,7 +51,9 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self refresh];
+    if (self.staticArrayForSearch.count==0) {
+        [self refresh];
+    }
 }
 -(void)viewDidDisappear:(BOOL)animated
 {

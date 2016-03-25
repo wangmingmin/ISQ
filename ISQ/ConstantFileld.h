@@ -258,19 +258,21 @@
 /**
  *获取议事厅列表
  */
-#define getYSTList @"http://192.168.2.111:8080/isqbms/getYSTList.from"
+#define getYSTList @"http://121.41.18.126:8080/isqbms/getYSTList.from"
 /**
  *获取议事厅详情
  */
-#define getYSTDetail @"http://192.168.2.111:8080/isqbms/getYSTDetail.from"
+#define getYSTDetail @"http://121.41.18.126:8080/isqbms/getYSTDetail.from"
 /**
  *议事厅选择选项
  */
-#define YSTChooseOption @"http://192.168.2.111:8080/isqbms/chooseOption.from"
+#define YSTChooseOption @"http://121.41.18.126:8080/isqbms/chooseOption.from"
 
 #define user_info [NSUserDefaults standardUserDefaults]
 #define saveCityName [NSUserDefaults standardUserDefaults]
 #define weixinAppID @"wx625b0199b2d176bd"
 #define weixinAppSecret @"b5efd07930e874660f7c3fcd4c726282"
+#define QQAppID @"1104175103"
+#define QQAppSecret @"aed9b0303e3ed1e27bae87c33761161d"
 
 #endif

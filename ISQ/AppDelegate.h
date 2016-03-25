@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "HomeViewController.h"
+#import <TencentOpenAPI/TencentOAuth.h>
+#import "WXApi.h"
 
-@interface AppDelegate : UIResponder<UIApplicationDelegate, IChatManagerDelegate,UIAlertViewDelegate>
+@interface AppDelegate : UIResponder<UIApplicationDelegate, IChatManagerDelegate,UIAlertViewDelegate,WXApiDelegate>
 {
     EMConnectionState _connectionState;
 }

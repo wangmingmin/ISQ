@@ -74,16 +74,51 @@ bool islogin=false;
     [BeeCloud initWithAppID:@"5652c5fb-096e-4660-8fa8-a9a511e9b296" andAppSecret:@"a3c0fefd-45e6-44aa-822c-117005773586"];
     [BeeCloud initWeChatPay:weixinAppID];
     
-    
+    //QQ weixin
+    [WXApi registerApp:weixinAppID];
     return YES;
     
     
 }
 
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    if ([WXApi handleOpenURL:url delegate:self]) {
+        return YES;
+    }
+    if ([TencentOAuth HandleOpenURL:url]) {
+        return [TencentOAuth HandleOpenURL:url];
+    }
+
+    return YES;
+}
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+{
+    if ([WXApi handleOpenURL:url delegate:self]) {
+        return YES;
+    }
+    if ([TencentOAuth HandleOpenURL:url]) {
+        return [TencentOAuth HandleOpenURL:url];
+    }
+
+    return YES;
+}
+
+-(void)onResp:(BaseResp *)resp
+{
+    if (!resp.errCode) {
+        SendAuthResp * AuthResp = (SendAuthResp *)resp;
+        
+    }
+    
+}
+
 -(BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options
 {
-    if (![BeeCloud handleOpenUrl:url]) {
+    if ([BeeCloud handleOpenUrl:url]) {
         //handle其他类型的url
+        return YES;
     }
     return YES;
 }
