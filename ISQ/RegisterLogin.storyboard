@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="NbP-NA-ArT">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="NbP-NA-ArT">
     <dependencies>
         <deployment version="1792" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
@@ -776,7 +776,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="128"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="9BB3D0BA-4AB1-4840-826B-3EB054424C8C" translatesAutoresizingMaskIntoConstraints="NO" id="lAM-NS-HIQ">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0A1F928D-CAF8-44A1-A237-F147D32C0E94" translatesAutoresizingMaskIntoConstraints="NO" id="lAM-NS-HIQ">
                                                     <rect key="frame" x="0.0" y="27" width="408" height="75"/>
                                                 </imageView>
                                                 <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6eN-r3-RTa">
@@ -1201,16 +1201,94 @@
                                                     <action selector="visitorAction:" destination="8Wk-eg-Gbj" eventType="touchUpInside" id="rqw-gE-OdI"/>
                                                 </connections>
                                             </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iWG-sM-EvF">
+                                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="76" id="HF8-aK-jqt"/>
+                                                    <constraint firstAttribute="height" constant="24" id="LTM-w4-YJS"/>
+                                                </constraints>
+                                                <state key="normal" image="bt_blue_76X24.png"/>
+                                                <variation key="default">
+                                                    <mask key="constraints">
+                                                        <exclude reference="HF8-aK-jqt"/>
+                                                        <exclude reference="LTM-w4-YJS"/>
+                                                    </mask>
+                                                </variation>
+                                                <variation key="heightClass=regular">
+                                                    <mask key="constraints">
+                                                        <include reference="HF8-aK-jqt"/>
+                                                        <include reference="LTM-w4-YJS"/>
+                                                    </mask>
+                                                </variation>
+                                                <connections>
+                                                    <action selector="QQLogIn:" destination="8Wk-eg-Gbj" eventType="touchUpInside" id="bMe-5U-ibi"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ONx-TZ-bdU">
+                                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="24" id="TVp-Qv-qlO"/>
+                                                    <constraint firstAttribute="width" constant="118" id="kBI-D0-tXK"/>
+                                                </constraints>
+                                                <state key="normal" image="icon32_wx_button.png"/>
+                                                <variation key="default">
+                                                    <mask key="constraints">
+                                                        <exclude reference="TVp-Qv-qlO"/>
+                                                        <exclude reference="kBI-D0-tXK"/>
+                                                    </mask>
+                                                </variation>
+                                                <variation key="heightClass=regular">
+                                                    <mask key="constraints">
+                                                        <include reference="TVp-Qv-qlO"/>
+                                                        <include reference="kBI-D0-tXK"/>
+                                                    </mask>
+                                                </variation>
+                                                <connections>
+                                                    <action selector="weixinLogIn:" destination="8Wk-eg-Gbj" eventType="touchUpInside" id="RWQ-mK-gXp"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <constraints>
                                             <constraint firstItem="HCS-Uk-1nm" firstAttribute="top" secondItem="DDe-Wt-FAz" secondAttribute="top" id="45r-FN-MwU"/>
                                             <constraint firstItem="HCS-Uk-1nm" firstAttribute="leading" secondItem="DDe-Wt-FAz" secondAttribute="leading" id="6GY-9l-qED"/>
                                             <constraint firstAttribute="bottom" secondItem="HCS-Uk-1nm" secondAttribute="bottom" id="QLa-9K-I7y"/>
                                             <constraint firstAttribute="trailing" secondItem="nTh-R0-1zZ" secondAttribute="trailing" id="RGq-4R-dd8"/>
+                                            <constraint firstItem="iWG-sM-EvF" firstAttribute="top" secondItem="DDe-Wt-FAz" secondAttribute="top" constant="8" id="WYf-pQ-NFm"/>
                                             <constraint firstAttribute="bottom" secondItem="nTh-R0-1zZ" secondAttribute="bottom" id="Y4q-z2-lLF"/>
+                                            <constraint firstItem="ONx-TZ-bdU" firstAttribute="centerX" secondItem="DDe-Wt-FAz" secondAttribute="centerX" id="du2-o3-REo">
+                                                <variation key="heightClass=regular" constant="42"/>
+                                            </constraint>
+                                            <constraint firstItem="iWG-sM-EvF" firstAttribute="centerX" secondItem="DDe-Wt-FAz" secondAttribute="centerX" id="gLY-9c-Xng">
+                                                <variation key="heightClass=regular" constant="-64"/>
+                                            </constraint>
                                             <constraint firstAttribute="height" constant="40" id="ogj-9P-HIK"/>
+                                            <constraint firstItem="ONx-TZ-bdU" firstAttribute="top" secondItem="DDe-Wt-FAz" secondAttribute="top" constant="8" id="ovX-9i-Hmy"/>
                                             <constraint firstItem="nTh-R0-1zZ" firstAttribute="top" secondItem="DDe-Wt-FAz" secondAttribute="top" id="vp7-B9-rAI"/>
                                         </constraints>
+                                        <variation key="default">
+                                            <mask key="subviews">
+                                                <exclude reference="iWG-sM-EvF"/>
+                                                <exclude reference="ONx-TZ-bdU"/>
+                                            </mask>
+                                            <mask key="constraints">
+                                                <exclude reference="WYf-pQ-NFm"/>
+                                                <exclude reference="gLY-9c-Xng"/>
+                                                <exclude reference="du2-o3-REo"/>
+                                                <exclude reference="ovX-9i-Hmy"/>
+                                            </mask>
+                                        </variation>
+                                        <variation key="heightClass=regular">
+                                            <mask key="subviews">
+                                                <include reference="iWG-sM-EvF"/>
+                                                <include reference="ONx-TZ-bdU"/>
+                                            </mask>
+                                            <mask key="constraints">
+                                                <include reference="WYf-pQ-NFm"/>
+                                                <include reference="gLY-9c-Xng"/>
+                                                <include reference="du2-o3-REo"/>
+                                                <include reference="ovX-9i-Hmy"/>
+                                            </mask>
+                                        </variation>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xf3-nG-XXY">
                                         <rect key="frame" x="14" y="187" width="91" height="30"/>
@@ -1522,7 +1600,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="9BB3D0BA-4AB1-4840-826B-3EB054424C8C" width="52" height="72">
+        <image name="0A1F928D-CAF8-44A1-A237-F147D32C0E94" width="52" height="72">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -1823,6 +1901,8 @@ AgEAAAAAAAAAQQAAAAAAAAAAAAAAAAAARJw
 </mutableData>
         </image>
         <image name="back_img" width="25" height="25"/>
+        <image name="bt_blue_76X24.png" width="76" height="24"/>
+        <image name="icon32_wx_button.png" width="156" height="32"/>
         <image name="login_logo" width="93" height="129"/>
         <image name="registerCheckmark" width="10" height="8"/>
         <image name="registerRectangle 393" width="23" height="23"/>
