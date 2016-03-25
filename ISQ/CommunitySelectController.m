@@ -35,6 +35,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    returnString = [[NSArray alloc] init];
+    
     
     //下拉刷新
     [self addHeader];
@@ -110,18 +112,29 @@
     
     NSString *http = [NSString stringWithFormat:@"%@?timestamp=%@&sign=%@&district=%@&limit=%@&page=%@&per_page=%@&sortby=%@&order=%@",url,[HMAC_SHA1 getTime],sign,[saveCityName objectForKey:userDistrictid],@"20",@"20",@"10",@"alphabet",@"asc"];
     
-    
     //建立一个字典，字典保存key是A-Z  值是数组
     index=[NSMutableDictionary dictionaryWithCapacity:0];
     [index removeAllObjects];
-    returnString=nil;
     [ISQHttpTool getHttp:http contentType:nil params:nil success:^(id responseObject) {
         
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJapaneseEUCStringEncoding  error:nil];
-        if (returnString.count > 0) {
-            
-            returnString = [[dic objectForKey:@"data"] objectForKey:@"content"];
+        NSDictionary *dic = [[NSDictionary alloc] init];
+        dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJapaneseEUCStringEncoding  error:nil];
+        NSString *resultString = [[dic objectForKey:@"data"] objectForKey:@"content"];
+        
+//        if (dic) {
+        
+//        }
+        NSDictionary *dic1 = [[dic objectForKey:@"data"] objectForKey:@"content"];
+        
+        NSLog(@"data--%@",dic1);
+        
+        if (dic1 ) {
+        
+//            returnString = [resultString componentsSeparatedByString:@","];
+//            
+//            NSLog(@"returnString--%@",returnString);
 
+            returnString = [[dic objectForKey:@"data"] objectForKey:@"content"];
             for (int i=0;i<returnString.count;i++) {
                 NSString *strFirLetter = [NSString stringWithFormat:@"%c",pinyinFirstLetter([returnString[i][@"communityshortname"] characterAtIndex:0])];
                 if ([[index allKeys]containsObject:strFirLetter]) {
