@@ -777,7 +777,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="128"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="FF4525CA-F54A-463D-BC9F-2CFBF7B0256E" translatesAutoresizingMaskIntoConstraints="NO" id="lAM-NS-HIQ">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="7B2D8833-9A44-4205-AECD-574E42AC5DDA" translatesAutoresizingMaskIntoConstraints="NO" id="lAM-NS-HIQ">
                                                     <rect key="frame" x="0.0" y="27" width="408" height="75"/>
                                                 </imageView>
                                                 <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6eN-r3-RTa">
@@ -1202,84 +1202,16 @@
                                                     <action selector="visitorAction:" destination="8Wk-eg-Gbj" eventType="touchUpInside" id="rqw-gE-OdI"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ujs-tf-sqe">
-                                                <rect key="frame" x="86" y="8" width="76" height="24"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="24" id="1pB-tt-KAn"/>
-                                                    <constraint firstAttribute="width" constant="76" id="NVZ-24-pn0"/>
-                                                    <constraint firstAttribute="height" constant="24" id="aRO-at-6Wg"/>
-                                                    <constraint firstAttribute="width" constant="76" id="cdI-oe-OT2"/>
-                                                </constraints>
-                                                <state key="normal" image="bt_blue_76X24.png"/>
-                                                <variation key="default">
-                                                    <mask key="constraints">
-                                                        <exclude reference="1pB-tt-KAn"/>
-                                                        <exclude reference="NVZ-24-pn0"/>
-                                                    </mask>
-                                                </variation>
-                                                <connections>
-                                                    <action selector="QQLogIn:" destination="8Wk-eg-Gbj" eventType="touchUpInside" id="IDY-J8-DnA"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lnp-S3-3EY">
-                                                <rect key="frame" x="170" y="8" width="118" height="24"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="118" id="JAU-Yh-4XI"/>
-                                                    <constraint firstAttribute="height" constant="24" id="jTC-vQ-pPb"/>
-                                                    <constraint firstAttribute="height" constant="24" id="urs-ov-OA8"/>
-                                                    <constraint firstAttribute="width" constant="118" id="yeD-w2-Glm"/>
-                                                </constraints>
-                                                <state key="normal" image="icon24_wx_button.png"/>
-                                                <variation key="default">
-                                                    <mask key="constraints">
-                                                        <exclude reference="urs-ov-OA8"/>
-                                                        <exclude reference="yeD-w2-Glm"/>
-                                                    </mask>
-                                                </variation>
-                                                <connections>
-                                                    <action selector="weixinLogIn:" destination="8Wk-eg-Gbj" eventType="touchUpInside" id="deR-i4-XVt"/>
-                                                </connections>
-                                            </button>
                                         </subviews>
                                         <constraints>
                                             <constraint firstItem="HCS-Uk-1nm" firstAttribute="top" secondItem="DDe-Wt-FAz" secondAttribute="top" id="45r-FN-MwU"/>
                                             <constraint firstItem="HCS-Uk-1nm" firstAttribute="leading" secondItem="DDe-Wt-FAz" secondAttribute="leading" id="6GY-9l-qED"/>
-                                            <constraint firstItem="Ujs-tf-sqe" firstAttribute="centerX" secondItem="DDe-Wt-FAz" secondAttribute="centerX" id="9ju-EJ-c4Q">
-                                                <variation key="heightClass=regular" constant="-64"/>
-                                            </constraint>
-                                            <constraint firstItem="Ujs-tf-sqe" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="HCS-Uk-1nm" secondAttribute="trailing" constant="6" id="Gs3-Cd-MeU"/>
                                             <constraint firstAttribute="bottom" secondItem="HCS-Uk-1nm" secondAttribute="bottom" id="QLa-9K-I7y"/>
                                             <constraint firstAttribute="trailing" secondItem="nTh-R0-1zZ" secondAttribute="trailing" id="RGq-4R-dd8"/>
                                             <constraint firstAttribute="bottom" secondItem="nTh-R0-1zZ" secondAttribute="bottom" id="Y4q-z2-lLF"/>
-                                            <constraint firstItem="lnp-S3-3EY" firstAttribute="leading" secondItem="Ujs-tf-sqe" secondAttribute="trailing" constant="8" id="aKm-Dq-91n"/>
-                                            <constraint firstItem="nTh-R0-1zZ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="lnp-S3-3EY" secondAttribute="trailing" constant="7" id="bK9-78-hHd"/>
-                                            <constraint firstItem="lnp-S3-3EY" firstAttribute="leading" secondItem="Ujs-tf-sqe" secondAttribute="trailing" constant="8" id="cDE-Vx-Bcs"/>
-                                            <constraint firstItem="lnp-S3-3EY" firstAttribute="top" secondItem="DDe-Wt-FAz" secondAttribute="top" constant="8" id="gb0-vi-PoU"/>
                                             <constraint firstAttribute="height" constant="40" id="ogj-9P-HIK"/>
-                                            <constraint firstItem="Ujs-tf-sqe" firstAttribute="top" secondItem="DDe-Wt-FAz" secondAttribute="top" constant="8" id="qLU-KN-mUq"/>
                                             <constraint firstItem="nTh-R0-1zZ" firstAttribute="top" secondItem="DDe-Wt-FAz" secondAttribute="top" id="vp7-B9-rAI"/>
-                                            <constraint firstItem="lnp-S3-3EY" firstAttribute="centerX" secondItem="DDe-Wt-FAz" secondAttribute="centerX" id="zyy-t7-7fl">
-                                                <variation key="heightClass=regular" constant="42"/>
-                                            </constraint>
                                         </constraints>
-                                        <variation key="default">
-                                            <mask key="constraints">
-                                                <exclude reference="9ju-EJ-c4Q"/>
-                                                <exclude reference="Gs3-Cd-MeU"/>
-                                                <exclude reference="zyy-t7-7fl"/>
-                                                <exclude reference="bK9-78-hHd"/>
-                                            </mask>
-                                        </variation>
-                                        <variation key="heightClass=regular">
-                                            <mask key="constraints">
-                                                <include reference="9ju-EJ-c4Q"/>
-                                                <exclude reference="Gs3-Cd-MeU"/>
-                                                <exclude reference="aKm-Dq-91n"/>
-                                                <exclude reference="cDE-Vx-Bcs"/>
-                                                <include reference="zyy-t7-7fl"/>
-                                                <exclude reference="bK9-78-hHd"/>
-                                            </mask>
-                                        </variation>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xf3-nG-XXY">
                                         <rect key="frame" x="14" y="187" width="91" height="30"/>
@@ -1352,7 +1284,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="FF4525CA-F54A-463D-BC9F-2CFBF7B0256E" width="52" height="72">
+        <image name="7B2D8833-9A44-4205-AECD-574E42AC5DDA" width="52" height="72">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -1653,8 +1585,6 @@ AgEAAAAAAAAAQQAAAAAAAAAAAAAAAAAARJw
 </mutableData>
         </image>
         <image name="back_img" width="25" height="25"/>
-        <image name="bt_blue_76X24.png" width="76" height="24"/>
-        <image name="icon24_wx_button.png" width="118" height="24"/>
         <image name="login_logo" width="93" height="129"/>
         <image name="registerCheckmark" width="10" height="8"/>
         <image name="registerRectangle 393" width="23" height="23"/>
