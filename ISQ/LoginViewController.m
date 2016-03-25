@@ -247,7 +247,14 @@ bool warInt=true;
 {
     if (!resp.errCode) {
         SendAuthResp * AuthResp = (SendAuthResp *)resp;
-        
+        NSString * httpString = [NSString stringWithFormat:@"https://api.weixin.qq.com/sns/oauth2/access_token?appid=%@&secret=%@&code=%@&grant_type=authorization_code",weixinAppID,weixinAppSecret,AuthResp.code];
+        [ISQHttpTool getHttp:httpString contentType:nil params:nil success:^(id data) {
+            NSDictionary * dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+            NSLog(@"dic = %@",dic);
+            
+        } failure:^(NSError *erro) {
+            
+        }];
     }
     
 }
