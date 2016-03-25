@@ -125,9 +125,15 @@ bool islogin=false;
 -(BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options
 {
     if ([BeeCloud handleOpenUrl:url]) {
-        //handle其他类型的url
         return YES;
     }
+    if ([WXApi handleOpenURL:url delegate:self]) {
+        return YES;
+    }
+    if ([TencentOAuth HandleOpenURL:url]) {
+        return [TencentOAuth HandleOpenURL:url];
+    }
+    
     return YES;
 }
 
