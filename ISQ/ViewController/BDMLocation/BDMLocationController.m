@@ -82,7 +82,7 @@ CGFloat  TheLong;
         
         locationDelegate.theAddress=result.address;
         locationDelegate.theAddress_city=result.addressDetail.city;
-        locationDelegate.theDistrict=result.addressDetail.district;
+        locationDelegate.theDistrict=result.addressDetail.district; 
         locationDelegate.theLa=TheLat;
         locationDelegate.theLo=TheLong;
         

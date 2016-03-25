@@ -74,7 +74,7 @@ bool RegisterwarInt=true;
     self.messageview2.layer.borderWidth=0.8f;
     
     self.passview2.layer.borderColor=[[UIColor lightGrayColor]colorWithAlphaComponent:0.6f].CGColor;
-    self.passview2.layer.borderWidth=0.8f;
+    self.passview2.layer.borderWidth=0.8f;      
     
     self.passview1.layer.borderColor=[[UIColor lightGrayColor]colorWithAlphaComponent:0.6f].CGColor;
     self.passview1.layer.borderWidth=0.8f;

@@ -58,11 +58,14 @@
 #define userCommunityID @"communityId"//社区id
 #define userIsqCode @"userIsqCode"//社区号
 #define userCityID @"cityId" //城市ID
+#define userProvinceid @"provinceid" //省份ID
+#define userDistrictid  @"districtid"  //区域ID
 #define MyUserID @"userId"//用户ID
 #define MYHEADIMGURL @"http://web.app.wisq.cn:8080/avatar/"   
 #define MYSELFHEADNAME @"MYSELFHEADNAME" //头像的地址
 
-#define saveCommunityName @"saveCommunityName" //选择社区后保存名称
+#define saveCommunityName @"communityshortname" //选择社区后保存名称
+#define saveCommunityLongName  @"communityname"  //社区全称
 #define userCityName @"userCityName"//城市名
 #define userCity_province @"userCity_province" //省份与城市
 #define  alertcomment  @"http://web.app.wisq.cn:8080/json/hx/alertcomment"   //修改备注

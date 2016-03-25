@@ -1,82 +1,78 @@
 //
-//  CitySelectController.m
+//  DistrictSelectViewController.m
 //  ISQ
 //
-//  Created by xindongni on 16/3/23.
+//  Created by xindongni on 16/3/24.
 //  Copyright © 2016年 cn.ai-shequ. All rights reserved.
 //
 
-#import "CitySelectController.h"
+#import "DistrictSelectViewController.h"
 #import "MJNIndexView.h"
-#include "CityTableViewCell.h"
+#import "CityTableViewCell.h"
 #import "MD5Func.h"
 #import "HMAC-SHA1.h"
-#import "MJRefresh.h"
 #import "pinyin.h"
-#import "DistrictSelectViewController.h"
+#import "CommunitySelectController.h"
 
-@interface CitySelectController ()<MJNIndexViewDataSource>{
+@interface DistrictSelectViewController ()<MJNIndexViewDataSource>{
 
-    CityTableViewCell *citycell;
+    CityTableViewCell *districtcell;
     NSArray *returnString;
     NSMutableDictionary*index;
     NSArray*arraylist;
-
 }
 
 @property (nonatomic,strong) MJNIndexView *indexView;
 
 @end
 
-@implementation CitySelectController
+@implementation DistrictSelectViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     returnString = [NSArray array];
-    self.citySelectTableview.showsVerticalScrollIndicator = NO;
+    self.districtSelectTableView.showsVerticalScrollIndicator = NO;
     
     //下拉刷新
     [self addHeader];
-    
 }
 
-
 - (void)addHeader{
-
+    
     __unsafe_unretained typeof(self) vc = self;
     // 添加下拉刷新头部控件
-    [vc.citySelectTableview addHeaderWithCallback:^{
+    [vc.districtSelectTableView addHeaderWithCallback:^{
         
         //获取城市信息
-        [self getCityData];
+        [self getDistrictData];
         
     }];
     
     //自动刷新(一进入程序就下拉刷新)
-    [vc.citySelectTableview headerBeginRefreshing];
+    [vc.districtSelectTableView headerBeginRefreshing];
     
 }
 
-//根据provinceid 获取city
-- (void)getCityData{
+//根据cityid 获取district
+- (void)getDistrictData{
 
     //建立一个字典，字典保存key是A-Z  值是数组
     index=[NSMutableDictionary dictionaryWithCapacity:0];
     [index removeAllObjects];
     returnString=nil;
-    NSString *url = @"http://api.wisq.cn/rest/community/city";
+    NSString *url = @"http://api.wisq.cn/rest/community/district";
     NSString *key = @"FkFITeRW";
-    NSString *str = [NSString stringWithFormat:@"%@%@province=%@timestamp=%@%@",@"GET",url,[saveCityName objectForKey:userProvinceid],[HMAC_SHA1 getTime],key];
+    NSString *str = [NSString stringWithFormat:@"%@%@city=%@timestamp=%@%@",@"GET",url,[saveCityName objectForKey:userCityID],[HMAC_SHA1 getTime],key];
     NSCharacterSet *URLBase64CharacterSet = [[NSCharacterSet characterSetWithCharactersInString:@"/+=\n:"] invertedSet];
     NSString *s = [str stringByAddingPercentEncodingWithAllowedCharacters:URLBase64CharacterSet];
     NSString *sign = [MD5Func md5:s];
-    NSString *http = [NSString stringWithFormat:@"%@?timestamp=%@&sign=%@&province=%@",url,[HMAC_SHA1 getTime],sign,[saveCityName objectForKey:userProvinceid]];
-    [ISQHttpTool getHttp:http contentType:nil params:nil success:^(id reponseObject) {
+    NSString *http = [NSString stringWithFormat:@"%@?timestamp=%@&sign=%@&city=%@",url,[HMAC_SHA1 getTime],sign,[saveCityName objectForKey:userCityID]];
+    [ISQHttpTool getHttp:http contentType:nil params:NULL success:^(id reponseObject) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:reponseObject options:NSJapaneseEUCStringEncoding  error:nil];
         returnString = [[dic objectForKey:@"data"] objectForKey:@"content"] ;
         for (int i=0;i<returnString.count;i++) {
-            NSString *strFirLetter = [NSString stringWithFormat:@"%c",pinyinFirstLetter([returnString[i][@"cityname"] characterAtIndex:0])];
+            NSString *strFirLetter = [NSString stringWithFormat:@"%c",pinyinFirstLetter([returnString[i][@"districtname"] characterAtIndex:0])];
             if ([[index allKeys]containsObject:strFirLetter]) {
                 //判断index字典中，是否有这个key如果有，取出值进行追加操作
                 [[index objectForKey:strFirLetter] addObject:returnString[i]];
@@ -100,22 +96,14 @@
         self.indexView.fontColor = [UIColor blackColor];
         [self.view addSubview:self.indexView];
         // 结束刷新
-        [self.citySelectTableview headerEndRefreshing];
-        [self.citySelectTableview reloadData];
-
+        [self.districtSelectTableView headerEndRefreshing];
+        [self.districtSelectTableView reloadData];
         
     } failure:^(NSError *erro) {
         
-        NSLog(@"获取城市数据出错---%@",erro);
     }];
-    
 }
 
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-
-}
 
 #pragma mark - UITableView delegate
 
@@ -126,22 +114,22 @@
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-
+    
     return [index[arraylist[section]] count];
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-
-    citycell = [tableView dequeueReusableCellWithIdentifier:@"cityCell2" forIndexPath:indexPath];
-    if (!citycell) {
+    
+    districtcell = [tableView dequeueReusableCellWithIdentifier:@"cityCell2" forIndexPath:indexPath];
+    if (!districtcell) {
         
-        citycell = [[CityTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cityCell2"];
+        districtcell = [[CityTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cityCell2"];
     }
     
-    citycell.cityNameLable.text = index[arraylist[indexPath.section]][indexPath.row][@"cityname"];
+    districtcell.cityNameLable.text = index[arraylist[indexPath.section]][indexPath.row][@"districtname"];
     
-    return citycell;
+    return districtcell;
 }
 
 
@@ -166,12 +154,12 @@
 
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-
-    [saveCityName setObject:index[arraylist[indexPath.section]][indexPath.row] [@"cityid"] forKey:userCityID];
+    
+    [saveCityName setObject:index[arraylist[indexPath.section]][indexPath.row] [@"districtid"] forKey:userDistrictid];
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"RegisterLogin" bundle:nil];
-    DistrictSelectViewController *districtSelect = [storyboard instantiateViewControllerWithIdentifier:@"SelectDistrictId"];
-    [self.navigationController pushViewController:districtSelect animated:YES];
+    CommunitySelectController *communitySelect = [storyboard instantiateViewControllerWithIdentifier:@"SelectCommunityId"];
+    [self.navigationController pushViewController:communitySelect animated:YES];
 }
 
 
@@ -179,7 +167,7 @@
 
 - (void)sectionForSectionMJNIndexTitle:(NSString *)title atIndex:(NSInteger)index{
     
-    [self.citySelectTableview scrollToRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:index] atScrollPosition: UITableViewScrollPositionTop animated:YES];
+    [self.districtSelectTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:index] atScrollPosition: UITableViewScrollPositionTop animated:YES];
 }
 
 
@@ -199,6 +187,9 @@
 }
 
 
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+}
 
 /*
 #pragma mark - Navigation
@@ -209,11 +200,5 @@
     // Pass the selected object to the new view controller.
 }
 */
-
-- (IBAction)backButton:(id)sender {
-    
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
 
 @end

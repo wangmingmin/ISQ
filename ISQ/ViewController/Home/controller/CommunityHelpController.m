@@ -54,7 +54,7 @@
         self.helpAdressEd.text=locationDelegate.theAddress;
     }
     if ([user_info objectForKey:@"saveCommunityName"]) {
-        self.helpCommunity_ed.text=[user_info objectForKey:@"saveCommunityName"];
+        self.helpCommunity_ed.text=[user_info objectForKey:saveCommunityName];
         name = self.helpCommunity_ed.text;
         
     }

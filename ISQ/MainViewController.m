@@ -82,7 +82,7 @@ static NSString *kGroupName = @"GroupName";
             
             if (![user_info objectForKey:userAccount] || ![user_info objectForKey:userPassword]) {
                 
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"登陆后才能使用此功能" message:@"立刻登陆" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"此功能需要登录后才能访问" message:@"立刻登陆" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
                 
                 [alertView show];
                 

@@ -12,7 +12,7 @@
 #import "ChangenfoConroller.h"
 #import "CommunityViewController.h"
 #import "ChangePassWordViewController.h"
-#import "CitySelectController.h"
+#import "ProvinceSelectController.h"
 
 @interface PersonalDataViewController (){
 
@@ -93,7 +93,7 @@
         
     }else if (indexPath.row == 2){
         UIStoryboard *storyBoard=[UIStoryboard storyboardWithName:@"RegisterLogin" bundle:nil];
-        CitySelectController *citySelectVC = [storyBoard instantiateViewControllerWithIdentifier:@"SeclecticCityId"];
+        ProvinceSelectController *citySelectVC = [storyBoard instantiateViewControllerWithIdentifier:@"SeclecticCityId"];
         [citySelectVC setHidesBottomBarWhenPushed:YES];
         [self.navigationController  pushViewController:citySelectVC animated:YES];
     }

@@ -9,9 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface CommunitySelectController :UIViewController<UITableViewDelegate,UITableViewDataSource>
+
 @property (weak, nonatomic) IBOutlet UITableView *communityTableview;
-@property(strong,nonatomic) NSArray *fromCityData;
-@property (nonatomic, strong) NSMutableArray *cities;
 
 - (IBAction)communitySelect_bt:(id)sender;
 

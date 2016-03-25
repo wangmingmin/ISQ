@@ -10,7 +10,7 @@
 #import "ConstantFileld.h"
 #import "AppDelegate.h"
 #import "ApplyViewController.h"
-#import "CitySelectController.h"
+#import "ProvinceSelectController.h"
 #import "CommunitySelectController.h"
 #import "UIImageView+AFNetworking.h"
 #import "BDMLocationController.h"
@@ -156,9 +156,9 @@ bool theTop=true;
 -(void)viewDidAppear:(BOOL)animated{
     
     
-    if([saveCityName objectForKey:@"saveCommunityName"]){
+    if([saveCityName objectForKey:saveCommunityName]){
         
-        [self.HomeSelectCity_ol setTitle:[NSString stringWithFormat:@"%@%@",[saveCityName objectForKey:userCityName],[saveCityName objectForKey:saveCommunityName]] forState:UIControlStateNormal];
+        [self.HomeSelectCity_ol setTitle:[NSString stringWithFormat:@"%@",[saveCityName objectForKey:saveCommunityName]] forState:UIControlStateNormal];
  
     }else {
         
@@ -601,7 +601,7 @@ bool theTop=true;
 - (IBAction)HomeSelectCity_bt:(id)sender {
     
     UIStoryboard *storyBoard=[UIStoryboard storyboardWithName:@"RegisterLogin" bundle:nil];
-    CitySelectController *citySelectVC=[storyBoard instantiateViewControllerWithIdentifier:@"SeclecticCityId"];
+    ProvinceSelectController *citySelectVC=[storyBoard instantiateViewControllerWithIdentifier:@"SeclecticCityId"];
     
     [citySelectVC setHidesBottomBarWhenPushed:YES];
     [self.navigationController  pushViewController:citySelectVC animated:YES];
