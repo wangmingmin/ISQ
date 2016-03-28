@@ -32,10 +32,13 @@
 #import "MainViewController.h"
 #import "meetingTableViewController.h"
 #import "CommunityHelpController.h"
+#import "MD5Func.h"
+#import "CommunitySelectController.h"
 
 @interface HomeViewController()<IChatManagerDelegate,SRRefreshDelegate,AnnouncementCellDelegate,UIAlertViewDelegate>{
     
     AppDelegate *HomeDelegate;
+
     NSArray *hornData;
     NSArray *locationSelectData;
     NSMutableArray *locationEssenceAdRUL1;
@@ -46,6 +49,7 @@
     NSArray *contentDic;
     OrderDetailModel *orderModel;
     NSDictionary *arrayDic;
+  
 }
 
 @property (nonatomic,strong) NSArray *announcements;
@@ -64,7 +68,6 @@ bool theTop=true;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupUntreatedApplyCount) name:UPDATEAPPLYCOUNT object:nil];
     contentDic = [[NSArray alloc] init];
     self.tabelview.tableFooterView = [[UIView alloc] init];
@@ -134,6 +137,15 @@ bool theTop=true;
     [super viewWillAppear:YES];
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
     [self loadNewThingDetailData];
+    
+    if (![saveCityName objectForKey:saveCommunityName]) {
+        
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"为了更好地使用爱社区，请您选择所在社区!" message:nil delegate:self cancelButtonTitle:@"暂时不选" otherButtonTitles:@"现在选择", nil];
+        
+        alertView.tag = 250;
+        
+        [alertView show];
+    }
 }
 
 
@@ -587,12 +599,24 @@ bool theTop=true;
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     
+    if (alertView.tag == 250) {
+        
+        if (buttonIndex == 1) {
+            
+        UIStoryboard *board=[UIStoryboard storyboardWithName:@"RegisterLogin" bundle:nil];
+        LoginViewController *loginVC=[board instantiateViewControllerWithIdentifier:@"SeclecticCityId"];
+        [self.navigationController pushViewController:loginVC animated:YES];
+            
+        }
+    }else{
+        
     if (buttonIndex == 1) {
         
         UIStoryboard *board=[UIStoryboard storyboardWithName:@"RegisterLogin" bundle:nil];
         LoginViewController *loginVC=[board instantiateViewControllerWithIdentifier:@"LoginStoryboard"];
         [self.navigationController pushViewController:loginVC animated:YES];
 
+        }
     }
 }
 
@@ -642,15 +666,12 @@ bool theTop=true;
     }else{
         
         [[[[[self tabBarController] viewControllers] objectAtIndex: indexICareAbout] tabBarItem] setBadgeValue:nil];
-        
     }
-    
-    
     UIApplication *application = [UIApplication sharedApplication];
     [application setApplicationIconBadgeNumber:m_unreadCount+unreadCount];
-    
-    
-    
 }
+
+
+
 
 @end

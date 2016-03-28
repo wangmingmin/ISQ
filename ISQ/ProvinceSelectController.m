@@ -15,7 +15,7 @@
 #import "pinyin.h"
 #import "MD5Func.h"
 #import "HMAC-SHA1.h"
-#include "CitySelectController.h"
+#import "CitySelectController.h"
 
 @interface ProvinceSelectController ()<MJNIndexViewDataSource>{
     
@@ -58,9 +58,8 @@
     [vc.cityTableview addHeaderWithCallback:^{
         
         //获取城市信息
-       
-        [self getCityData];
         [self loadNearCommunity];
+       
         
     }];
     
@@ -72,6 +71,7 @@
 
 //LBS查询附近社区
 - (void)loadNearCommunity{
+    
     
     AppDelegate *location = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     
@@ -88,26 +88,27 @@
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJapaneseEUCStringEncoding  error:nil];
         NSInteger totalcount = [[[dic objectForKey:@"data"] objectForKey:@"total"] integerValue];
         if (totalcount > 0) {
-            
+            [nearCommunity removeAllObjects];
             returnString = [[dic objectForKey:@"data"] objectForKey:@"content"] ;
             for (int i=0;i<returnString.count;i++) {
                 
                 [nearCommunity addObject:returnString[i][@"communityshortname"]];
             }
         }
-       
+        
+         [self.cityTableview reloadData];
         
     } failure:^(NSError *erro) {
         
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"获取附近社区数据出错" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:@"确定", nil];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"从服务器获取数据出错" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:@"确定", nil];
         
         [alertView show];
         
     }];
     
-    // 结束刷新
-    [self.cityTableview headerEndRefreshing];
-    [self.cityTableview reloadData];
+     [self getCityData];
+
+   
 }
 
 
@@ -115,7 +116,7 @@
 
 //查询省份
 -(void)getCityData{
-   
+    
     NSString *timestamp = [NSString stringWithFormat:@"%@",[HMAC_SHA1 getTime]];
     NSString *key = @"FkFITeRW";
     NSString *url2 = @"http://api.wisq.cn/rest/region/province";
@@ -131,7 +132,7 @@
     returnString=nil;
     
     [ISQHttpTool getHttp:URL2 contentType:nil params:nil success:^(id responseObject) {
-        
+
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJapaneseEUCStringEncoding  error:nil];
         returnString = [[dic objectForKey:@"data"] objectForKey:@"content"] ;
         for (int i=0;i<returnString.count;i++) {
@@ -145,7 +146,7 @@
                 
                 NSMutableArray*tempArray=[NSMutableArray arrayWithCapacity:0];
                 [tempArray addObject:returnString[i]];
-                
+    
                 [index setObject:tempArray forKey:strFirLetter];
             }
             
@@ -166,7 +167,9 @@
         
     } failure:^(NSError *erro) {
         
-        NSLog(@"获取省份数据错误----%@",erro);
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"从服务器获取数据失败" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        
+        [alertView show];
     }];
     
 }
@@ -216,10 +219,10 @@
         cell.cityNameLable.text = nearCommunity[indexPath.row];
             
     }
-//    else if (indexPath.section == 2){
-//    
-//        
-//    }
+    else if (indexPath.section == 1){
+    
+        cell.cityNameLable.text = @"";
+    }
     
     else {
     
@@ -235,19 +238,20 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     if (indexPath.section == 0) {
-        if (returnString[0][@"communityshortname"] ) {
-            [saveCityName setObject:returnString[indexPath.row][@"communityshortname"] forKey:saveCommunityName];
-            [saveCityName setObject:returnString[indexPath.row][@"communityname"] forKey:saveCommunityLongName];
-            [saveCityName setObject:returnString[indexPath.row][@"communityid"] forKey:userCommunityID];
-
-        }
+        
+        [saveCityName setObject:returnString[indexPath.row][@"communityshortname"] forKey:saveCommunityName];
+        [saveCityName setObject:returnString[indexPath.row][@"communityname"] forKey:saveCommunityLongName];
+        [saveCityName setObject:returnString[indexPath.row][@"communityid"] forKey:userCommunityID];
+        
+        NSLog(@"data----%@",[saveCityName objectForKey:saveCommunityName]);
+        CommunitySelectController *communityVC = [[CommunitySelectController alloc] init];
+        [communityVC toSaveCommunityID];
+        [self.navigationController popViewControllerAnimated:YES];
         
     }else if (indexPath.section == 1){
     
         
-    }
-    
-    else{
+    }else{
     
         //保存省份id
         [saveCityName setObject:index[arraylist[indexPath.section -2]][indexPath.row] [@"provinceid"] forKey:userProvinceid];
@@ -257,8 +261,6 @@
         [self.navigationController pushViewController:citySelectVC animated:YES];
         
     }
-    
-//    [saveCityName removeObjectForKey:saveCommunityName];
     
 }
 

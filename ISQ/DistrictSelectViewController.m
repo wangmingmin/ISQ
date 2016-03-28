@@ -62,11 +62,11 @@
     returnString=nil;
     NSString *url = @"http://api.wisq.cn/rest/region/district";
     NSString *key = @"FkFITeRW";
-    NSString *str = [NSString stringWithFormat:@"%@%@city=%@timestamp=%@%@",@"GET",url,[saveCityName objectForKey:userCityID],[HMAC_SHA1 getTime],key];
+    NSString *str = [NSString stringWithFormat:@"%@%@city_id=%@timestamp=%@%@",@"GET",url,[saveCityName objectForKey:userCityID],[HMAC_SHA1 getTime],key];
     NSCharacterSet *URLBase64CharacterSet = [[NSCharacterSet characterSetWithCharactersInString:@"/+=\n:"] invertedSet];
     NSString *s = [str stringByAddingPercentEncodingWithAllowedCharacters:URLBase64CharacterSet];
     NSString *sign = [MD5Func md5:s];
-    NSString *http = [NSString stringWithFormat:@"%@?timestamp=%@&sign=%@&city=%@",url,[HMAC_SHA1 getTime],sign,[saveCityName objectForKey:userCityID]];
+    NSString *http = [NSString stringWithFormat:@"%@?timestamp=%@&sign=%@&city_id=%@",url,[HMAC_SHA1 getTime],sign,[saveCityName objectForKey:userCityID]];
     [ISQHttpTool getHttp:http contentType:nil params:NULL success:^(id reponseObject) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:reponseObject options:NSJapaneseEUCStringEncoding  error:nil];

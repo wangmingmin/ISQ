@@ -105,12 +105,12 @@
     
     NSString *url = @"http://api.wisq.cn/rest/region/community";
     NSString *key = @"FkFITeRW";
-    NSString *s = [NSString stringWithFormat:@"%@%@district=%@limit=%@order=%@page=%@per_page=%@sortby=%@timestamp=%@%@",@"GET",url,[saveCityName objectForKey:userDistrictid],@"20",@"asc",@"20",@"10",@"alphabet",[HMAC_SHA1 getTime],key];
+    NSString *s = [NSString stringWithFormat:@"%@%@district_id=%@limit=%@order=%@page=%@per_page=%@sortby=%@timestamp=%@%@",@"GET",url,[saveCityName objectForKey:userDistrictid],@"20",@"asc",@"20",@"10",@"alphabet",[HMAC_SHA1 getTime],key];
     NSCharacterSet *URLBase64CharacterSet = [[NSCharacterSet characterSetWithCharactersInString:@"/+=\n:"] invertedSet];
     NSString *str = [s stringByAddingPercentEncodingWithAllowedCharacters:URLBase64CharacterSet];
     NSString *sign = [MD5Func md5:str];
     
-    NSString *http = [NSString stringWithFormat:@"%@?timestamp=%@&sign=%@&district=%@&limit=%@&page=%@&per_page=%@&sortby=%@&order=%@",url,[HMAC_SHA1 getTime],sign,[saveCityName objectForKey:userDistrictid],@"20",@"20",@"10",@"alphabet",@"asc"];
+    NSString *http = [NSString stringWithFormat:@"%@?timestamp=%@&sign=%@&district_id=%@&limit=%@&page=%@&per_page=%@&sortby=%@&order=%@",url,[HMAC_SHA1 getTime],sign,[saveCityName objectForKey:userDistrictid],@"20",@"20",@"10",@"alphabet",@"asc"];
     
     //建立一个字典，字典保存key是A-Z  值是数组
     index=[NSMutableDictionary dictionaryWithCapacity:0];
