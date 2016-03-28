@@ -103,7 +103,7 @@
 #pragma mark - 获取社区数据
 -(void)getCommnityData{
     
-    NSString *url = @"http://api.wisq.cn/rest/community/community";
+    NSString *url = @"http://api.wisq.cn/rest/region/community";
     NSString *key = @"FkFITeRW";
     NSString *s = [NSString stringWithFormat:@"%@%@district=%@limit=%@order=%@page=%@per_page=%@sortby=%@timestamp=%@%@",@"GET",url,[saveCityName objectForKey:userDistrictid],@"20",@"asc",@"20",@"10",@"alphabet",[HMAC_SHA1 getTime],key];
     NSCharacterSet *URLBase64CharacterSet = [[NSCharacterSet characterSetWithCharactersInString:@"/+=\n:"] invertedSet];
@@ -117,23 +117,11 @@
     [index removeAllObjects];
     [ISQHttpTool getHttp:http contentType:nil params:nil success:^(id responseObject) {
         
-        NSDictionary *dic = [[NSDictionary alloc] init];
-        dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJapaneseEUCStringEncoding  error:nil];
-        NSString *resultString = [[dic objectForKey:@"data"] objectForKey:@"content"];
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJapaneseEUCStringEncoding  error:nil];
+        NSInteger totalcount = [[[dic objectForKey:@"data"] objectForKey:@"total"] integerValue];
         
-//        if (dic) {
+        if (totalcount > 0) {
         
-//        }
-        NSDictionary *dic1 = [[dic objectForKey:@"data"] objectForKey:@"content"];
-        
-        NSLog(@"data--%@",dic1);
-        
-        if (dic1 ) {
-        
-//            returnString = [resultString componentsSeparatedByString:@","];
-//            
-//            NSLog(@"returnString--%@",returnString);
-
             returnString = [[dic objectForKey:@"data"] objectForKey:@"content"];
             for (int i=0;i<returnString.count;i++) {
                 NSString *strFirLetter = [NSString stringWithFormat:@"%c",pinyinFirstLetter([returnString[i][@"communityshortname"] characterAtIndex:0])];

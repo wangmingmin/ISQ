@@ -14,4 +14,7 @@
 
 - (IBAction)communitySelect_bt:(id)sender;
 
+
+-(void)toSaveCommunityID;
+
 @end

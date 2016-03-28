@@ -60,7 +60,7 @@
     index=[NSMutableDictionary dictionaryWithCapacity:0];
     [index removeAllObjects];
     returnString=nil;
-    NSString *url = @"http://api.wisq.cn/rest/community/district";
+    NSString *url = @"http://api.wisq.cn/rest/region/district";
     NSString *key = @"FkFITeRW";
     NSString *str = [NSString stringWithFormat:@"%@%@city=%@timestamp=%@%@",@"GET",url,[saveCityName objectForKey:userCityID],[HMAC_SHA1 getTime],key];
     NSCharacterSet *URLBase64CharacterSet = [[NSCharacterSet characterSetWithCharactersInString:@"/+=\n:"] invertedSet];
