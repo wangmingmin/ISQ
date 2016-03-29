@@ -3882,11 +3882,6 @@
                                                         <constraint firstAttribute="bottom" secondItem="6DL-6e-CXe" secondAttribute="bottom" id="tcf-RR-hrc"/>
                                                         <constraint firstAttribute="trailing" secondItem="wvc-KJ-gQI" secondAttribute="trailing" id="yYp-GB-zfu"/>
                                                     </constraints>
-                                                    <variation key="default">
-                                                        <mask key="subviews">
-                                                            <exclude reference="6DL-6e-CXe"/>
-                                                        </mask>
-                                                    </variation>
                                                 </tableViewCellContentView>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <connections>
