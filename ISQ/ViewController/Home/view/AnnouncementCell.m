@@ -26,9 +26,8 @@
         [view removeFromSuperview];
     }
     self.scrollView.delegate = self;
-    self.scrollView.bounces = YES;
-    self.scrollView.contentSize = CGSizeMake(UISCREENWIDTH * 4, UISCREENWIDTH*0.50133333);
-    self.pageControl.numberOfPages = 4;
+    self.scrollView.contentSize = CGSizeMake(UISCREENWIDTH * self.announcements.count, UISCREENWIDTH*0.50133333);
+    self.pageControl.numberOfPages = self.announcements.count;
     self.pageControl.currentPage = 0;
     for (int i = 0; i<self.announcements.count; i++) {
         NSDictionary *dic = [self.announcements objectAtIndex:i];
@@ -118,6 +117,17 @@
     CGFloat scrollViewWidth =  CGRectGetWidth(scrollView.frame);
     int page = (scrollView.contentOffset.x + scrollViewWidth / 2) /  scrollViewWidth;
     self.pageControl.currentPage = page;
+}
+
+-(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    [self addTimer];
+}
+
+-(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    [self.timer invalidate];
+    self.timer = nil;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
