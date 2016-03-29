@@ -483,46 +483,46 @@ bool islogin=false;
 
 -(void) checkNewEdition
 {
-    NSDictionary *infoDictionary =[[NSBundle mainBundle]infoDictionary];
-    NSString * nowVersion = [infoDictionary objectForKey:@"CFBundleVersion"];
-    NSURL * url = [NSURL URLWithString:APP_URL];
-    NSURLRequest * request = [NSURLRequest requestWithURL:url];
-    NSData * response = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-
-    NSError * error;
-    NSDictionary * appInfoDic = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:&error];
-    NSDictionary * resultsDic = appInfoDic[@"results"][0];
-    NSString * latestVersion = resultsDic[@"version"];
-
-    if(error)
-    {
-        NSLog(@"error %@",[error description]);
-        return;
-    }
-
-    NSMutableArray * latestV = [[NSMutableArray alloc]initWithArray:[latestVersion componentsSeparatedByString:@"."]];
-    if (latestV.count<3) {
-        for (int i = 0; i<3-latestV.count; i++) {
-            [latestV addObject:@"0"];
-        }
-    }
-    NSMutableArray * nowV = [[NSMutableArray alloc]initWithArray:[nowVersion componentsSeparatedByString:@"."]];
-    if (nowV.count<3) {
-        for (int i = 0; i<3-nowV.count; i++) {
-            [nowV addObject:@"0"];
-        }
-    }
-
-    latestVersion = [NSString stringWithFormat:@"%@%@%@",latestV[0],latestV[1],latestV[2]];
-    nowVersion = [NSString stringWithFormat:@"%@%@%@",nowV[0],nowV[1],nowV[2]];
-    trackViewUrl = resultsDic[@"trackViewUrl"];
-    if (nowVersion.intValue<latestVersion.intValue) {
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"版本更新" message:@"您当前使用的版本需要更新，\n请前往 App Store 下载最新版本" delegate:self cancelButtonTitle:@"确定" otherButtonTitles: nil];
-        [alert show];
-
-//#warning 点击确定后再跳转
-//        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:resultsDic[@"trackViewUrl"]]];
-    }
+//    NSDictionary *infoDictionary =[[NSBundle mainBundle]infoDictionary];
+//    NSString * nowVersion = [infoDictionary objectForKey:@"CFBundleVersion"];
+//    NSURL * url = [NSURL URLWithString:APP_URL];
+//    NSURLRequest * request = [NSURLRequest requestWithURL:url];
+//    NSData * response = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+//
+//    NSError * error;
+//    NSDictionary * appInfoDic = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:&error];
+//    NSDictionary * resultsDic = appInfoDic[@"results"][0];
+//    NSString * latestVersion = resultsDic[@"version"];
+//
+//    if(error)
+//    {
+//        NSLog(@"error %@",[error description]);
+//        return;
+//    }
+//
+//    NSMutableArray * latestV = [[NSMutableArray alloc]initWithArray:[latestVersion componentsSeparatedByString:@"."]];
+//    if (latestV.count<3) {
+//        for (int i = 0; i<3-latestV.count; i++) {
+//            [latestV addObject:@"0"];
+//        }
+//    }
+//    NSMutableArray * nowV = [[NSMutableArray alloc]initWithArray:[nowVersion componentsSeparatedByString:@"."]];
+//    if (nowV.count<3) {
+//        for (int i = 0; i<3-nowV.count; i++) {
+//            [nowV addObject:@"0"];
+//        }
+//    }
+//
+//    latestVersion = [NSString stringWithFormat:@"%@%@%@",latestV[0],latestV[1],latestV[2]];
+//    nowVersion = [NSString stringWithFormat:@"%@%@%@",nowV[0],nowV[1],nowV[2]];
+//    trackViewUrl = resultsDic[@"trackViewUrl"];
+//    if (nowVersion.intValue<latestVersion.intValue) {
+//        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"版本更新" message:@"您当前使用的版本需要更新，\n请前往 App Store 下载最新版本" delegate:self cancelButtonTitle:@"确定" otherButtonTitles: nil];
+//        [alert show];
+//
+////#warning 点击确定后再跳转
+////        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:resultsDic[@"trackViewUrl"]]];
+//    }
 
 }
 

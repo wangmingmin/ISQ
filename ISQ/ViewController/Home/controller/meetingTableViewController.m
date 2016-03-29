@@ -161,8 +161,15 @@ static int rowInt;
         [self hideHud];
         NSDictionary * dataDic = [NSJSONSerialization JSONObjectWithData:resData options:NSJapaneseEUCStringEncoding error:nil];
 //        NSLog(@"meeting Dic = %@",dataDic);
+        if (dataDic[@"retData"] == nil) {
+            return ;
+        }
         NSArray * dataArr = dataDic[@"retData"];
+        if (dataArr.count==0) {
+            return ;
+        }
         if(rowInt == 0){
+            [self.discussArray removeAllObjects];
             [self.discussArray addObjectsFromArray:dataArr];
             self.staticArrayForSearch = self.discussArray;
             [self.tableView reloadData];
