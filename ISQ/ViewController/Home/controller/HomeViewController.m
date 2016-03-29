@@ -140,7 +140,7 @@ bool theTop=true;
     
     if (![saveCityName objectForKey:saveCommunityName]) {
         
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"为了更好地使用爱社区，请您选择所在社区!" message:nil delegate:self cancelButtonTitle:@"暂时不选" otherButtonTitles:@"现在选择", nil];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"为了更好地使用爱社区，请您先选择所在社区!" message:nil delegate:self cancelButtonTitle:@"暂时不选" otherButtonTitles:@"现在选择", nil];
         
         alertView.tag = 250;
         

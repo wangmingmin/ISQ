@@ -499,7 +499,7 @@
         
         if(fromHttpData){
             NSMutableDictionary *dic1=[NSMutableDictionary dictionary];
-            
+            NSLog(@"data---%@",fromHttpData);
             dic1[@"img"]=fromHttpData[sender.tag][@"image"];
             dic1[@"title"]=fromHttpData[sender.tag][@"title"];
             dic1[@"desc"]=fromHttpData[sender.tag][@"content"];
@@ -696,10 +696,10 @@
             hotModel *hotmodel = [hotModel objectWithKeyValues:fromHttpData[indexPath.row]];
             [cell.hotimage  setImageWithURL:[NSURL URLWithString:hotmodel.image] placeholderImage:[UIImage imageNamed:@"empty_photo"]];
             cell.contentLabel.text = hotmodel.content;
-            if (indexPath.row == 0) {
-                [cell.joinButton setImage:[UIImage imageNamed:@"icon_eye"] forState:UIControlStateNormal];
-                [cell.joinButton setTitle:@"   观看" forState:UIControlStateNormal];
-            }
+//            if (indexPath.row == 0) {
+//                [cell.joinButton setImage:[UIImage imageNamed:@"icon_eye"] forState:UIControlStateNormal];
+//                [cell.joinButton setTitle:@"   观看" forState:UIControlStateNormal];
+//            }
             cell.shareButton.tag = indexPath.row;
             cell.joinButton.tag = indexPath.row;
             [cell.joinButton addTarget:self action:@selector(hotJoinAction:) forControlEvents:UIControlEventTouchUpInside];
