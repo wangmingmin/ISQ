@@ -87,8 +87,9 @@
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJapaneseEUCStringEncoding  error:nil];
         NSInteger totalcount = [[[dic objectForKey:@"data"] objectForKey:@"total"] integerValue];
+        [nearCommunity removeAllObjects];
+
         if (totalcount > 0) {
-            [nearCommunity removeAllObjects];
             returnString = [[dic objectForKey:@"data"] objectForKey:@"content"] ;
             for (int i=0;i<returnString.count;i++) {
                 
@@ -129,23 +130,23 @@
     //建立一个字典，字典保存key是A-Z  值是数组
     index=[NSMutableDictionary dictionaryWithCapacity:0];
     [index removeAllObjects];
-    returnString=nil;
     
     [ISQHttpTool getHttp:URL2 contentType:nil params:nil success:^(id responseObject) {
+        NSArray * returnResData=[[NSArray alloc] init];
 
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJapaneseEUCStringEncoding  error:nil];
-        returnString = [[dic objectForKey:@"data"] objectForKey:@"content"] ;
-        for (int i=0;i<returnString.count;i++) {
-            NSString *strFirLetter = [NSString stringWithFormat:@"%c",pinyinFirstLetter([returnString[i][@"provincename"] characterAtIndex:0])];
+        returnResData = [[dic objectForKey:@"data"] objectForKey:@"content"] ;
+        for (int i=0;i<returnResData.count;i++) {
+            NSString *strFirLetter = [NSString stringWithFormat:@"%c",pinyinFirstLetter([returnResData[i][@"provincename"] characterAtIndex:0])];
             
             if ([[index allKeys]containsObject:strFirLetter]) {
                 //判断index字典中，是否有这个key如果有，取出值进行追加操作
-                [[index objectForKey:strFirLetter] addObject:returnString[i]];
+                [[index objectForKey:strFirLetter] addObject:returnResData[i]];
                 
             }else{
                 
                 NSMutableArray*tempArray=[NSMutableArray arrayWithCapacity:0];
-                [tempArray addObject:returnString[i]];
+                [tempArray addObject:returnResData[i]];
     
                 [index setObject:tempArray forKey:strFirLetter];
             }
@@ -236,7 +237,6 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
     if (indexPath.section == 0) {
         
         [saveCityName setObject:returnString[indexPath.row][@"communityshortname"] forKey:saveCommunityName];
