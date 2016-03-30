@@ -89,7 +89,7 @@
 
 - (void)addTimer{
     if (self.timer == nil) {
-        self.timer = [NSTimer scheduledTimerWithTimeInterval:3
+        self.timer = [NSTimer scheduledTimerWithTimeInterval:7
                                                       target:self
                                                     selector:@selector(handleSchedule)
                                                     userInfo:nil
