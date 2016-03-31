@@ -82,8 +82,6 @@ bool theTop=true;
     
     self.announcements = [NSArray array];
     
-    [self loadAnnouncementData];
-    
     //百度地图定位
     bdmapVC=[[BDMLocationController alloc]init];
     [bdmapVC baiduMapLocationL];
@@ -137,6 +135,7 @@ bool theTop=true;
     [super viewWillAppear:YES];
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
     [self loadNewThingDetailData];
+     [self loadAnnouncementData];
     
     if (![saveCityName objectForKey:saveCommunityName]) {
         

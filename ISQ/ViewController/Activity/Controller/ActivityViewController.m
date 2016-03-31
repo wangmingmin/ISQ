@@ -308,7 +308,8 @@
             
             [self hideHud];
         }];
-    }
+        
+    }else{
     
     NSDictionary *dict = @{@"location_x":location_x,@"location_y":location_y,@"rows":[NSString stringWithFormat:@"%ld",(long)rows]};
     [ISQHttpTool getHttp:getNearActiveList contentType:nil params:dict success:^(id responseObject) {
@@ -331,6 +332,8 @@
         
         [self hideHud];
     }];
+        
+    }
 }
 
 
