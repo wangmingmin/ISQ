@@ -494,11 +494,11 @@ bool theTop=true;
 }
 
 
-//议事厅
+//议事厅,原生界面，需要时取消注释，并断开storyboard的segue链接
 - (IBAction)OnDiscussToShowMeeting:(UIButton *)sender {
   
-    meetingTableViewController * meeting = [[meetingTableViewController alloc] init];
-    [self.navigationController pushViewController:meeting animated:YES];
+//    meetingTableViewController * meeting = [[meetingTableViewController alloc] init];
+//    [self.navigationController pushViewController:meeting animated:YES];
 }
 
 
@@ -573,9 +573,19 @@ bool theTop=true;
         webVC.theUrl = url;
             
         }
-        
+    }
+    //议事厅-已经断开storyboard的segue链接，改为原生,需要时再次链接segue即可
+    else if ([[segue identifier] isEqualToString:@"discuss"]){
+        SeconWebController *webVC = [segue destinationViewController];
+        if ([[saveCityName objectForKey:saveCommunityName] hasPrefix:@"百步亭"]) {
+            webVC.theUrl = discuss;
+        }else{
+            NSString *url = [NSString stringWithFormat:@"%@",tenementURL];
+            webVC.theUrl = url;
+        }
+    }
     //新鲜事
-    }else if ([[segue identifier] isEqualToString:@"communityNewThing"]){
+    else if ([[segue identifier] isEqualToString:@"communityNewThing"]){
         NSString *communityID = [saveCityName objectForKey:userCommunityID];
         NSString *url = [NSString stringWithFormat:@"%@%@",communityNewThing,communityID];
         SeconWebController *webVC = [segue destinationViewController];

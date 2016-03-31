@@ -3919,6 +3919,7 @@
                                                                     </state>
                                                                     <connections>
                                                                         <action selector="OnDiscussToShowMeeting:" destination="BY0-zg-Jnc" eventType="touchUpInside" id="aDF-M4-v3F"/>
+                                                                        <segue destination="Ibd-Rv-P9O" kind="push" identifier="discuss" id="ZQC-yD-bcx"/>
                                                                     </connections>
                                                                 </button>
                                                                 <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wbj-mz-6PO" customClass="HomeButton3">
@@ -7087,8 +7088,8 @@
         <image name="topBar_blue.png" width="500" height="80"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="oav-9c-ZkE"/>
-        <segue reference="K5Q-0k-Yu3"/>
         <segue reference="Xf2-a7-gAb"/>
+        <segue reference="ZQC-yD-bcx"/>
+        <segue reference="K5Q-0k-Yu3"/>
     </inferredMetricsTieBreakers>
 </document>
