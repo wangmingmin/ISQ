@@ -194,7 +194,21 @@ bool warInt=true;
         [ISQHttpTool getHttp:httpString contentType:nil params:nil success:^(id data) {
             NSDictionary * dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
             NSLog(@"dic = %@",dic);
-
+            
+//            id community_id =[user_info objectForKey:userCommunityID];
+//            NSMutableDictionary * paramsDic = [NSMutableDictionary dictionaryWithObjects:@[@"client_credentials",@"qq",_tencentOAuth.openId,community_id] forKeys:@[@"grant_type",@"login_type",@"openid",@"community_id"]];
+//            
+//            paramsDic[@"nickname"] = dic[@"nickname"];
+//            paramsDic[@"sex"] = [dic[@"gender"] isEqualToString:@"男"]?@0:@1;
+//            paramsDic[@"user_face"] = dic[@"figureurl_qq_1"];
+//
+//            [ISQHttpTool post:@"http://api.wisq.cn/oauth/authorization/otherlogin" contentType:nil params:paramsDic success:^(id responseObj) {
+//                NSDictionary * dic2 = [NSJSONSerialization JSONObjectWithData:responseObj options:NSJSONReadingAllowFragments error:nil];
+//                NSLog(@"dic2 ======== %@",dic2);
+//
+//            } failure:^(NSError *error) {
+//
+//            }];
         } failure:^(NSError *erro) {
             
         }];
@@ -255,6 +269,19 @@ bool warInt=true;
             [ISQHttpTool getHttp:httpString contentType:nil params:nil success:^(id data) {
                 NSDictionary * dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
                 NSLog(@"dic = %@",dic);
+                /*
+                 {
+                 "access_token":"ACCESS_TOKEN",
+                 "expires_in":7200,
+                 "refresh_token":"REFRESH_TOKEN",
+                 "openid":"OPENID",
+                 "scope":"SCOPE",
+                 "unionid":"o6_bmasdasdsad6_2sgVt7hMZOPfL"
+                 } 
+                 */
+                
+            //用户信息 http请求方式: GET
+            //https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID
                 
             } failure:^(NSError *erro) {
                 

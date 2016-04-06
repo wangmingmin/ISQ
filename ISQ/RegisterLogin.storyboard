@@ -776,7 +776,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="128"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="F03118B8-452F-423A-9D9E-34C0D1B191BF" translatesAutoresizingMaskIntoConstraints="NO" id="lAM-NS-HIQ">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="484BB146-4A3C-4547-9D73-2837102636F4" translatesAutoresizingMaskIntoConstraints="NO" id="lAM-NS-HIQ">
                                                     <rect key="frame" x="0.0" y="27" width="408" height="75"/>
                                                 </imageView>
                                                 <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6eN-r3-RTa">
@@ -1577,7 +1577,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="F03118B8-452F-423A-9D9E-34C0D1B191BF" width="52" height="72">
+        <image name="484BB146-4A3C-4547-9D73-2837102636F4" width="52" height="72">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
