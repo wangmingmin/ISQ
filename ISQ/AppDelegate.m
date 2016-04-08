@@ -1,4 +1,4 @@
-//
+ //
 //  AppDelegate.m
 //  ISQ
 //
@@ -16,6 +16,7 @@
 #import "Reachability.h"
 #import "UMessage.h"
 #import "BeeCloud.h"
+#import "MobClick.h"
 
 #define UMSYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
 #define _IPHONE80_ 80000
@@ -42,6 +43,12 @@ bool islogin=false;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [self pushUM:launchOptions];
+    
+    //友盟统计
+//    [MobClick startWithAppkey:@"566f7e4b67e58ef47d003c5d" reportPolicy:BATCH channelId:@"App Store"];
+//    NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+//    [MobClick setAppVersion:version];
+//    [MobClick checkUpdate];
 
      [[EaseMob sharedInstance].chatManager setIsUseIp:NO];
     self.window.backgroundColor = [UIColor whiteColor];

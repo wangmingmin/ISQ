@@ -77,19 +77,14 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return 8;
+    return 6;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     if (indexPath.row == 3 ) {
         return 8;
-    }else if (indexPath.row == 5){
-        return 1;
-    }else if (indexPath.row == 7){
-        return 60;
     }
-    
     return 50;
 }
 
@@ -102,25 +97,19 @@
         cell=[tableView dequeueReusableCellWithIdentifier:@"SettingCell1" forIndexPath:indexPath];
     }else if (indexPath.row == 2){
         cell=[tableView dequeueReusableCellWithIdentifier:@"SettingCell2" forIndexPath:indexPath];
-    }else if (indexPath.row == 3 || indexPath.row == 5){
+    }else if (indexPath.row == 3 ){
         cell=[tableView dequeueReusableCellWithIdentifier:@"SettingCell3" forIndexPath:indexPath];
-    }else if (indexPath.row == 4 || indexPath.row == 6){
+    }else if (indexPath.row == 4){
         cell=[tableView dequeueReusableCellWithIdentifier:@"SettingCell4" forIndexPath:indexPath];
-        if (indexPath.row == 4) {
-            cell.labelText.text = @"当前版本";
-            cell.detailLabel.text = [NSString stringWithFormat:@"%@%@",@"V ",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
-        }else
-        if (indexPath.row == 6){
         cell.labelText.text = @"清除缓存";
         float size = sum/(1024*1024.0);
         cell.detailLabel.text = [NSString stringWithFormat:@"%.1fM",size];
-        }
-    }else if (indexPath.row == 7){
+    }else if (indexPath.row == 5){
         cell = [tableView dequeueReusableCellWithIdentifier:@"SettingCell5" forIndexPath:indexPath];
     }
     cell.layer.borderWidth=0.5f;
-    cell.layer.borderColor=[[UIColor lightGrayColor]colorWithAlphaComponent:0.2                ].CGColor;
-    if (indexPath.row == 7) {
+    cell.layer.borderColor=[[UIColor lightGrayColor]colorWithAlphaComponent:0.2].CGColor;
+    if (indexPath.row == 5) {
         cell.layer.borderColor = [UIColor clearColor].CGColor;
     }
     
@@ -130,19 +119,20 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    if (indexPath.row == 6){
+    if (indexPath.row == 4){
         
-        alert3 = [[UIAlertView alloc] initWithTitle:@"是否确定清除当前缓存"
-                                                            message:nil
-                                                           delegate:self
-                                                  cancelButtonTitle:@"取消"
-                                                  otherButtonTitles:@"确定", nil];
-        alert3.tag = 902;
-        
-        [alert3 show];
-
-        
-    }else if (indexPath.row == 7){
+        if (sum/(1024*1024.0) >0.0) {
+            
+            alert3 = [[UIAlertView alloc] initWithTitle:@"是否确定清除当前缓存"
+                                                message:nil
+                                               delegate:self
+                                      cancelButtonTitle:@"取消"
+                                      otherButtonTitles:@"确定", nil];
+            alert3.tag = 902;
+            
+            [alert3 show];
+        }
+    }else if (indexPath.row == 5){
         
         if ([user_info objectForKey:userAccount] && [user_info objectForKey:userPassword]) {
         
