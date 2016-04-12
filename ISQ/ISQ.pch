@@ -48,6 +48,8 @@
 #import "UIlabel+Extension.h"
 #import "UIImageView+AFNetworking.h"
 
+#import "MobClick.h"
+
 #ifdef DEBUG // 调试状态, 打开LOG功能
 #define ISQLog(...) NSLog(__VA_ARGS__)
 #else // 发布状态, 关闭LOG功能

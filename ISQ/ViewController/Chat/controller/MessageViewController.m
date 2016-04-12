@@ -115,6 +115,25 @@ NSInteger applyCount; //通知的条数
     findTableview=[[UITableView alloc]init];
 }
 
+- (void)viewWillAppear:(BOOL)animated{
+    
+    [super viewWillAppear:YES];
+    [MobClick beginLogPageView:NSStringFromClass([self class])];
+    if (self.messageTableview) {
+        [self refreshDataSource];
+    }
+    
+    [self registerNotifications];
+}
+
+
+- (void)viewWillDisappear:(BOOL)animated{
+    
+    [super viewWillDisappear:YES];
+    [MobClick endLogPageView:NSStringFromClass([self class])];
+    
+     [self unregisterNotifications];
+}
 
 
 //获取好友缓存
@@ -1400,23 +1419,6 @@ NSInteger applyCount; //通知的条数
             
             break;
     }
-}
-
-
--(void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-    
-    if (self.messageTableview) {
-        [self refreshDataSource];
-    }
-    
-    [self registerNotifications];
-
-}
-
--(void)viewWillDisappear:(BOOL)animated{ 
-    [super viewWillDisappear:animated];
-    [self unregisterNotifications];
 }
 
 

@@ -43,8 +43,17 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
+    
+    [super viewWillAppear:YES];
+    [MobClick beginLogPageView:NSStringFromClass([self class])];
     [self CacheSize];
+}
+
+
+- (void)viewWillDisappear:(BOOL)animated{
+    
+    [super viewWillDisappear:YES];
+    [MobClick endLogPageView:NSStringFromClass([self class])];
 }
 
 

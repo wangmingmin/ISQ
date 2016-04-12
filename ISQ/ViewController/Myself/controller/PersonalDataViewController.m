@@ -41,7 +41,14 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
+    [MobClick beginLogPageView:NSStringFromClass([self class])];
     [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor],NSForegroundColorAttributeName,[UIFont fontWithName:@"" size:23.0],NSFontAttributeName,nil]];
+}
+
+- (void)viewWillDisappear:(BOOL)animated{
+
+    [super viewWillDisappear:YES];
+    [MobClick endLogPageView:NSStringFromClass([self class])];
 }
 
 - (void)didReceiveMemoryWarning {

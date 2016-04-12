@@ -98,6 +98,25 @@ static NSString * const reuseIdentifier = @"cell";
     [self.imageView addGestureRecognizer:tapImageView];
 }
 
+- (void)viewWillAppear:(BOOL)animated{
+    
+    [super viewWillAppear:YES];
+    [MobClick beginLogPageView:NSStringFromClass([self class])];
+    
+    [self checkWhichOneIsOnSelect:0];
+    if (self.movingView != nil) {
+        int pageNumber = self.movingView.center.x/(screenWidth/5);
+        [self checkWhichOneIsOnSelect:pageNumber];
+    }
+}
+
+- (void)viewWillDisappear:(BOOL)animated{
+    
+    [super viewWillDisappear:YES];
+    [MobClick endLogPageView:NSStringFromClass([self class])];
+    
+}
+
 -(void)tapImageView:(UIGestureRecognizer *)sender
 {
     SeconWebController *webVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SeconWebController"];
@@ -266,16 +285,6 @@ static NSString * const reuseIdentifier = @"cell";
     }
 }
 
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [self checkWhichOneIsOnSelect:0];
-    if (self.movingView != nil) {
-        int pageNumber = self.movingView.center.x/(screenWidth/5);
-        [self checkWhichOneIsOnSelect:pageNumber];
-    }
-
-}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -47,8 +47,10 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated{
+    
     [super viewWillAppear:YES];
-
+    [MobClick beginLogPageView:NSStringFromClass([self class])];
+    
     if (locationDelegate.theAddress) {
         
         self.helpAdressEd.text=locationDelegate.theAddress;
@@ -62,9 +64,13 @@
     [self addFooter];
     //下拉刷新
     [self addHeader];
-
 }
 
+- (void)viewWillDisappear:(BOOL)animated{
+    
+    [super viewWillDisappear:YES];
+    [MobClick endLogPageView:NSStringFromClass([self class])];
+}
 
 - (void)addHeader{
     

@@ -133,6 +133,7 @@ bool theTop=true;
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
+    [MobClick beginLogPageView:NSStringFromClass([self class])];
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
     [self loadNewThingDetailData];
      [self loadAnnouncementData];
@@ -147,6 +148,12 @@ bool theTop=true;
     }
 }
 
+
+- (void)viewWillDisappear:(BOOL)animated{
+
+    [super viewWillDisappear:YES];
+    [MobClick endLogPageView:NSStringFromClass([self class])];
+}
 
 - (void)loadAnnouncementData{
 

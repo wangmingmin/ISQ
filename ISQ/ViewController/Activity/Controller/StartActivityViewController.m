@@ -113,6 +113,21 @@
 }
 
 
+- (void)viewWillAppear:(BOOL)animated{
+    
+    [super viewWillAppear:YES];
+    [MobClick beginLogPageView:NSStringFromClass([self class])];
+}
+
+- (void)viewWillDisappear:(BOOL)animated{
+    
+    [super viewWillDisappear:YES];
+    [MobClick endLogPageView:NSStringFromClass([self class])];
+    
+     [_pickview remove];
+}
+
+
 // 正文内容控件
 - (void)setupTextView
 {
@@ -941,11 +956,6 @@
     HUD.removeFromSuperViewOnHide = YES;
     
     [HUD hide:YES afterDelay:1.5];
-}
-
--(void)viewWillDisappear:(BOOL)animated{
-    
-     [_pickview remove];
 }
 
 @end

@@ -62,18 +62,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
     
     [self _setupSubviews];
-    
-    
-    
     
     _nameLabel.text=_chatter;
     
     if (_callSession.type == eCallSessionTypeVideo) {
         
-
         [self _initializeCamera];
         [_session startRunning];
         [self.view addGestureRecognizer:self.tapRecognizer];
@@ -96,20 +91,25 @@
         [_actionView addSubview:_hangupButton];
         [self _stopRing];
     }
-    
-    
-    
-    
     //获取通话的联系人的信息
     [self getCallerData:_chatter];
+}
+
+- (void)viewWillAppear:(BOOL)animated{
     
+    [super viewWillAppear:YES];
+    [MobClick  beginLogPageView:NSStringFromClass([self class])];
     
 }
 
+- (void)viewWillDisappear:(BOOL)animated{
+    
+    [super viewWillDisappear:YES];
+    [MobClick endLogPageView:NSStringFromClass([self class])];
+}
+
+
 -(void)getCallerData:(NSString*)chatter{
-    
-    
-    
     
     _friendsDataSource = [[NSMutableDictionary alloc] init];//好友数据源
     theCache=[[EGOCache alloc]init];
