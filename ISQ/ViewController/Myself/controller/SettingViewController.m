@@ -11,6 +11,7 @@
 #import "ApplyViewController.h"
 #import "LoginViewController.h"
 #import "SDImageCache.h"
+#import "SettingVersionCell.h"
 #import "UMessage.h"
 
 @interface SettingViewController (){
@@ -23,6 +24,7 @@
     UIAlertView *alert4;
     NSString *trackViewUrl;
     NSString *imagePath;
+    NSString * nowVersion;
     //存储文件大小
     long long sum;
 }
@@ -36,7 +38,8 @@
     [super viewDidLoad];
     theCache=[[EGOCache alloc]init];
     self.title = @"设置";
-    
+    NSDictionary *infoDictionary =[[NSBundle mainBundle]infoDictionary];
+    nowVersion = [infoDictionary objectForKey:@"CFBundleVersion"];
     [[ UIApplication sharedApplication ] setStatusBarStyle : UIStatusBarStyleDefault ];
     self.tabBarController.tabBar.hidden=YES;
    
@@ -86,12 +89,15 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return 6;
+    return 7;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    if (indexPath.row == 3 ) {
+    if (indexPath.row == 0) {
+        
+        return 130;
+    }else if (indexPath.row == 4 ) {
         return 8;
     }
     return 50;
@@ -101,24 +107,28 @@
     
     LocationSettingCell *cell;
     if (indexPath.row == 0) {
+        SettingVersionCell *versioncell = [tableView dequeueReusableCellWithIdentifier:@"versioncell" forIndexPath:indexPath];
+        versioncell.versionLabel.text = [NSString stringWithFormat:@"%@  V%@",@"爱社区",nowVersion];
+        return versioncell;
+    }else if (indexPath.row == 1) {
         cell=[tableView dequeueReusableCellWithIdentifier:@"SettingCell0" forIndexPath:indexPath];
-    }else if (indexPath.row == 1){
-        cell=[tableView dequeueReusableCellWithIdentifier:@"SettingCell1" forIndexPath:indexPath];
     }else if (indexPath.row == 2){
+        cell=[tableView dequeueReusableCellWithIdentifier:@"SettingCell1" forIndexPath:indexPath];
+    }else if (indexPath.row == 3){
         cell=[tableView dequeueReusableCellWithIdentifier:@"SettingCell2" forIndexPath:indexPath];
-    }else if (indexPath.row == 3 ){
+    }else if (indexPath.row == 4 ){
         cell=[tableView dequeueReusableCellWithIdentifier:@"SettingCell3" forIndexPath:indexPath];
-    }else if (indexPath.row == 4){
+    }else if (indexPath.row == 5){
         cell=[tableView dequeueReusableCellWithIdentifier:@"SettingCell4" forIndexPath:indexPath];
         cell.labelText.text = @"清除缓存";
         float size = sum/(1024*1024.0);
         cell.detailLabel.text = [NSString stringWithFormat:@"%.1fM",size];
-    }else if (indexPath.row == 5){
+    }else if (indexPath.row == 6){
         cell = [tableView dequeueReusableCellWithIdentifier:@"SettingCell5" forIndexPath:indexPath];
     }
     cell.layer.borderWidth=0.5f;
     cell.layer.borderColor=[[UIColor lightGrayColor]colorWithAlphaComponent:0.2].CGColor;
-    if (indexPath.row == 5) {
+    if (indexPath.row == 6) {
         cell.layer.borderColor = [UIColor clearColor].CGColor;
     }
     
@@ -128,7 +138,7 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    if (indexPath.row == 4){
+    if (indexPath.row == 5){
         
         if (sum/(1024*1024.0) >0.0) {
             
@@ -141,7 +151,7 @@
             
             [alert3 show];
         }
-    }else if (indexPath.row == 5){
+    }else if (indexPath.row == 6){
         
         if ([user_info objectForKey:userAccount] && [user_info objectForKey:userPassword]) {
         
