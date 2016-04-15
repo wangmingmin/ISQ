@@ -72,7 +72,20 @@ static NSString *kGroupName = @"GroupName";
     
 }
 
-//这个方法在选中tabBar的时候调用
+- (void)viewWillAppear:(BOOL)animated{
+
+    [super viewWillAppear:YES];
+    [MobClick beginLogPageView:NSStringFromClass([self class])];
+    
+}
+
+- (void)viewWillDisappear:(BOOL)animated{
+
+    [super viewWillDisappear:YES];
+    [MobClick endLogPageView:NSStringFromClass([self class])];
+}
+
+//这个方法在选中tabBar的时候 调用
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController{
     
     NSArray *array = viewController.childViewControllers;

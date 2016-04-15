@@ -36,11 +36,22 @@
     self.navigationController.interactivePopGestureRecognizer.delegate = (id<UIGestureRecognizerDelegate>)self;
 }
 
--(void)viewWillAppear:(BOOL)animated{
+- (void)viewWillAppear:(BOOL)animated{
     
-    
-    self.navigationController.navigationBar.hidden=YES;
+    [super viewWillAppear:YES];
+    [MobClick beginLogPageView:NSStringFromClass([self class])];
+    self.navigationController.navigationBar.hidden = YES;
 }
+
+
+- (void)viewWillDisappear:(BOOL)animated{
+    
+    [super viewWillDisappear:YES];
+    [MobClick endLogPageView:NSStringFromClass([self class])];
+    [theTime invalidate];
+
+}
+
 
 //已经登陆过则进入主界面，未登录则进入登录界面
 -(void)toStart{
@@ -93,13 +104,6 @@
 
 }
 
-
-
--(void)viewWillDisappear:(BOOL)animated{
-    
-    [theTime invalidate];
-    
-}
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     

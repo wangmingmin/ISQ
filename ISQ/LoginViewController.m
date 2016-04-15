@@ -32,8 +32,7 @@ bool warInt=true;
 
 
 - (void)viewDidLoad {
-    
-    
+
     [super viewDidLoad];
     _tencentOAuth = [[TencentOAuth alloc] initWithAppId:QQAppID
                                             andDelegate:self];
@@ -47,6 +46,20 @@ bool warInt=true;
         self.loginPhoneNumber_tv.text=[user_info objectForKey:userAccount];
     }
 }
+
+- (void)viewWillAppear:(BOOL)animated{
+    
+    [super viewWillAppear:YES];
+    [MobClick beginLogPageView:NSStringFromClass([self class])];
+}
+
+
+- (void)viewWillDisappear:(BOOL)animated{
+    
+    [super viewWillDisappear:YES];
+    [MobClick endLogPageView:NSStringFromClass([self class])];
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

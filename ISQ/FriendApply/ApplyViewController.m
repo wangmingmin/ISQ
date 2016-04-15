@@ -77,21 +77,26 @@ static ApplyViewController *controller = nil;
     [self.navigationItem setLeftBarButtonItem:backItem];
     
     [self loadDataSourceFromLocalDB];
+}
+
+- (void)viewWillAppear:(BOOL)animated{
     
+    [super viewWillAppear:YES];
+    [MobClick  beginLogPageView:NSStringFromClass([self class])];
     
 }
+
+- (void)viewWillDisappear:(BOOL)animated{
+    
+    [super viewWillDisappear:YES];
+    [MobClick endLogPageView:NSStringFromClass([self class])];
+}
+
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-//    [self.tableView reloadData];
 }
 
 #pragma mark - getter

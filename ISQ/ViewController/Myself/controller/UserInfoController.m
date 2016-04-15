@@ -118,6 +118,7 @@ NSString *TMP_UPLOAD_IMG_PATH=@"";
             
             NSURL *imgUrl=[[NSURL alloc]initWithString:[user_info objectForKey:MYSELFHEADNAME]];
             [cell.userInfoImg setImageWithURL:imgUrl placeholderImage:[UIImage imageNamed:@"personalData"]];
+            [cell.uploadPhoto setTitle:@"更换头像" forState:UIControlStateNormal];
             [cell.uploadPhoto addTarget:self action:@selector(uploadPhotoAction:) forControlEvents:UIControlEventTouchUpInside];
             cell.userInfoImg.canClick=YES;
 

@@ -64,7 +64,7 @@ static RealtimeSearchUtil *defaultUtil = nil;
     
     return defaultUtil;
 }
-
+ 
 #pragma mark - private
 
 - (void)realtimeSearch:(NSString *)string

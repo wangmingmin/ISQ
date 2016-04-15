@@ -41,11 +41,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    
-   
-    
-   
-    if ([[newAccountData objectAtIndex:0] isEqualToString:@"邮箱地址"]){
+     if ([[newAccountData objectAtIndex:0] isEqualToString:@"邮箱地址"]){
         self.title=@"修改邮箱地址";
         [self.accountNext_ol setTitle:@"保存" forState:UIControlStateNormal];
         self.emailView.hidden=NO;
@@ -99,6 +95,19 @@
     }
 }
 
+- (void)viewWillAppear:(BOOL)animated{
+
+    [super viewWillAppear:YES];
+    [MobClick beginLogPageView:NSStringFromClass([self class])];
+}
+
+
+- (void)viewWillDisappear:(BOOL)animated{
+
+    [super viewWillDisappear:YES];
+    [MobClick endLogPageView:NSStringFromClass([self class])];
+}
+
 #pragma mark CustomIOSAlertViewDelegate
 -(void)clickToChange{
     
@@ -136,7 +145,6 @@
 
 //验证密码的正确性http
 -(void)validationPassWord{
-    
     
     //提示框
     [self showHudInView:self.view hint:@"正在验证..."];

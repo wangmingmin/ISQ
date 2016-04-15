@@ -50,9 +50,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    // Uncomment the following line to preserve selection between presentations.
-    
     self.tableView.backgroundColor = [UIColor whiteColor];
     self.tableView.tableHeaderView = self.headerView;
     self.tableView.tableFooterView = self.footerView;
@@ -64,9 +61,21 @@
     [self.navigationItem setLeftBarButtonItem:backItem];
     
     [self fetchGroupInfo];
+}
+
+- (void)viewWillAppear:(BOOL)animated{
     
+    [super viewWillAppear:YES];
+    [MobClick beginLogPageView:NSStringFromClass([self class])];
+}
+
+
+- (void)viewWillDisappear:(BOOL)animated{
     
-    }
+    [super viewWillDisappear:YES];
+    [MobClick endLogPageView:NSStringFromClass([self class])];
+}
+
 
 - (void)didReceiveMemoryWarning
 {

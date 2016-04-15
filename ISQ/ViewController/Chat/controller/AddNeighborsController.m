@@ -58,40 +58,33 @@
 
 }
 
+- (void)viewWillAppear:(BOOL)animated{
+
+    [super viewWillAppear:YES];
+    [MobClick beginLogPageView:NSStringFromClass([self class])];
+}
+
+- (void)viewWillDisappear:(BOOL)animated{
+
+    [super viewWillDisappear:YES];
+    [MobClick endLogPageView:NSStringFromClass([self class])];
+}
 
 -(void)getMineCommunity{
     
-    
     NSDictionary *arry=@{@"ua":[user_info objectForKey:userAccount],@"cid":[user_info objectForKey:userCommunityID]};
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/plain"];
-    
-    [manager GET:FINDNEIGBOR parameters:arry success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [ISQHttpTool getHttp:FINDNEIGBOR contentType:nil params:arry success:^(id responseObject) {
         
-        
-      
         neighborData=[NSJSONSerialization JSONObjectWithData:responseObject options:NSJapaneseEUCStringEncoding error:nil];
-       
-       
         
         [self.AddNeighborsTableview reloadData];
-        
-        
-        
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-        
+
+    } failure:^(NSError *erro) {
         
     }];
     
-    
-    
 }
-
 
 
 - (void)didReceiveMemoryWarning {
