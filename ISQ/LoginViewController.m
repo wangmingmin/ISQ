@@ -195,6 +195,8 @@ bool warInt=true;
             NSDictionary * dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
             NSLog(@"dic = %@",dic);
             
+            //建议在获取用户信息成功后再对接爱社区第三方登录
+            
 //            id community_id =[user_info objectForKey:userCommunityID];
 //            NSMutableDictionary * paramsDic = [NSMutableDictionary dictionaryWithObjects:@[@"client_credentials",@"qq",_tencentOAuth.openId,community_id] forKeys:@[@"grant_type",@"login_type",@"openid",@"community_id"]];
 //            
@@ -280,7 +282,7 @@ bool warInt=true;
                  } 
                  */
                 
-            //用户信息 http请求方式: GET
+            //用户信息 http请求方式: GET，建议在获取用户信息成功后再对接爱社区第三方登录
             //https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID
                 
             } failure:^(NSError *erro) {
