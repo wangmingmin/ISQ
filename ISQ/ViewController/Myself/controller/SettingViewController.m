@@ -187,7 +187,7 @@
                [self hideHud];
                if (error && error.errorCode != EMErrorServerNotLogin) {
                    
-                   [self showHint:error.description];
+//                   [self showHint:error.description];
                    
                }else{
 //                   NSString * string_id = [user_info objectForKey:MyUserID];
@@ -197,16 +197,17 @@
                    if([theCache plistForKey:IMCACHEDATA]){
                        [theCache removeCacheForKey:IMCACHEDATA];
                    }
-                   //清除UIWebView的缓存
-                   [[NSURLCache sharedURLCache] removeAllCachedResponses];
-                   //清除cookies
-                   NSHTTPCookie *cookie;
+//                   //清除UIWebView的缓存
+//                   [[NSURLCache sharedURLCache] removeAllCachedResponses];
+//                   //清除cookies
+//                   NSHTTPCookie *cookie;
+//                   
+//                   NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+//                   for (cookie in [storage cookies])
+//                   {
+//                       [storage deleteCookie:cookie];
+//                   }
                    
-                   NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-                   for (cookie in [storage cookies])
-                   {
-                       [storage deleteCookie:cookie];
-                   }
                    [[ApplyViewController shareController] clear];
                    [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
                    UIStoryboard *registerStory=[UIStoryboard storyboardWithName:@"RegisterLogin" bundle:nil];

@@ -151,7 +151,7 @@
         returnResData = [[dic objectForKey:@"data"] objectForKey:@"content"] ;
         for (int i=0;i<returnResData.count;i++) {
             NSString *strFirLetter = [NSString stringWithFormat:@"%c",pinyinFirstLetter([returnResData[i][@"provincename"] characterAtIndex:0])];
-            
+
             if ([[index allKeys]containsObject:strFirLetter]) {
                 //判断index字典中，是否有这个key如果有，取出值进行追加操作
                 [[index objectForKey:strFirLetter] addObject:returnResData[i]];

@@ -19,6 +19,8 @@
 #import "HomeViewController.h"
 #import "AppDelegate.h"
 #import "Reachability.h"
+#import "HMAC-SHA1.h"
+#import "MD5Func.h"
 
 @interface MainViewController ()<UIAlertViewDelegate, IChatManagerDelegate, EMCallManagerDelegate,UITabBarControllerDelegate>
 
@@ -70,7 +72,34 @@ static NSString *kGroupName = @"GroupName";
     [self getUserInfo];
     [self theWIFI];
     
+    
+    //差异化模块测试
+//    [self differentData];
+    
 }
+
+
+/* 差异化模块   welcome欢迎页  banner轮播图  activity活动   style背景样式  module模块  item栏目 */
+- (void)differentData{
+
+    NSString *url = @"http://api.wisq.cn/rest/different/getinfo";
+    NSString *key = @"FkFITeRW";
+    NSString *str = [NSString stringWithFormat:@"%@%@community_id=%@timestamp=%@type=%@%@",@"GET",url,[saveCityName objectForKey:userCommunityID],[HMAC_SHA1 getTime],@"module",key];
+    NSCharacterSet *URLBase64CharacterSet = [[NSCharacterSet characterSetWithCharactersInString:@"/+=\n:"] invertedSet];
+    NSString *s = [str stringByAddingPercentEncodingWithAllowedCharacters:URLBase64CharacterSet];
+    NSString *sign = [MD5Func md5:s];
+    NSDictionary *parameter = @{@"community_id":[saveCityName objectForKey:userCommunityID],@"timestamp":[HMAC_SHA1 getTime],@"type":@"module",@"sign":sign};
+    
+    [ISQHttpTool getHttp:url contentType:nil params:parameter success:^(id reponseObject) {
+        
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:reponseObject options:NSJapaneseEUCStringEncoding  error:nil];
+        NSLog(@"welcomeData---%@",dic);
+    } failure:^(NSError *erro) {
+        
+        NSLog(@"error--%@",erro);
+    }];
+}
+
 
 - (void)viewWillAppear:(BOOL)animated{
 
